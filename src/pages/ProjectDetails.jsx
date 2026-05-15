@@ -62,7 +62,7 @@ const ProjectDetails = () => {
             <img 
               alt={project.title} 
               className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" 
-              src={project.hero_image_url || 'https://images.unsplash.com/photo-1540575861501-7cf05a4b125a?auto=format&fit=crop&q=80&w=2070'} 
+              src={project.thumbnail_url || project.hero_image_url || 'https://images.unsplash.com/photo-1540575861501-7cf05a4b125a?auto=format&fit=crop&q=80&w=2070'} 
             />
           </div>
           
@@ -119,7 +119,7 @@ const ProjectDetails = () => {
           </section>
         )}
 
-        {/* Committee Section */}
+        {/* Committee Section - Commented out for now
         {committee.length > 0 && (
           <section className="py-24 bg-transparent border-y border-white/5 mb-24">
             <h2 className="font-hanken text-3xl md:text-5xl mb-12 text-center text-white font-black tracking-tight">Organizing Committee</h2>
@@ -136,20 +136,34 @@ const ProjectDetails = () => {
             </div>
           </section>
         )}
+        */}
 
         {/* Image Gallery */}
         {highlights.length > 0 && (
-          <section>
-            <h2 className="font-hanken text-3xl md:text-5xl mb-12 text-white font-black tracking-tight">Event Highlights</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <section className="mt-32">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+              <div className="border-l-4 border-primary pl-8">
+                <h2 className="font-hanken text-3xl md:text-5xl text-white font-black tracking-tight">Event Highlights</h2>
+                <p className="text-white/40 mt-2 text-sm md:text-base">Moments captured from our previous editions</p>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {highlights.map((h, i) => (
-                <div key={i} className="overflow-hidden rounded-2xl relative group h-64">
-                  <img alt={h.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0" src={h.image_url} />
-                  {h.title && (
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-6 flex items-end">
-                      <p className="text-white font-black text-sm">{h.title}</p>
-                    </div>
-                  )}
+                <div key={i} className="group relative rounded-[2rem] overflow-hidden aspect-[4/5] glass-card border-none shadow-2xl">
+                  <img 
+                    alt={h.title} 
+                    className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-1" 
+                    src={h.image_url} 
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-8">
+                    <p className="text-primary font-mono text-[10px] tracking-[0.2em] uppercase mb-2">Gallery Item</p>
+                    <h4 className="text-white font-black text-xl leading-tight transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                      {h.title || 'Event Moment'}
+                    </h4>
+                  </div>
+                  {/* Subtle border overlay */}
+                  <div className="absolute inset-0 border border-white/5 group-hover:border-primary/20 rounded-[2rem] transition-colors pointer-events-none"></div>
                 </div>
               ))}
             </div>

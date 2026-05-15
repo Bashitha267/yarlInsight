@@ -263,6 +263,31 @@ const Admin = () => {
                 </div>
               </div>
 
+              {/* SECTION: HIGHLIGHTS */}
+              <div className="space-y-6">
+                <div className="flex justify-between items-center border-b border-white/10 pb-4">
+                  <h3 className="text-xl font-bold">5. Event Highlights</h3>
+                  <button type="button" onClick={() => addItem('highlights')} className="text-primary font-bold text-sm">+ Add Highlight</button>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {(projectForm.highlights || []).map((h, i) => (
+                    <div key={i} className="glass-card p-4 rounded-2xl space-y-3 relative">
+                      <div className="relative group">
+                        <input type="file" className="text-[8px] w-full" onChange={async (e) => { const url = await uploadImage(e.target.files[0]); if(url) updateItem('highlights', i, 'image_url', url); }} />
+                        {h.image_url && (
+                          <div className="relative mt-2">
+                            <img src={h.image_url} className="w-full h-24 object-cover rounded-lg border border-white/10" />
+                            <button type="button" onClick={() => updateItem('highlights', i, 'image_url', '')} className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 shadow-lg"><span className="material-symbols-outlined text-[10px]">close</span></button>
+                          </div>
+                        )}
+                      </div>
+                      <input type="text" placeholder="Caption/Title" className="admin-input w-full text-xs" value={h.title} onChange={e => updateItem('highlights', i, 'title', e.target.value)} />
+                      <button type="button" onClick={() => removeItem('highlights', i)} className="absolute top-2 right-2 text-red-500 text-xs font-black uppercase tracking-tighter">Remove</button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
               <button type="submit" disabled={loading || uploading} className="admin-btn-primary px-12 py-5 text-xl w-full">
                 {loading ? 'Processing...' : (editingProject ? 'Update Project' : 'Publish Project')}
               </button>
@@ -287,8 +312,17 @@ const Admin = () => {
       </main>
 
       <style jsx="true">{`
-        .admin-input { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 0.75rem; padding: 1rem; color: white !important; width: 100%; outline: none; transition: all 0.2s; }
-        .admin-input:focus { border-color: #FACC15; background: rgba(255, 255, 255, 0.1); }
+        .admin-input { 
+          background: #111111 !important; 
+          border: 1px solid rgba(255, 255, 255, 0.1); 
+          border-radius: 0.75rem; 
+          padding: 1rem; 
+          color: white !important; 
+          width: 100%; 
+          outline: none; 
+          transition: all 0.2s; 
+        }
+        .admin-input:focus { border-color: #FACC15; background: #1a1a1a !important; }
         .admin-btn-primary { background: #FACC15; color: black; font-weight: 900; border-radius: 0.75rem; padding: 1rem; transition: all 0.2s; text-transform: uppercase; }
         .admin-btn-primary:hover { filter: brightness(1.1); transform: translateY(-2px); }
         .glass-card { background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
