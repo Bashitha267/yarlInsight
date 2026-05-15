@@ -30,18 +30,14 @@ const Hero = () => {
           </div>
 
           <div className="space-y-2">
-            <h1 className="font-hanken text-5xl md:text-8xl text-white font-black leading-none tracking-tight animate-slide-up flex flex-wrap items-center gap-x-4">
+            <h1 className="font-hanken text-5xl md:text-8xl text-white font-black leading-none tracking-tight animate-slide-up flex flex-wrap items-center gap-x-4 mb-6">
               <span>Yarl</span>
               <RollingText words={dynamicWords} />
             </h1>
-            <p className="text-primary font-mono text-xl md:text-2xl font-bold animate-slide-up animation-delay-300">
-              Precision IQ 2.0
+            <p className="font-inter text-xl md:text-2xl text-white/60 mb-12 max-w-2xl leading-relaxed animate-slide-up animation-delay-300">
+              Join us for a transformative two-day summer school hosted by IEEE Student Branch of the University of Jaffna.
             </p>
           </div>
-
-          <p className="font-inter text-lg md:text-2xl text-white/60 max-w-2xl leading-relaxed animate-slide-up animation-delay-500">
-            Join the most anticipated student-led event of the year. Empowering the next generation of campus innovators and leaders.
-          </p>
 
           <div className="flex flex-wrap gap-6 pt-4 animate-slide-up animation-delay-1000">
             <button className="bg-primary text-black px-10 py-4 rounded-xl font-black text-lg md:text-xl hover:scale-105 transition-all shadow-[0_0_30px_rgba(250,204,21,0.3)] active:scale-95 flex items-center gap-3">

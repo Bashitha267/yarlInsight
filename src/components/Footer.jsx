@@ -1,30 +1,20 @@
 import React from 'react';
+import FAQ from './FAQ';
 
 const CTA = () => {
   return (
-    <section className="py-32 px-6 md:px-margin-desktop max-w-container-max mx-auto">
-      <div className="relative rounded-[40px] overflow-hidden py-24 px-12 text-center border border-white/10 bg-surface shadow-2xl">
-        {/* Abstract Background */}
-        <div className="absolute inset-0 -z-10 overflow-hidden">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2"></div>
-          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-white/5 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/2"></div>
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
-        </div>
-
-        <div className="max-w-3xl mx-auto space-y-10 relative z-10">
-          <h2 className="font-hanken text-4xl md:text-6xl text-white font-bold leading-tight tracking-tight">
-            Be part of the <span className="text-primary italic">next big thing</span> on campus
+    <section className="py-24 px-6 md:px-margin-desktop max-w-container-max mx-auto">
+      <div className="relative rounded-3xl overflow-hidden py-16 px-12 text-center bg-primary">
+        <div className="max-w-3xl mx-auto space-y-6 relative z-10 text-black">
+          <h2 className="font-hanken text-4xl md:text-5xl font-black leading-tight">
+            Ready to Join YarlInsight?
           </h2>
-          <p className="text-white/60 text-lg md:text-xl font-inter max-w-2xl mx-auto">
-            Don't miss out on the opportunity to showcase your skills and connect with peers. Registration for Yarl Insight 2024 is now open.
+          <p className="text-black/70 text-lg font-medium max-w-xl mx-auto">
+            Don't miss this opportunity to enhance your skills and network with industry professionals.
           </p>
-          
-          <div className="flex flex-col sm:flex-row justify-center gap-6 pt-4">
-            <button className="bg-primary text-black px-12 py-5 rounded-2xl font-black text-xl hover:scale-105 transition-all shadow-[0_0_40px_rgba(250,204,21,0.2)] active:scale-95">
-              Sign Up Now
-            </button>
-            <button className="glass-card text-white px-10 py-5 rounded-2xl font-bold hover:bg-white/10 active:scale-95">
-              Contact Organizing Team
+          <div className="pt-4">
+            <button className="bg-black text-white px-10 py-4 rounded-xl font-bold text-lg hover:scale-105 transition-all active:scale-95 shadow-xl">
+              Registrations available soon
             </button>
           </div>
         </div>
@@ -35,76 +25,87 @@ const CTA = () => {
 
 const Footer = () => {
   return (
-    <footer className="bg-black border-t border-white/5 pt-24 pb-12">
-      <div className="px-6 md:px-margin-desktop max-w-container-max mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-20">
-          <div className="space-y-6 col-span-1 lg:col-span-1">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-primary rounded-sm flex items-center justify-center">
-                <span className="text-black font-black text-xl">Y</span>
+    <>
+      <footer className="bg-black text-white pt-24 pb-8 border-t border-white/5">
+        <div className="px-6 md:px-margin-desktop max-w-container-max mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+            {/* Column 1: About */}
+            <div className="space-y-6">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-primary rounded flex items-center justify-center font-black text-black">Y</div>
+                <span className="text-xl font-bold tracking-tighter">YarlInsight</span>
               </div>
-              <div className="text-2xl font-bold text-white tracking-tight font-hanken">
-                Yarl Insight <span className="text-primary">2.0</span>
+              <p className="text-white/40 text-sm leading-relaxed">
+                A comprehensive two-day summer school dedicated to Fullstack Development with MERN Stack. Hosted by IEEE Student Branch of the University of Jaffna.
+              </p>
+            </div>
+
+            {/* Column 2: Quick Links */}
+            <div className="space-y-6">
+              <h4 className="text-sm font-bold uppercase tracking-widest text-primary">Quick Links</h4>
+              <ul className="space-y-3">
+                {['Home', 'About', 'Speakers', 'Schedule', 'Gallery', 'FAQ'].map((link) => (
+                  <li key={link}>
+                    <a href={`#${link.toLowerCase()}`} className="text-white/40 hover:text-white transition-colors text-sm">{link}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Column 3: Contact */}
+            <div className="space-y-6">
+              <h4 className="text-sm font-bold uppercase tracking-widest text-primary">Contact</h4>
+              <ul className="space-y-4">
+                <li className="flex items-start gap-3 text-sm text-white/40">
+                  <span className="material-symbols-outlined text-primary text-lg">location_on</span>
+                  <span>University of Jaffna, Sri Lanka</span>
+                </li>
+                <li className="flex items-start gap-3 text-sm text-white/40">
+                  <span className="material-symbols-outlined text-primary text-lg">mail</span>
+                  <span>ieeesb@univ.jfn.ac.lk</span>
+                </li>
+                <li className="flex items-start gap-3 text-sm text-white/40">
+                  <span className="material-symbols-outlined text-primary text-lg">phone</span>
+                  <span>+94 71 087 0119</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Column 4: Follow Us */}
+            <div className="space-y-6">
+              <h4 className="text-sm font-bold uppercase tracking-widest text-primary">Follow Us</h4>
+              <div className="flex gap-3">
+                {[
+                  { icon: 'facebook', url: 'https://www.facebook.com/IEEESBUoJ/' },
+                  { icon: 'youtube', url: 'https://www.youtube.com/@ieeestudentbranch-universi6371' },
+                  { icon: 'linkedin', url: 'https://lk.linkedin.com/company/ieeesbuoj' }
+                ].map((social) => (
+                  <a 
+                    key={social.icon} 
+                    href={social.url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-primary hover:text-black transition-all"
+                  >
+                    <i className={`fab fa-${social.icon}`}></i>
+                  </a>
+                ))}
               </div>
             </div>
-            <p className="text-white/40 text-sm leading-relaxed max-w-xs">
-              Empowering students through innovation, collaboration, and peer-to-peer excellence.
+          </div>
+
+          {/* Bottom Bar */}
+          <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+            <p className="text-[10px] text-white/20 uppercase tracking-widest text-center">
+              © {new Date().getFullYear()} YarlInsight. All rights reserved. Organized by IEEE Student Branch of University of Jaffna.
             </p>
-            <div className="flex gap-4">
-              {['school', 'groups', 'auto_awesome'].map((icon) => (
-                <a key={icon} href="#" className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center border border-white/10 text-white/40 hover:text-primary hover:border-primary transition-all">
-                  <span className="material-symbols-outlined text-lg">{icon}</span>
-                </a>
-              ))}
-            </div>
-          </div>
-
-          <div className="space-y-6">
-            <h5 className="text-primary font-mono text-xs uppercase tracking-[0.2em] font-bold">Event Info</h5>
-            <ul className="space-y-4">
-              {['Schedule', 'Speakers', 'Workshops', 'Hackathon'].map((item) => (
-                <li key={item}><a href="#" className="text-white/60 hover:text-white transition-colors text-sm">{item}</a></li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="space-y-6">
-            <h5 className="text-primary font-mono text-xs uppercase tracking-[0.2em] font-bold">Support</h5>
-            <ul className="space-y-4">
-              {['FAQ', 'Venue Map', 'Student Guide', 'Contact Us'].map((item) => (
-                <li key={item}><a href="#" className="text-white/60 hover:text-white transition-colors text-sm">{item}</a></li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="space-y-6">
-            <h5 className="text-primary font-mono text-xs uppercase tracking-[0.2em] font-bold">Stay Updated</h5>
-            <p className="text-white/40 text-sm leading-relaxed">
-              Get the latest news and announcements delivered to your inbox.
-            </p>
-            <div className="flex gap-2">
-              <input 
-                type="email" 
-                placeholder="Student email" 
-                className="bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-sm w-full focus:outline-none focus:border-primary transition-colors text-white"
-              />
-              <button className="bg-primary text-black p-2 rounded-lg hover:brightness-110 transition-all">
-                <span className="material-symbols-outlined">send</span>
-              </button>
+            <div className="flex items-center gap-4 text-[10px] text-white/20 uppercase tracking-widest">
+              <span>Developed by <a href="https://nimeshbashitha.me" target="_blank" rel="noopener noreferrer" className="text-white/60 font-bold hover:text-primary transition-colors">Nimesh Bashitha</a></span>
             </div>
           </div>
         </div>
-
-        <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] font-mono text-white/20 uppercase tracking-widest">
-          <div>© 2024 Yarl Insight Organizing Committee. Student Initiative.</div>
-          <div className="flex gap-8">
-            <a href="#" className="hover:text-white transition-colors">Instagram</a>
-            <a href="#" className="hover:text-white transition-colors">Facebook</a>
-            <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
-          </div>
-        </div>
-      </div>
-    </footer>
+      </footer>
+    </>
   );
 };
 

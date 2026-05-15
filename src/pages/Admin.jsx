@@ -9,6 +9,7 @@ const Admin = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('projects');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // Data States
   const [projects, setProjects] = useState([]);
@@ -76,7 +77,7 @@ const Admin = () => {
       committee: { name: '', role: '', image_url: '' },
       highlights: { title: '', type: '', image_url: '', grid_size: 'small' }
     };
-    setProjectForm({ ...projectForm, [type]: [...projectForm[type], schemas[type]] });
+    setProjectForm({ ...projectForm, [type]: [...(projectForm[type] || []), schemas[type]] });
   };
 
   const updateItem = (type, index, field, value) => {
@@ -104,7 +105,6 @@ const Admin = () => {
       if (editingProject) {
         await supabase.from('projects').update(pData).eq('id', editingProject.id);
         pid = editingProject.id;
-        // Simple strategy: Clear and re-insert children for consistency in this example
         await supabase.from('project_speakers').delete().eq('project_id', pid);
         await supabase.from('project_committee').delete().eq('project_id', pid);
         await supabase.from('project_highlights').delete().eq('project_id', pid);
@@ -113,10 +113,9 @@ const Admin = () => {
         pid = data.id;
       }
 
-      // Save children
-      if (projectForm.speakers.length) await supabase.from('project_speakers').insert(projectForm.speakers.map(s => ({ ...s, project_id: pid })));
-      if (projectForm.committee.length) await supabase.from('project_committee').insert(projectForm.committee.map(c => ({ ...c, project_id: pid })));
-      if (projectForm.highlights.length) await supabase.from('project_highlights').insert(projectForm.highlights.map(h => ({ ...h, project_id: pid })));
+      if (projectForm.speakers?.length) await supabase.from('project_speakers').insert(projectForm.speakers.map(s => ({ ...s, project_id: pid })));
+      if (projectForm.committee?.length) await supabase.from('project_committee').insert(projectForm.committee.map(c => ({ ...c, project_id: pid })));
+      if (projectForm.highlights?.length) await supabase.from('project_highlights').insert(projectForm.highlights.map(h => ({ ...h, project_id: pid })));
 
       alert('Project saved successfully!');
       setProjectForm(initialProjectState);
@@ -128,13 +127,26 @@ const Admin = () => {
 
   if (!isLoggedIn) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center p-6">
-        <div className="glass-card p-10 rounded-2xl w-full max-w-md space-y-8 border-primary/20">
-          <h1 className="text-3xl font-black text-white text-center">Admin <span className="text-primary">Login</span></h1>
+      <div className="min-h-screen bg-black flex items-center justify-center p-6 relative overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px]"></div>
+        <div className="glass-card p-12 rounded-[2rem] w-full max-w-md space-y-10 relative z-10 border border-white/10 shadow-2xl">
+          <div className="text-center space-y-2">
+            <h1 className="text-4xl font-black text-white tracking-tighter">Admin <span className="text-primary italic">Portal</span></h1>
+            <p className="text-white/40 text-sm">Secure access for authorized members only</p>
+          </div>
           <form onSubmit={handleLogin} className="space-y-6">
-            <input type="text" placeholder="Username" className="admin-input w-full" value={username} onChange={e => setUsername(e.target.value)} />
-            <input type="password" placeholder="Password" className="admin-input w-full" value={password} onChange={e => setPassword(e.target.value)} />
-            <button type="submit" className="admin-btn-primary w-full">{loading ? '...' : 'Sign In'}</button>
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <label className="text-[10px] uppercase font-black text-primary tracking-widest ml-1">Username</label>
+                <input type="text" placeholder="Enter username" className="admin-input" value={username} onChange={e => setUsername(e.target.value)} required />
+              </div>
+              <div className="space-y-2">
+                <label className="text-[10px] uppercase font-black text-primary tracking-widest ml-1">Password</label>
+                <input type="password" placeholder="••••••••" className="admin-input" value={password} onChange={e => setPassword(e.target.value)} required />
+              </div>
+            </div>
+            {error && <div className="text-red-500 text-xs text-center font-bold">{error}</div>}
+            <button type="submit" disabled={loading} className="admin-btn-primary w-full">{loading ? 'Authenticating...' : 'Sign In'}</button>
           </form>
         </div>
       </div>
@@ -142,42 +154,50 @@ const Admin = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white flex">
-      <aside className="w-64 bg-white/5 border-r border-white/10 p-8 flex flex-col gap-8 fixed h-full z-20">
+    <div className="min-h-screen bg-black text-white flex flex-col lg:flex-row">
+      {/* Mobile Top Bar */}
+      <div className="lg:hidden flex justify-between items-center p-6 bg-white/5 border-b border-white/10 sticky top-0 z-30 backdrop-blur-xl">
         <div className="font-black text-xl text-primary">ADMIN</div>
+        <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="text-white">
+          <span className="material-symbols-outlined">{isSidebarOpen ? 'close' : 'menu'}</span>
+        </button>
+      </div>
+
+      {/* Sidebar - Mobile Drawer / Desktop Fixed */}
+      <aside className={`w-64 bg-black lg:bg-white/5 border-r border-white/10 p-8 flex flex-col gap-8 fixed lg:sticky top-0 h-full z-40 transition-transform duration-300 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
+        <div className="hidden lg:block font-black text-xl text-primary">ADMIN</div>
         <nav className="space-y-2 flex-grow">
           {['projects', 'schedule'].map(tab => (
-            <button key={tab} onClick={() => setActiveTab(tab)} className={`w-full text-left px-4 py-3 rounded-xl capitalize transition-all ${activeTab === tab ? 'bg-primary text-black font-bold' : 'hover:bg-white/5 text-white/40'}`}>
+            <button key={tab} onClick={() => { setActiveTab(tab); setIsSidebarOpen(false); }} className={`w-full text-left px-4 py-3 rounded-xl capitalize transition-all ${activeTab === tab ? 'bg-primary text-black font-bold' : 'hover:bg-white/5 text-white/40'}`}>
               {tab}
             </button>
           ))}
         </nav>
-        <button onClick={() => { sessionStorage.removeItem('admin_session'); setIsLoggedIn(false); }} className="text-white/20 hover:text-red-500 text-xs uppercase font-bold tracking-widest px-4">Sign Out</button>
+        <button onClick={() => { sessionStorage.removeItem('admin_session'); setIsLoggedIn(false); }} className="text-white/20 hover:text-red-500 text-xs uppercase font-bold tracking-widest px-4 text-left">Sign Out</button>
       </aside>
 
-      <main className="ml-64 flex-grow p-12 max-w-5xl">
+      {/* Main Content Area */}
+      <main className="flex-grow p-6 lg:p-12 max-w-5xl mx-auto w-full">
         {activeTab === 'projects' && (
           <div className="space-y-16">
-            <h2 className="text-4xl font-black">{editingProject ? 'Edit' : 'Create'} <span className="text-primary">Project</span></h2>
+            <h2 className="text-3xl lg:text-4xl font-black">{editingProject ? 'Edit' : 'Create'} <span className="text-primary">Project</span></h2>
             
             <form onSubmit={handleSaveProject} className="space-y-12">
-              {/* SECTION: BASIC INFO */}
               <div className="space-y-6">
                 <h3 className="text-xl font-bold border-b border-white/10 pb-4">1. Project Details</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <input type="text" placeholder="Title" className="admin-input col-span-2" value={projectForm.title} onChange={e => setProjectForm({...projectForm, title: e.target.value})} required />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <input type="text" placeholder="Title" className="admin-input md:col-span-2" value={projectForm.title} onChange={e => setProjectForm({...projectForm, title: e.target.value})} required />
                   <input type="text" placeholder="Tag Line" className="admin-input" value={projectForm.tag} onChange={e => setProjectForm({...projectForm, tag: e.target.value})} />
                   <input type="text" placeholder="Location" className="admin-input" value={projectForm.location} onChange={e => setProjectForm({...projectForm, location: e.target.value})} />
                   <input type="date" className="admin-input" value={projectForm.start_date} onChange={e => setProjectForm({...projectForm, start_date: e.target.value})} />
                   <input type="date" className="admin-input" value={projectForm.end_date} onChange={e => setProjectForm({...projectForm, end_date: e.target.value})} />
-                  <textarea placeholder="Description" rows="4" className="admin-input col-span-2" value={projectForm.description} onChange={e => setProjectForm({...projectForm, description: e.target.value})}></textarea>
+                  <textarea placeholder="Description" rows="4" className="admin-input md:col-span-2" value={projectForm.description} onChange={e => setProjectForm({...projectForm, description: e.target.value})}></textarea>
                 </div>
               </div>
 
-              {/* SECTION: IMAGES */}
               <div className="space-y-6">
                 <h3 className="text-xl font-bold border-b border-white/10 pb-4">2. Main Media</h3>
-                <div className="grid grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   {['hero_image_url', 'thumbnail_url'].map(field => (
                     <div key={field} className="p-6 border-2 border-dashed border-white/10 rounded-2xl space-y-4">
                       <label className="text-xs uppercase font-black text-white/40 tracking-widest">{field.replace('_', ' ')}</label>
@@ -185,13 +205,7 @@ const Admin = () => {
                       {projectForm[field] && (
                         <div className="relative mt-2">
                           <img src={projectForm[field]} className="w-full h-32 object-cover rounded-lg border border-white/10" />
-                          <button 
-                            type="button" 
-                            onClick={() => setProjectForm({...projectForm, [field]: ''})}
-                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 shadow-lg hover:bg-red-600 transition-colors"
-                          >
-                            <span className="material-symbols-outlined text-xs">close</span>
-                          </button>
+                          <button type="button" onClick={() => setProjectForm({...projectForm, [field]: ''})} className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 shadow-lg hover:bg-red-600 transition-colors"><span className="material-symbols-outlined text-xs">close</span></button>
                         </div>
                       )}
                     </div>
@@ -199,119 +213,70 @@ const Admin = () => {
                 </div>
               </div>
 
-              {/* SECTION: SPEAKERS */}
               <div className="space-y-6">
                 <div className="flex justify-between items-center border-b border-white/10 pb-4">
                   <h3 className="text-xl font-bold">3. Keynote Speakers</h3>
-                  <button type="button" onClick={() => addItem('speakers')} className="text-primary font-bold text-sm">+ Add Speaker</button>
+                  <button type="button" onClick={() => addItem('speakers')} className="text-primary font-bold text-sm">+ Add</button>
                 </div>
                 <div className="space-y-4">
-                  {projectForm.speakers.map((s, i) => (
-                    <div key={i} className="glass-card p-6 rounded-2xl grid grid-cols-12 gap-4 relative">
-                      <div className="col-span-3">
+                  {(projectForm.speakers || []).map((s, i) => (
+                    <div key={i} className="glass-card p-4 lg:p-6 rounded-2xl flex flex-col md:flex-row gap-6 relative">
+                      <div className="w-full md:w-32">
                         <input type="file" className="text-[8px] w-full" onChange={async (e) => { const url = await uploadImage(e.target.files[0]); if(url) updateItem('speakers', i, 'image_url', url); }} />
                         {s.image_url && (
                           <div className="relative mt-2">
                             <img src={s.image_url} className="w-full aspect-square object-cover rounded-lg" />
-                            <button 
-                              type="button" 
-                              onClick={() => updateItem('speakers', i, 'image_url', '')}
-                              className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1"
-                            >
-                              <span className="material-symbols-outlined text-[10px]">close</span>
-                            </button>
+                            <button type="button" onClick={() => updateItem('speakers', i, 'image_url', '')} className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1"><span className="material-symbols-outlined text-[10px]">close</span></button>
                           </div>
                         )}
                       </div>
-                      <div className="col-span-8 space-y-3">
-                        <input type="text" placeholder="Name" className="admin-input w-full" value={s.name} onChange={e => updateItem('speakers', i, 'name', e.target.value)} />
-                        <input type="text" placeholder="Role" className="admin-input w-full" value={s.role} onChange={e => updateItem('speakers', i, 'role', e.target.value)} />
-                        <textarea placeholder="Bio" className="admin-input w-full" rows="2" value={s.description} onChange={e => updateItem('speakers', i, 'description', e.target.value)}></textarea>
+                      <div className="flex-grow space-y-3">
+                        <input type="text" placeholder="Name" className="admin-input w-full text-sm" value={s.name} onChange={e => updateItem('speakers', i, 'name', e.target.value)} />
+                        <input type="text" placeholder="Role" className="admin-input w-full text-sm" value={s.role} onChange={e => updateItem('speakers', i, 'role', e.target.value)} />
+                        <textarea placeholder="Bio" className="admin-input w-full text-sm" rows="2" value={s.description} onChange={e => updateItem('speakers', i, 'description', e.target.value)}></textarea>
                       </div>
-                      <button type="button" onClick={() => removeItem('speakers', i)} className="col-span-1 text-red-500 material-symbols-outlined">delete</button>
+                      <button type="button" onClick={() => removeItem('speakers', i)} className="text-red-500 material-symbols-outlined self-start">delete</button>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* SECTION: COMMITTEE */}
               <div className="space-y-6">
                 <div className="flex justify-between items-center border-b border-white/10 pb-4">
                   <h3 className="text-xl font-bold">4. Committee</h3>
-                  <button type="button" onClick={() => addItem('committee')} className="text-primary font-bold text-sm">+ Add Member</button>
+                  <button type="button" onClick={() => addItem('committee')} className="text-primary font-bold text-sm">+ Add</button>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
-                  {projectForm.committee.map((c, i) => (
-                    <div key={i} className="glass-card p-6 rounded-2xl flex gap-4 relative">
-                      <div className="w-20">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {(projectForm.committee || []).map((c, i) => (
+                    <div key={i} className="glass-card p-4 rounded-2xl flex gap-4 relative">
+                      <div className="w-16">
                         <input type="file" className="text-[8px] w-full" onChange={async (e) => { const url = await uploadImage(e.target.files[0]); if(url) updateItem('committee', i, 'image_url', url); }} />
-                        {c.image_url && (
-                          <div className="relative mt-2">
-                            <img src={c.image_url} className="w-16 h-16 rounded-full object-cover" />
-                            <button 
-                              type="button" 
-                              onClick={() => updateItem('committee', i, 'image_url', '')}
-                              className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-0.5"
-                            >
-                              <span className="material-symbols-outlined text-[8px]">close</span>
-                            </button>
-                          </div>
-                        )}
+                        {c.image_url && <img src={c.image_url} className="w-12 h-12 rounded-full object-cover mt-2" />}
                       </div>
                       <div className="flex-grow space-y-2">
-                        <input type="text" placeholder="Name" className="admin-input w-full text-sm" value={c.name} onChange={e => updateItem('committee', i, 'name', e.target.value)} />
-                        <input type="text" placeholder="Role" className="admin-input w-full text-sm" value={c.role} onChange={e => updateItem('committee', i, 'role', e.target.value)} />
+                        <input type="text" placeholder="Name" className="admin-input w-full text-xs" value={c.name} onChange={e => updateItem('committee', i, 'name', e.target.value)} />
+                        <input type="text" placeholder="Role" className="admin-input w-full text-xs" value={c.role} onChange={e => updateItem('committee', i, 'role', e.target.value)} />
                       </div>
-                      <button type="button" onClick={() => removeItem('committee', i)} className="text-red-500 material-symbols-outlined self-start">close</button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* SECTION: HIGHLIGHTS */}
-              <div className="space-y-6">
-                <div className="flex justify-between items-center border-b border-white/10 pb-4">
-                  <h3 className="text-xl font-bold">5. Event Highlights</h3>
-                  <button type="button" onClick={() => addItem('highlights')} className="text-primary font-bold text-sm">+ Add Highlight</button>
-                </div>
-                <div className="grid grid-cols-3 gap-4">
-                  {projectForm.highlights.map((h, i) => (
-                    <div key={i} className="glass-card p-4 rounded-2xl space-y-3 relative">
-                      <input type="file" className="text-[8px] w-full" onChange={async (e) => { const url = await uploadImage(e.target.files[0]); if(url) updateItem('highlights', i, 'image_url', url); }} />
-                      {h.image_url && (
-                        <div className="relative">
-                          <img src={h.image_url} className="w-full h-24 object-cover rounded-lg" />
-                          <button 
-                            type="button" 
-                            onClick={() => updateItem('highlights', i, 'image_url', '')}
-                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1"
-                          >
-                            <span className="material-symbols-outlined text-[10px]">close</span>
-                          </button>
-                        </div>
-                      )}
-                      <input type="text" placeholder="Title" className="admin-input w-full text-xs" value={h.title} onChange={e => updateItem('highlights', i, 'title', e.target.value)} />
-                      <button type="button" onClick={() => removeItem('highlights', i)} className="absolute top-2 right-2 text-red-500 text-xs">Remove</button>
+                      <button type="button" onClick={() => removeItem('committee', i)} className="text-red-500 material-symbols-outlined self-start text-sm">close</button>
                     </div>
                   ))}
                 </div>
               </div>
 
               <button type="submit" disabled={loading || uploading} className="admin-btn-primary px-12 py-5 text-xl w-full">
-                {loading ? 'Processing...' : (editingProject ? 'Update Everything' : 'Publish Everything')}
+                {loading ? 'Processing...' : (editingProject ? 'Update Project' : 'Publish Project')}
               </button>
             </form>
 
-            {/* PROJECT LIST */}
             <section className="pt-20 space-y-6">
-              <h3 className="text-2xl font-black">All Projects</h3>
-              <div className="grid grid-cols-2 gap-4">
+              <h3 className="text-2xl font-black">Project List</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {projects.map(p => (
-                  <div key={p.id} onClick={() => { setEditingProject(p); setProjectForm(p); window.scrollTo({top:0, behavior:'smooth'}); }} className="glass-card p-4 flex gap-4 cursor-pointer hover:border-primary/50 transition-all">
-                    <img src={p.thumbnail_url || p.hero_image_url} className="w-20 h-20 object-cover rounded-lg" />
-                    <div>
-                      <div className="font-bold">{p.title}</div>
-                      <div className="text-xs text-white/40">{p.tag}</div>
+                  <div key={p.id} onClick={async () => { setEditingProject(p); const [spk, com, hlt] = await Promise.all([supabase.from('project_speakers').select('*').eq('project_id', p.id), supabase.from('project_committee').select('*').eq('project_id', p.id), supabase.from('project_highlights').select('*').eq('project_id', p.id)]); setProjectForm({...p, speakers: spk.data || [], committee: com.data || [], highlights: hlt.data || []}); window.scrollTo({top:0, behavior:'smooth'}); }} className="glass-card p-4 flex gap-4 cursor-pointer hover:border-primary/50 transition-all">
+                    <img src={p.thumbnail_url || p.hero_image_url} className="w-16 h-16 object-cover rounded-lg" />
+                    <div className="overflow-hidden">
+                      <div className="font-bold truncate">{p.title}</div>
+                      <div className="text-[10px] text-white/40 truncate">{p.tag}</div>
                     </div>
                   </div>
                 ))}
@@ -322,11 +287,11 @@ const Admin = () => {
       </main>
 
       <style jsx="true">{`
-        .admin-input { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.75rem; padding: 0.75rem 1rem; color: white; outline: none; transition: border-color 0.2s; }
-        .admin-input:focus { border-color: #FACC15; }
-        .admin-btn-primary { background: #FACC15; color: black; font-weight: 900; border-radius: 0.75rem; transition: all 0.2s; }
+        .admin-input { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 0.75rem; padding: 1rem; color: white !important; width: 100%; outline: none; transition: all 0.2s; }
+        .admin-input:focus { border-color: #FACC15; background: rgba(255, 255, 255, 0.1); }
+        .admin-btn-primary { background: #FACC15; color: black; font-weight: 900; border-radius: 0.75rem; padding: 1rem; transition: all 0.2s; text-transform: uppercase; }
         .admin-btn-primary:hover { filter: brightness(1.1); transform: translateY(-2px); }
-        .admin-btn-primary:active { transform: translateY(0); }
+        .glass-card { background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
       `}</style>
     </div>
   );
