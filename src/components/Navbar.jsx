@@ -31,7 +31,7 @@ const Navbar = () => {
     <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled || isMobileMenuOpen ? 'bg-black/90 backdrop-blur-xl border-b border-white/10 py-4' : 'bg-transparent py-6'}`}>
       <div className="flex justify-between items-center px-6 md:px-margin-desktop max-w-container-max mx-auto">
         <div className="flex items-center gap-3">
-          <img src={logo} alt="Yarl Insight Logo" className="w-48 md:w-auto h-4 md:h-8 object-cover" />
+          <img src={logo} alt="YARL INSIGHT Logo" className="w-48 md:w-auto h-4 md:h-8 object-cover" />
 
         </div>
 

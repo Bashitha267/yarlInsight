@@ -2,11 +2,11 @@ import React from "react";
 import { motion } from "framer-motion";
 
 export default function RollingText({
-  words = ["Insight"],
+  words = ["INSIGHT"],
   duration = 0.9,
   stagger = 0.16,
 }) {
-  const text = words?.[0] || "Insight";
+  const text = words?.[0] || "INSIGHT";
 
   return (
     <div className="overflow-hidden inline-flex text-secondary font-black">

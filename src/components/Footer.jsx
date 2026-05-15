@@ -8,7 +8,7 @@ const CTA = () => {
       <div className="relative rounded-3xl overflow-hidden py-16 px-12 text-center bg-primary">
         <div className="max-w-3xl mx-auto space-y-6 relative z-10 text-white">
           <h2 className="font-hanken text-4xl md:text-5xl font-black leading-tight">
-            Ready to Join YarlInsight 3.0
+            Ready to Join YARL INSIGHT 3.0
           </h2>
           <p className="text-black/70 text-lg font-medium max-w-xl mx-auto">
             Don't miss this opportunity to enhance your skills and network with industry professionals.
@@ -98,7 +98,7 @@ const Footer = () => {
           {/* Bottom Bar */}
           <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
             <p className="text-[10px] text-white/20 uppercase tracking-widest text-center">
-              © {new Date().getFullYear()} <span className="text-primary">Yarl</span><span className="text-secondary">Insight</span>. All rights reserved. Organized by IEEE Student Branch of University of Jaffna.
+              © {new Date().getFullYear()} <span className="text-primary">YARL</span> <span className="text-secondary">INSIGHT</span>. All rights reserved. Organized by IEEE Student Branch of University of Jaffna.
             </p>
             <div className="flex items-center gap-4 text-[10px] text-white/20 uppercase tracking-widest">
               <span>Developed by <a href="https://nimeshbashitha.me" target="_blank" rel="noopener noreferrer" className="text-white/60 font-bold hover:text-primary transition-colors">Nimesh Bashitha</a></span>

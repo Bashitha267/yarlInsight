@@ -3,8 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const faqData = [
   {
-    question: "Who can attend YarlInsight?",
-    answer: "YarlInsight is open to undergraduates in computer science, engineering, and related fields. Professionals looking to update their skills are also welcome to attend."
+    question: "Who can attend YARL INSIGHT?",
+    answer: "YARL INSIGHT is open to undergraduates in computer science, engineering, and related fields. Professionals looking to update their skills are also welcome to attend."
   },
   {
     question: "What is the cost to attend?",

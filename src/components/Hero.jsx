@@ -2,7 +2,7 @@ import React from 'react';
 import RollingText from './RollingText';
 
 const Hero = () => {
-  const dynamicWords = ["Insight"];
+  const dynamicWords = ["INSIGHT"];
 
   return (
     <section className="relative min-h-[95vh] w-full overflow-hidden flex items-center pt-20">
@@ -31,7 +31,7 @@ const Hero = () => {
 
           <div className="space-y-2">
             <h1 className="font-hanken text-5xl md:text-8xl font-black leading-none tracking-tight animate-slide-up flex flex-wrap items-center gap-x-4 mb-6">
-              <span className="text-primary">Yarl</span>
+              <span className="text-primary">YARL</span>
               <RollingText words={dynamicWords} />
             </h1>
             <p className="font-inter text-xl md:text-2xl text-white/60 mb-12 max-w-2xl leading-relaxed animate-slide-up animation-delay-300">

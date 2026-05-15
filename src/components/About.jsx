@@ -11,7 +11,7 @@ const About = () => {
             <img
               className="w-full aspect-square md:aspect-video lg:aspect-square object-cover rounded-xl"
               src={whyImage}
-              alt="Why Attend YarlInsight"
+              alt="Why Attend YARL INSIGHT"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60"></div>
           </div>
@@ -30,15 +30,15 @@ const About = () => {
         <div className="space-y-8 order-1 lg:order-2">
           <div className="space-y-4">
             <h2 className="font-mono text-sm uppercase tracking-[0.3em]">
-              About <span className="text-primary">Yarl</span><span className="text-secondary">Insight</span>
+              About <span className="text-primary">YARL</span> <span className="text-secondary">INSIGHT</span>
             </h2>
             <h3 className="font-hanken text-4xl md:text-5xl text-white font-bold leading-tight">
-              Why Attend <span className="underline underline-offset-8 decoration-white/20"><span className="text-primary">Yarl</span><span className="text-secondary">Insight</span>?</span>
+              Why Attend <span className="underline underline-offset-8 decoration-white/20"><span className="text-primary">YARL</span> <span className="text-secondary">INSIGHT</span>?</span>
             </h3>
           </div>
 
           <p className="font-inter text-lg text-white/60 leading-relaxed">
-            YarlInsight brings together industry experts, academic leaders, and passionate students for an immersive learning experience in Fullstack Development with MERN Stack.
+            YARL INSIGHT brings together industry experts, academic leaders, and passionate students for an immersive learning experience in Fullstack Development with MERN Stack.
           </p>
 
           <div className="grid sm:grid-cols-2 gap-6">
