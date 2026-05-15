@@ -92,7 +92,7 @@ const Schedule = () => {
                 className="space-y-10"
               >
                 <div className="flex items-center gap-6">
-                  <div className="bg-primary text-black px-6 py-2 rounded-full font-black text-xl">
+                  <div className="bg-primary text-white px-6 py-2 rounded-full font-black text-xl">
                     {day.day_label}
                   </div>
                   <div className="h-px flex-grow bg-white/10"></div>
@@ -110,17 +110,17 @@ const Schedule = () => {
                     return (
                       <motion.div 
                         key={event.id || eventIdx}
-                        whileHover={{ scale: 1.01, backgroundColor: active ? 'rgba(250,204,21,0.1)' : 'rgba(255,255,255,0.03)' }}
+                        whileHover={{ scale: 1.01, backgroundColor: active ? 'rgba(26,86,166,0.1)' : 'rgba(255,255,255,0.03)' }}
                         className={`p-6 md:p-8 rounded-2xl flex flex-col md:flex-row md:items-center gap-6 transition-all ${
                           active 
-                            ? 'bg-primary/5 border border-primary shadow-[0_0_30px_rgba(250,204,21,0.2)]' 
+                            ? 'bg-primary/5 border border-primary shadow-[0_0_30px_rgba(26,86,166,0.2)]' 
                             : 'glass-card border-white/5'
                         }`}
                       >
                         <div className="md:w-32 text-primary font-mono font-bold text-lg flex flex-col">
                           {event.display_time}
                           {active && (
-                            <span className="text-[10px] bg-primary text-black px-2 py-0.5 rounded uppercase mt-1 animate-pulse tracking-widest inline-block text-center">
+                            <span className="text-[10px] bg-primary text-white px-2 py-0.5 rounded uppercase mt-1 animate-pulse tracking-widest inline-block text-center">
                               Happening Now
                             </span>
                           )}

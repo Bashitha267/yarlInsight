@@ -40,21 +40,21 @@ const Events = () => {
             events.map((event) => (
               <Link to={`/details/${event.id}`} key={event.id} className="group glass-card rounded-2xl overflow-hidden border-white/5 hover:border-primary/30 transition-all">
                 <div className="relative h-64 overflow-hidden">
-                  <img 
-                    src={event.thumbnail_url || event.hero_image_url} 
+                  <img
+                    src={event.thumbnail_url || event.hero_image_url}
                     alt={event.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110  "
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                  <div className="absolute top-4 left-4 bg-primary text-black text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-tighter">
+                  <div className="absolute top-4 left-4 bg-primary text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-tighter">
                     {event.tag}
                   </div>
                 </div>
-                
+
                 <div className="p-8 space-y-4">
                   <h4 className="text-xl font-bold text-white group-hover:text-primary transition-colors">{event.title}</h4>
                   <p className="text-white/50 text-sm leading-relaxed line-clamp-2">{event.description}</p>
-                  
+
                   <div className="pt-6 border-t border-white/10 flex justify-between items-center text-[10px] font-mono text-white/40 uppercase tracking-widest">
                     <div className="flex items-center gap-2">
                       <span className="material-symbols-outlined text-sm text-primary">event</span>

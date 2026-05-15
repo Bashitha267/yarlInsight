@@ -1,13 +1,14 @@
 import React from 'react';
 import FAQ from './FAQ';
+import logo from '../assets/logo.png';
 
 const CTA = () => {
   return (
     <section className="py-24 px-6 md:px-margin-desktop max-w-container-max mx-auto">
       <div className="relative rounded-3xl overflow-hidden py-16 px-12 text-center bg-primary">
-        <div className="max-w-3xl mx-auto space-y-6 relative z-10 text-black">
+        <div className="max-w-3xl mx-auto space-y-6 relative z-10 text-white">
           <h2 className="font-hanken text-4xl md:text-5xl font-black leading-tight">
-            Ready to Join YarlInsight?
+            Ready to Join YarlInsight 3.0
           </h2>
           <p className="text-black/70 text-lg font-medium max-w-xl mx-auto">
             Don't miss this opportunity to enhance your skills and network with industry professionals.
@@ -32,8 +33,8 @@ const Footer = () => {
             {/* Column 1: About */}
             <div className="space-y-6">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-primary rounded flex items-center justify-center font-black text-black">Y</div>
-                <span className="text-xl font-bold tracking-tighter">YarlInsight</span>
+                <img src={logo} alt="Logo" className="h-6 w-auto md:h-6 object-cover" />
+
               </div>
               <p className="text-white/40 text-sm leading-relaxed">
                 A comprehensive two-day summer school dedicated to Fullstack Development with MERN Stack. Hosted by IEEE Student Branch of the University of Jaffna.
@@ -80,10 +81,10 @@ const Footer = () => {
                   { icon: 'youtube', url: 'https://www.youtube.com/@ieeestudentbranch-universi6371' },
                   { icon: 'linkedin', url: 'https://lk.linkedin.com/company/ieeesbuoj' }
                 ].map((social) => (
-                  <a 
-                    key={social.icon} 
-                    href={social.url} 
-                    target="_blank" 
+                  <a
+                    key={social.icon}
+                    href={social.url}
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-primary hover:text-black transition-all"
                   >
@@ -97,7 +98,7 @@ const Footer = () => {
           {/* Bottom Bar */}
           <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
             <p className="text-[10px] text-white/20 uppercase tracking-widest text-center">
-              © {new Date().getFullYear()} YarlInsight. All rights reserved. Organized by IEEE Student Branch of University of Jaffna.
+              © {new Date().getFullYear()} <span className="text-primary">Yarl</span><span className="text-secondary">Insight</span>. All rights reserved. Organized by IEEE Student Branch of University of Jaffna.
             </p>
             <div className="flex items-center gap-4 text-[10px] text-white/20 uppercase tracking-widest">
               <span>Developed by <a href="https://nimeshbashitha.me" target="_blank" rel="noopener noreferrer" className="text-white/60 font-bold hover:text-primary transition-colors">Nimesh Bashitha</a></span>

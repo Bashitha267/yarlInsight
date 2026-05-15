@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply bg-background text-on-background font-inter selection:bg-primary selection:text-black;
+    @apply bg-background text-on-background font-inter selection:bg-primary selection:text-white;
     -webkit-font-smoothing: antialiased;
   }
 }
@@ -15,11 +15,11 @@
   }
   
   .glass-card:hover {
-    @apply border-primary/50 shadow-[0_0_20px_rgba(250,204,21,0.1)];
+    @apply border-primary/50 shadow-[0_0_20px_rgba(26,86,166,0.2)];
   }
 
   .btn-primary {
-    @apply bg-primary text-black px-8 py-3 rounded-lg font-bold transition-all duration-200 active:scale-95 hover:brightness-110 flex items-center justify-center gap-2;
+    @apply bg-primary text-white px-8 py-3 rounded-lg font-bold transition-all duration-200 active:scale-95 hover:brightness-110 flex items-center justify-center gap-2;
   }
 
   .btn-outline {

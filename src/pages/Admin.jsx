@@ -168,7 +168,7 @@ const Admin = () => {
         <div className="hidden lg:block font-black text-xl text-primary">ADMIN</div>
         <nav className="space-y-2 flex-grow">
           {['projects', 'schedule'].map(tab => (
-            <button key={tab} onClick={() => { setActiveTab(tab); setIsSidebarOpen(false); }} className={`w-full text-left px-4 py-3 rounded-xl capitalize transition-all ${activeTab === tab ? 'bg-primary text-black font-bold' : 'hover:bg-white/5 text-white/40'}`}>
+            <button key={tab} onClick={() => { setActiveTab(tab); setIsSidebarOpen(false); }} className={`w-full text-left px-4 py-3 rounded-xl capitalize transition-all ${activeTab === tab ? 'bg-primary text-white font-bold' : 'hover:bg-white/5 text-white/40'}`}>
               {tab}
             </button>
           ))}
@@ -322,8 +322,8 @@ const Admin = () => {
           outline: none; 
           transition: all 0.2s; 
         }
-        .admin-input:focus { border-color: #FACC15; background: #1a1a1a !important; }
-        .admin-btn-primary { background: #FACC15; color: black; font-weight: 900; border-radius: 0.75rem; padding: 1rem; transition: all 0.2s; text-transform: uppercase; }
+        .admin-input:focus { border-color: #1A56A6; background: #1a1a1a !important; }
+        .admin-btn-primary { background: #1A56A6; color: white; font-weight: 900; border-radius: 0.75rem; padding: 1rem; transition: all 0.2s; text-transform: uppercase; }
         .admin-btn-primary:hover { filter: brightness(1.1); transform: translateY(-2px); }
         .glass-card { background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
       `}</style>

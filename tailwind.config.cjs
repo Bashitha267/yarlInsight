@@ -9,9 +9,14 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#FACC15', // Vibrant Yellow
-          dark: '#EAB308',
-          light: '#FEF08A',
+          DEFAULT: '#1A56A6', // Yarl Blue
+          dark: '#154686',
+          light: '#3B82F6',
+        },
+        secondary: {
+          DEFAULT: '#F9A825', // Insight Orange
+          dark: '#F57F17',
+          light: '#FBC02D',
         },
         background: '#000000',
         surface: {

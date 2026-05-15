@@ -9,7 +9,7 @@ export default function RollingText({
   const text = words?.[0] || "Insight";
 
   return (
-    <div className="overflow-hidden inline-flex text-primary font-black">
+    <div className="overflow-hidden inline-flex text-secondary font-black">
       {text.split("").map((char, index) => (
         <motion.span
           key={`${char}-${index}`}

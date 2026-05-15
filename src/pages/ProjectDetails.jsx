@@ -59,13 +59,13 @@ const ProjectDetails = () => {
         {/* Hero Section */}
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-24">
           <div className="lg:col-span-7 rounded-2xl overflow-hidden glass-card border-none shadow-2xl h-[450px]">
-            <img 
-              alt={project.title} 
-              className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" 
-              src={project.thumbnail_url || project.hero_image_url || 'https://images.unsplash.com/photo-1540575861501-7cf05a4b125a?auto=format&fit=crop&q=80&w=2070'} 
+            <img
+              alt={project.title}
+              className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+              src={project.thumbnail_url || project.hero_image_url || 'https://images.unsplash.com/photo-1540575861501-7cf05a4b125a?auto=format&fit=crop&q=80&w=2070'}
             />
           </div>
-          
+
           <div className="lg:col-span-5 flex flex-col justify-center space-y-8">
             <div>
               <span className="text-primary font-mono text-sm bg-primary/10 px-4 py-1.5 rounded-full border border-primary/30 tracking-widest uppercase">
@@ -75,7 +75,7 @@ const ProjectDetails = () => {
                 {project.title}
               </h1>
             </div>
-            
+
             <div className="flex flex-wrap items-center gap-6 text-white/60">
               <div className="flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary">calendar_today</span>
@@ -91,7 +91,7 @@ const ProjectDetails = () => {
                 </>
               )}
             </div>
-            
+
             <p className="text-white/60 text-lg leading-relaxed font-inter">
               {project.description}
             </p>
@@ -108,7 +108,7 @@ const ProjectDetails = () => {
               {speakers.map((speaker, i) => (
                 <div key={i} className="glass-card p-8 flex flex-col items-center text-center group rounded-2xl hover:bg-white/5 transition-all duration-500">
                   <div className="w-32 h-32 rounded-full overflow-hidden border-2 border-white/10 group-hover:border-primary transition-all mb-6 relative">
-                    <img alt={speaker.name} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" src={speaker.image_url} />
+                    <img alt={speaker.name} className="w-full h-full object-cover transition-all duration-500" src={speaker.image_url} />
                   </div>
                   <h3 className="text-xl font-black text-white mb-1">{speaker.name}</h3>
                   <p className="text-primary text-xs font-mono font-bold tracking-widest uppercase mb-4">{speaker.role}</p>
@@ -147,14 +147,14 @@ const ProjectDetails = () => {
                 <p className="text-white/40 mt-2 text-sm md:text-base">Moments captured from our previous editions</p>
               </div>
             </div>
-            
+
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {highlights.map((h, i) => (
                 <div key={i} className="group relative rounded-[2rem] overflow-hidden aspect-[4/5] glass-card border-none shadow-2xl">
-                  <img 
-                    alt={h.title} 
-                    className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-1" 
-                    src={h.image_url} 
+                  <img
+                    alt={h.title}
+                    className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-1"
+                    src={h.image_url}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-8">
                     <p className="text-primary font-mono text-[10px] tracking-[0.2em] uppercase mb-2">Gallery Item</p>
