@@ -22,11 +22,12 @@ const Home = () => (
 const AppContent = () => {
   const location = useLocation();
   const isAdminPage = location.pathname === '/admin';
+  const isAboutSection = location.hash === '#about';
 
   return (
     <div className="min-h-screen bg-black selection:bg-primary selection:text-black relative">
       <ShootingStarsGrid />
-      {!isAdminPage && <Navbar />}
+      {!isAdminPage && !isAboutSection && <Navbar />}
       <main className="relative z-10">
         <Routes>
           <Route path="/" element={<Home />} />

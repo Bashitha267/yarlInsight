@@ -1,6 +1,5 @@
 import React from 'react';
 import FAQ from './FAQ';
-import logo from '../assets/logo.png';
 
 const CTA = () => {
   return (
@@ -33,7 +32,7 @@ const Footer = () => {
             {/* Column 1: About */}
             <div className="space-y-6">
               <div className="flex items-center gap-2">
-                <img src={logo} alt="Logo" className="h-6 w-auto md:h-6 object-cover" />
+                <img src="/logo.png" alt="Logo" className="h-6 w-auto md:h-6 object-cover" />
 
               </div>
               <p className="text-white/40 text-sm leading-relaxed">
