@@ -8,7 +8,7 @@ const faqData = [
   },
   {
     question: "What is the cost to attend?",
-    answer: "The registration fee for IEEE student members is LKR 1,500 and for non-IEEE student members is LKR 2,000."
+    answer: "The registration fee for IEEE student members is LKR 2,000 and for non-IEEE student members is LKR 2,500"
   },
   {
     question: "Will I receive a certificate?",
