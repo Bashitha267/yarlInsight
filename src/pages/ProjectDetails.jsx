@@ -11,6 +11,10 @@ const ProjectDetails = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [id]);
+
+  useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
