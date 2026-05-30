@@ -142,7 +142,7 @@ const ProjectDetails = () => {
                       className="w-16 h-16 rounded-xl overflow-hidden border"
                       style={{ borderColor: sponsor.color || 'rgba(255, 255, 255, 0.1)' }}
                     >
-                      <img alt={sponsor.name} className="w-full h-full object-cover" src={sponsor.image_url} />
+                      <img alt={sponsor.name} className="w-full h-full object-cover" src={sponsor.image_url || '/logo.png'} />
                     </div>
                     <div className="flex flex-col">
                       <h3 className="text-lg font-black text-white leading-tight">{sponsor.name}</h3>

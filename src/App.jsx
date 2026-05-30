@@ -3,6 +3,7 @@ import FAQ from './components/FAQ';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
+import Sponsors from './components/Sponsors';
 import Events from './components/Events';
 import { CTA, Footer } from './components/Footer';
 import ProjectDetails from './pages/ProjectDetails';
@@ -14,6 +15,7 @@ const Home = () => (
   <>
     <Hero />
     <About />
+    <Sponsors />
     <Events />
     <FAQ />
   </>
