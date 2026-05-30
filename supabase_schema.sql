@@ -33,6 +33,17 @@ CREATE TABLE project_committee (
     sort_order INTEGER DEFAULT 0
 );
 
+-- 3b. Project Sponsors
+CREATE TABLE project_sponsors (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    project_id UUID REFERENCES projects(id) ON DELETE CASCADE,
+    name VARCHAR(255) NOT NULL,
+    title VARCHAR(255),
+    color VARCHAR(20),
+    image_url TEXT,
+    sort_order INTEGER DEFAULT 0
+);
+
 -- 4. Project Highlights (Gallery)
 CREATE TABLE project_highlights (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -67,6 +78,7 @@ CREATE TABLE schedule_events (
 -- Enable RLS (Row Level Security) and allow public read access
 ALTER TABLE projects ENABLE ROW LEVEL SECURITY;
 ALTER TABLE project_speakers ENABLE ROW LEVEL SECURITY;
+ALTER TABLE project_sponsors ENABLE ROW LEVEL SECURITY;
 ALTER TABLE project_committee ENABLE ROW LEVEL SECURITY;
 ALTER TABLE project_highlights ENABLE ROW LEVEL SECURITY;
 ALTER TABLE schedule_days ENABLE ROW LEVEL SECURITY;
@@ -74,6 +86,7 @@ ALTER TABLE schedule_events ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "Allow public read access on projects" ON projects FOR SELECT USING (true);
 CREATE POLICY "Allow public read access on project_speakers" ON project_speakers FOR SELECT USING (true);
+CREATE POLICY "Allow public read access on project_sponsors" ON project_sponsors FOR SELECT USING (true);
 CREATE POLICY "Allow public read access on project_committee" ON project_committee FOR SELECT USING (true);
 CREATE POLICY "Allow public read access on project_highlights" ON project_highlights FOR SELECT USING (true);
 CREATE POLICY "Allow public read access on schedule_days" ON schedule_days FOR SELECT USING (true);

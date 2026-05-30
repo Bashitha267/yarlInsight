@@ -19,7 +19,7 @@ const Admin = () => {
   const initialProjectState = { 
     title: '', tag: '', start_date: '', end_date: '', 
     location: '', description: '', hero_image_url: '', thumbnail_url: '',
-    speakers: [], highlights: [], committee: []
+    speakers: [], sponsors: [], highlights: [], committee: []
   };
   const [projectForm, setProjectForm] = useState(initialProjectState);
   const [uploading, setUploading] = useState(false);
@@ -74,6 +74,7 @@ const Admin = () => {
   const addItem = (type) => {
     const schemas = {
       speakers: { name: '', role: '', description: '', image_url: '' },
+      sponsors: { name: '', title: '', color: '', image_url: '' },
       committee: { name: '', role: '', image_url: '' },
       highlights: { title: '', type: '', image_url: '', grid_size: 'small' }
     };
@@ -106,6 +107,7 @@ const Admin = () => {
         await supabase.from('projects').update(pData).eq('id', editingProject.id);
         pid = editingProject.id;
         await supabase.from('project_speakers').delete().eq('project_id', pid);
+        await supabase.from('project_sponsors').delete().eq('project_id', pid);
         await supabase.from('project_committee').delete().eq('project_id', pid);
         await supabase.from('project_highlights').delete().eq('project_id', pid);
       } else {
@@ -114,6 +116,7 @@ const Admin = () => {
       }
 
       if (projectForm.speakers?.length) await supabase.from('project_speakers').insert(projectForm.speakers.map(s => ({ ...s, project_id: pid })));
+      if (projectForm.sponsors?.length) await supabase.from('project_sponsors').insert(projectForm.sponsors.map(s => ({ ...s, project_id: pid })));
       if (projectForm.committee?.length) await supabase.from('project_committee').insert(projectForm.committee.map(c => ({ ...c, project_id: pid })));
       if (projectForm.highlights?.length) await supabase.from('project_highlights').insert(projectForm.highlights.map(h => ({ ...h, project_id: pid })));
 
@@ -243,7 +246,35 @@ const Admin = () => {
 
               <div className="space-y-6">
                 <div className="flex justify-between items-center border-b border-white/10 pb-4">
-                  <h3 className="text-xl font-bold">4. Committee</h3>
+                  <h3 className="text-xl font-bold">4. Sponsors</h3>
+                  <button type="button" onClick={() => addItem('sponsors')} className="text-primary font-bold text-sm">+ Add</button>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {(projectForm.sponsors || []).map((s, i) => (
+                    <div key={i} className="glass-card p-4 rounded-2xl flex flex-col gap-4 relative">
+                      <div className="w-full">
+                        <input type="file" className="text-[8px] w-full" onChange={async (e) => { const url = await uploadImage(e.target.files[0]); if(url) updateItem('sponsors', i, 'image_url', url); }} />
+                        {s.image_url && (
+                          <div className="relative mt-2">
+                            <img src={s.image_url} className="w-full h-28 object-cover rounded-lg border border-white/10" />
+                            <button type="button" onClick={() => updateItem('sponsors', i, 'image_url', '')} className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1"><span className="material-symbols-outlined text-[10px]">close</span></button>
+                          </div>
+                        )}
+                      </div>
+                      <div className="space-y-2">
+                        <input type="text" placeholder="Sponsor Name" className="admin-input w-full text-xs" value={s.name} onChange={e => updateItem('sponsors', i, 'name', e.target.value)} />
+                        <input type="text" placeholder="Sponsor Title (Gold, Silver, etc.)" className="admin-input w-full text-xs" value={s.title} onChange={e => updateItem('sponsors', i, 'title', e.target.value)} />
+                        <input type="text" placeholder="Color Hex (#D4AF37)" className="admin-input w-full text-xs" value={s.color} onChange={e => updateItem('sponsors', i, 'color', e.target.value)} />
+                      </div>
+                      <button type="button" onClick={() => removeItem('sponsors', i)} className="text-red-500 material-symbols-outlined self-start text-sm">close</button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                <div className="flex justify-between items-center border-b border-white/10 pb-4">
+                  <h3 className="text-xl font-bold">5. Committee</h3>
                   <button type="button" onClick={() => addItem('committee')} className="text-primary font-bold text-sm">+ Add</button>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -266,7 +297,7 @@ const Admin = () => {
               {/* SECTION: HIGHLIGHTS */}
               <div className="space-y-6">
                 <div className="flex justify-between items-center border-b border-white/10 pb-4">
-                  <h3 className="text-xl font-bold">5. Event Highlights</h3>
+                  <h3 className="text-xl font-bold">6. Event Highlights</h3>
                   <button type="button" onClick={() => addItem('highlights')} className="text-primary font-bold text-sm">+ Add Highlight</button>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -297,7 +328,7 @@ const Admin = () => {
               <h3 className="text-2xl font-black">Project List</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {projects.map(p => (
-                  <div key={p.id} onClick={async () => { setEditingProject(p); const [spk, com, hlt] = await Promise.all([supabase.from('project_speakers').select('*').eq('project_id', p.id), supabase.from('project_committee').select('*').eq('project_id', p.id), supabase.from('project_highlights').select('*').eq('project_id', p.id)]); setProjectForm({...p, speakers: spk.data || [], committee: com.data || [], highlights: hlt.data || []}); window.scrollTo({top:0, behavior:'smooth'}); }} className="glass-card p-4 flex gap-4 cursor-pointer hover:border-primary/50 transition-all">
+                  <div key={p.id} onClick={async () => { setEditingProject(p); const [spk, spo, com, hlt] = await Promise.all([supabase.from('project_speakers').select('*').eq('project_id', p.id), supabase.from('project_sponsors').select('*').eq('project_id', p.id), supabase.from('project_committee').select('*').eq('project_id', p.id), supabase.from('project_highlights').select('*').eq('project_id', p.id)]); setProjectForm({...p, speakers: spk.data || [], sponsors: spo.data || [], committee: com.data || [], highlights: hlt.data || []}); window.scrollTo({top:0, behavior:'smooth'}); }} className="glass-card p-4 flex gap-4 cursor-pointer hover:border-primary/50 transition-all">
                     <img src={p.thumbnail_url || p.hero_image_url} className="w-16 h-16 object-cover rounded-lg" />
                     <div className="overflow-hidden">
                       <div className="font-bold truncate">{p.title}</div>

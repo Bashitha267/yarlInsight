@@ -6,6 +6,7 @@ const ProjectDetails = () => {
   const { id } = useParams();
   const [project, setProject] = useState(null);
   const [speakers, setSpeakers] = useState([]);
+  const [sponsors, setSponsors] = useState([]);
   const [committee, setCommittee] = useState([]);
   const [highlights, setHighlights] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,6 +27,10 @@ const ProjectDetails = () => {
         // Fetch Speakers
         const { data: sData } = await supabase.from('project_speakers').select('*').eq('project_id', id).order('sort_order', { ascending: true });
         setSpeakers(sData || []);
+
+        // Fetch Sponsors
+        const { data: spData } = await supabase.from('project_sponsors').select('*').eq('project_id', id).order('sort_order', { ascending: true });
+        setSponsors(spData || []);
 
         // Fetch Committee
         const { data: cData } = await supabase.from('project_committee').select('*').eq('project_id', id).order('sort_order', { ascending: true });
@@ -117,6 +122,43 @@ const ProjectDetails = () => {
                   <h3 className="text-xl font-black text-white mb-1">{speaker.name}</h3>
                   <p className="text-primary text-xs font-mono font-bold tracking-widest uppercase mb-4">{speaker.role}</p>
                   <p className="text-white/40 text-sm leading-relaxed">{speaker.description}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Sponsors Section */}
+        {sponsors.length > 0 && (
+          <section className="mb-24">
+            <div className="border-l-4 border-primary pl-8 mb-12">
+              <h2 className="font-hanken text-3xl md:text-5xl text-white font-black tracking-tight">Sponsors</h2>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {sponsors.map((sponsor, i) => (
+                <div key={i} className="glass-card p-6 rounded-2xl flex flex-col gap-6 hover:bg-white/5 transition-all duration-500">
+                  <div className="flex items-center gap-4">
+                    <div
+                      className="w-16 h-16 rounded-xl overflow-hidden border"
+                      style={{ borderColor: sponsor.color || 'rgba(255, 255, 255, 0.1)' }}
+                    >
+                      <img alt={sponsor.name} className="w-full h-full object-cover" src={sponsor.image_url} />
+                    </div>
+                    <div className="flex flex-col">
+                      <h3 className="text-lg font-black text-white leading-tight">{sponsor.name}</h3>
+                      <p className="text-xs font-mono font-bold tracking-widest uppercase" style={{ color: sponsor.color || '#ffffff' }}>
+                        {sponsor.title}
+                      </p>
+                    </div>
+                  </div>
+                  {sponsor.color && (
+                    <div className="flex items-center gap-3">
+                      <span className="text-[10px] text-white/40 font-mono uppercase tracking-widest">Sponsor Color</span>
+                      <span className="px-3 py-1 rounded-full text-[10px] font-mono tracking-widest uppercase" style={{ backgroundColor: sponsor.color, color: '#000000' }}>
+                        {sponsor.color}
+                      </span>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
