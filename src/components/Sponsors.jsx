@@ -1,106 +1,137 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 
 const Sponsors = () => {
-  // Ensure the page loads from the very top of the window on mount
-  React.useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-  }, []);
-
-  // Sponsor data configured to allow easy customization or image replacement.
-  const sponsors = [
+  // Sponsor configuration data
+  const sponsorsList = [
     {
       name: 'Aravanai',
       tier: 'Gold',
-      logoUrl: 'https://res.cloudinary.com/dnfbik3if/image/upload/v1780118625/05_kd5xjn.png', // Logo image URL provided by user
-      badgeStyle: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
-      cardStyle: 'border-amber-500/20 hover:border-amber-400 shadow-[0_0_20px_rgba(245,158,11,0.03)] hover:shadow-[0_0_60px_rgba(245,158,11,0.35)] bg-gradient-to-b from-amber-500/[0.06] via-white/[0.01] to-transparent',
-      logoBg: 'bg-amber-500/5 border-amber-500/20 group-hover:border-amber-400/40',
-      gradientText: 'from-amber-300 via-amber-200 to-yellow-500',
+      logoUrl: 'https://res.cloudinary.com/dnfbik3if/image/upload/v1780118625/05_kd5xjn.png',
+      badgeColor: 'text-amber-400 border-amber-500/30 bg-amber-500/10',
+      borderColor: 'group-hover:border-amber-400/80 border-white/5',
+      logoBg: 'bg-amber-500/5 group-hover:bg-amber-500/10 border-white/5 group-hover:border-amber-400/40',
+      shadowGlow: 'hover:shadow-[0_0_50px_rgba(245,158,11,0.25)]',
+      textColor: 'text-amber-400',
       icon: 'emoji_events', // Trophy
       iconColor: 'text-amber-400'
     },
     {
       name: 'WSO2',
       tier: 'Silver',
-      logoUrl: '', // User can manually add WSO2 logo image path here
-      badgeStyle: 'bg-slate-300/10 text-slate-300 border-slate-300/20',
-      cardStyle: 'border-slate-500/10 hover:border-[#F14E23] shadow-[0_0_20px_rgba(241,78,35,0.02)] hover:shadow-[0_0_60px_rgba(241,78,35,0.35)] bg-gradient-to-b from-slate-500/[0.02] via-white/[0.01] to-transparent',
-      logoBg: 'bg-slate-500/5 border-slate-500/10 group-hover:border-[#F14E23]/40',
-      gradientText: 'from-white via-slate-200 to-[#F14E23]',
+      logoUrl: '', // Fallback styled logo text is used if empty
+      badgeColor: 'text-slate-300 border-slate-500/30 bg-slate-500/10',
+      borderColor: 'group-hover:border-[#F14E23]/80 border-white/5',
+      logoBg: 'bg-slate-500/5 group-hover:bg-orange-500/10 border-white/5 group-hover:border-[#F14E23]/40',
+      shadowGlow: 'hover:shadow-[0_0_50px_rgba(241,78,35,0.25)]',
+      textColor: 'text-[#F14E23]',
       icon: 'workspace_premium', // Medal
       iconColor: 'text-slate-300'
     },
     {
       name: 'Prime1',
       tier: 'Bronze',
-      logoUrl: 'https://res.cloudinary.com/dnfbik3if/image/upload/v1780118625/Prime1_yhmkdt.png', // Logo image URL provided by user
-      badgeStyle: 'bg-orange-950/20 text-orange-400 border-orange-900/30',
-      cardStyle: 'border-orange-900/15 hover:border-orange-600 shadow-[0_0_10px_rgba(0,0,0,0.5)] hover:shadow-[0_0_50px_rgba(234,88,12,0.25)] bg-gradient-to-b from-amber-900/[0.02] via-white/[0.01] to-transparent',
-      logoBg: 'bg-amber-900/5 border-amber-900/10 group-hover:border-orange-600/40',
-      gradientText: 'from-orange-400 via-amber-600 to-amber-800',
-      icon: 'military_tech', // Medal badge
-      iconColor: 'text-amber-600'
+      logoUrl: 'https://res.cloudinary.com/dnfbik3if/image/upload/v1780118625/Prime1_yhmkdt.png',
+      badgeColor: 'text-orange-400 border-orange-700/30 bg-orange-700/10',
+      borderColor: 'group-hover:border-orange-500/80 border-white/5',
+      logoBg: 'bg-orange-950/5 group-hover:bg-orange-950/20 border-white/5 group-hover:border-orange-500/30',
+      shadowGlow: 'hover:shadow-[0_0_40px_rgba(234,88,12,0.2)]',
+      textColor: 'text-orange-500',
+      icon: 'military_tech', // Rank Badge
+      iconColor: 'text-orange-500'
     }
   ];
 
   return (
-    <section id="sponsors" className="min-h-screen py-24 md:py-32 bg-transparent border-t border-white/5 relative overflow-hidden flex flex-col justify-center">
-      {/* Decorative background glows */}
-      <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[500px] h-[500px] bg-[#1A56A6]/10 rounded-full blur-[140px] pointer-events-none"></div>
-      <div className="absolute top-1/3 right-1/4 -translate-y-1/2 w-[400px] h-[400px] bg-[#F9A825]/5 rounded-full blur-[120px] pointer-events-none"></div>
+    <section id="sponsors" className="min-h-screen py-32 bg-transparent border-t border-white/5 relative overflow-hidden flex flex-col justify-center">
+      {/* Decorative ambient background glows */}
+      <div className="absolute top-1/4 left-1/4 -translate-y-1/2 w-[550px] h-[550px] bg-[#1A56A6]/10 rounded-full blur-[150px] pointer-events-none"></div>
+      <div className="absolute bottom-1/4 right-1/4 translate-y-1/2 w-[450px] h-[450px] bg-[#F9A825]/5 rounded-full blur-[130px] pointer-events-none"></div>
 
       <div className="px-6 md:px-margin-desktop max-w-container-max mx-auto relative z-10 w-full">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-20 space-y-4">
-          <h2 className="text-primary font-mono text-sm uppercase tracking-[0.3em] animate-fade-in">
-            Supporting Innovation
-          </h2>
-          <h3 className="font-hanken text-4xl md:text-5xl text-white font-bold tracking-tight">
-            YarlInsight 3.0 <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-light to-secondary">Sponsors</span>
-          </h3>
-          <p className="text-white/50 text-base md:text-lg leading-relaxed max-w-xl mx-auto font-inter">
-            We are proud to partner with organizations that share our vision of empowering the next generation of tech talent.
-          </p>
+        <div className="text-center max-w-3xl mx-auto mb-24 space-y-6">
+          <motion.div 
+            initial={{ opacity: 0, y: -10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-mono tracking-[0.2em] text-white/60 uppercase shadow-inner"
+          >
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+            Collaborations
+          </motion.div>
+
+          <motion.h2 
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="font-hanken text-4xl md:text-6xl text-white font-extrabold tracking-tight leading-none"
+          >
+            <span className="text-primary">YARL</span> <span className="text-secondary">INSIGHT</span><span className="text-white"> 3.0</span> <span className="text-secondary italic">Sponsors</span>
+          </motion.h2>
+
+          <motion.p 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="text-white/50 text-base md:text-lg leading-relaxed max-w-xl mx-auto font-inter"
+          >
+            We are honored to have the backing of forward-thinking brands driving local technical ecosystem growth.
+          </motion.p>
         </div>
 
-        {/* Sponsors Grid - Responsive Layout: 1 column on mobile, 3 columns on desktop (uniform card sizes, widened layout) */}
+        {/* Sponsors Grid - Uniform size, highly animated cards */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-8 items-stretch max-w-6xl mx-auto pt-6">
-          {sponsors.map((sponsor) => (
-            <div 
+          {sponsorsList.map((sponsor, index) => (
+            <motion.div
               key={sponsor.name}
-              className={`group glass-card rounded-[2.5rem] p-12 md:p-14 border transition-all duration-500 flex flex-col items-center text-center justify-center w-full ${sponsor.cardStyle}`}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.15, type: 'spring', stiffness: 100 }}
+              whileHover={{ 
+                y: -15,
+                scale: 1.025,
+                transition: { duration: 0.3, ease: 'easeOut' }
+              }}
+              className={`group relative bg-[#0a0a0a]/60 backdrop-blur-2xl border rounded-[2.5rem] p-12 md:p-14 flex flex-col items-center justify-center transition-all duration-500 w-full cursor-default ${sponsor.borderColor} ${sponsor.shadowGlow}`}
+              style={{
+                boxShadow: `0 0 40px rgba(0, 0, 0, 0.6)`
+              }}
             >
-              <div className="w-full flex flex-col items-center space-y-8">
-                {/* Visual Icon Badge */}
-                <div className="flex items-center gap-2 py-1.5 px-4 rounded-full border text-xs font-mono font-bold tracking-wider uppercase bg-black/40 border-white/5 shadow-inner">
-                  <span className={`material-symbols-outlined text-base ${sponsor.iconColor}`}>
+              <div className="w-full flex flex-col items-center space-y-8 relative z-10">
+                {/* Badge Header */}
+                <div className={`flex items-center gap-2 py-1.5 px-4.5 rounded-full border text-[10px] font-mono font-bold tracking-widest uppercase shadow-md ${sponsor.badgeColor}`}>
+                  <span className={`material-symbols-outlined text-sm ${sponsor.iconColor}`}>
                     {sponsor.icon}
                   </span>
-                  <span className="text-white">{sponsor.tier} Sponsor</span>
+                  <span>{sponsor.tier} Sponsor</span>
                 </div>
 
-                {/* Logo Container (increased height to h-44) */}
-                <div className={`w-full h-44 flex items-center justify-center rounded-[1.75rem] bg-black/50 border relative overflow-hidden transition-all duration-300 group-hover:bg-black/70 ${sponsor.logoBg}`}>
+                {/* Logo Display area */}
+                <div className={`w-full h-44 flex items-center justify-center rounded-[2rem] bg-black/60 border relative overflow-hidden transition-all duration-300 group-hover:bg-black/80 ${sponsor.logoBg}`}>
                   {sponsor.logoUrl ? (
-                    <img 
+                    <motion.img 
                       src={sponsor.logoUrl} 
                       alt={`${sponsor.name} Logo`} 
-                      className="max-w-[80%] max-h-[80%] object-contain"
+                      className="max-w-[75%] max-h-[75%] object-contain filter group-hover:brightness-110 transition-all duration-300"
+                      whileHover={{ scale: 1.05 }}
                     />
                   ) : (
                     <div className="text-center p-4">
                       {sponsor.name === 'WSO2' ? (
-                        /* WSO2 Logo styling: Crisp white with orange accent matching guidelines */
-                        <div className="flex items-center justify-center gap-0.5">
-                          <span className="text-5xl font-black tracking-tight text-white">
+                        <div className="flex items-center justify-center gap-0.5 group-hover:scale-105 transition-transform duration-300">
+                          <span className="text-5xl font-black tracking-tighter text-white">
                             WSO
                           </span>
-                          <span className="text-5xl font-black tracking-tight text-[#F14E23]">
+                          <span className="text-5xl font-black tracking-tighter text-[#F14E23]">
                             2
                           </span>
                         </div>
                       ) : (
-                        <span className={`text-4xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r ${sponsor.gradientText}`}>
+                        <span className={`text-4xl font-black tracking-tight ${sponsor.textColor}`}>
                           {sponsor.name}
                         </span>
                       )}
@@ -108,14 +139,14 @@ const Sponsors = () => {
                   )}
                 </div>
 
-                {/* Details (enlarged text sizes, tagline/description removed) */}
-                <div className="space-y-2 w-full">
-                  <h4 className="text-3xl md:text-4xl font-bold text-white transition-colors tracking-tight">
+                {/* Styled Sponsor Name */}
+                <div className="space-y-2 text-center w-full">
+                  <h4 className="text-3xl font-extrabold text-white tracking-tight group-hover:text-white/80 transition-all duration-300">
                     {sponsor.name}
                   </h4>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

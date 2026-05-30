@@ -3,6 +3,7 @@ import FAQ from './components/FAQ';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
+import Sponsors from './components/Sponsors';
 import Events from './components/Events';
 import { CTA, Footer } from './components/Footer';
 import ProjectDetails from './pages/ProjectDetails';
@@ -10,14 +11,20 @@ import Schedule from './pages/Schedule';
 import SponsorsPage from './pages/Sponsors';
 import Admin from './pages/Admin';
 import ShootingStarsGrid from './components/ShootingStarsGrid';
+import { motion } from 'framer-motion';
 
 const Home = () => (
-  <>
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.8, ease: "easeOut" }}
+  >
     <Hero />
     <About />
+    <Sponsors />
     <Events />
     <FAQ />
-  </>
+  </motion.div>
 );
 
 const AppContent = () => {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
+import { motion } from 'framer-motion';
 
 const ProjectDetails = () => {
   const { id } = useParams();
@@ -63,7 +64,12 @@ const ProjectDetails = () => {
   );
 
   return (
-    <div className="bg-transparent text-white font-inter min-h-screen">
+    <motion.div 
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="bg-transparent text-white font-inter min-h-screen"
+    >
       <main className="pt-32 pb-16 px-6 md:px-margin-desktop max-w-container-max mx-auto w-full">
         {/* Hero Section */}
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-24">
@@ -216,7 +222,7 @@ const ProjectDetails = () => {
           </section>
         )}
       </main>
-    </div>
+    </motion.div>
   );
 };
 

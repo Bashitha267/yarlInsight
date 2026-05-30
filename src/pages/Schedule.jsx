@@ -74,7 +74,12 @@ const Schedule = () => {
   };
 
   return (
-    <div className="bg-transparent text-white font-inter min-h-screen pt-32 pb-20 px-6 md:px-margin-desktop max-w-container-max mx-auto">
+    <motion.div 
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="bg-transparent text-white font-inter min-h-screen pt-32 pb-20 px-6 md:px-margin-desktop max-w-container-max mx-auto"
+    >
       <div className="max-w-4xl mx-auto space-y-16">
         <header className="text-center space-y-4">
           <h1 className="font-hanken text-5xl md:text-7xl font-black tracking-tight">Event <span className="text-primary italic">Schedule</span></h1>
@@ -160,7 +165,7 @@ const Schedule = () => {
           </div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

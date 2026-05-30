@@ -4,16 +4,16 @@ import FAQ from './FAQ';
 const CTA = () => {
   return (
     <section className="py-24 px-6 md:px-margin-desktop max-w-container-max mx-auto">
-      <div className="relative rounded-3xl overflow-hidden py-16 px-12 text-center bg-primary">
+      <div className="relative rounded-3xl overflow-hidden py-16 px-12 text-center bg-black/60 border border-white/10 backdrop-blur-md shadow-[0_0_40px_rgba(26,86,166,0.15)]">
         <div className="max-w-3xl mx-auto space-y-6 relative z-10 text-white">
           <h2 className="font-hanken text-4xl md:text-5xl font-black leading-tight">
-            Ready to Join YARL INSIGHT 3.0
+            Ready to Join <span className="text-primary">YARL</span> <span className="text-secondary">INSIGHT</span> <span className="text-white">3.0</span>
           </h2>
-          <p className="text-black/70 text-lg font-medium max-w-xl mx-auto">
+          <p className="text-white/60 text-lg font-medium max-w-xl mx-auto font-inter">
             Don't miss this opportunity to enhance your skills and network with industry professionals.
           </p>
           <div className="pt-4">
-            <button className="bg-black text-white px-10 py-4 rounded-xl font-bold text-lg hover:scale-105 transition-all active:scale-95 shadow-xl">
+            <button className="bg-primary text-white px-10 py-4 rounded-xl font-bold text-lg hover:scale-105 transition-all active:scale-95 shadow-xl hover:bg-primary-dark">
               Registrations available soon
             </button>
           </div>
@@ -32,8 +32,9 @@ const Footer = () => {
             {/* Column 1: About */}
             <div className="space-y-6">
               <div className="flex items-center gap-2">
-                <img src="/logo.png" alt="Logo" className="h-6 w-auto md:h-6 object-cover" />
-
+                <span className="font-hanken text-xl font-black tracking-wider uppercase select-none">
+                  <span className="text-primary">YARL</span> <span className="text-secondary">INSIGHT</span>
+                </span>
               </div>
               <p className="text-white/40 text-sm leading-relaxed">
                 A comprehensive two-day summer school dedicated to Fullstack Development with MERN Stack. Hosted by IEEE Student Branch of the University of Jaffna.
