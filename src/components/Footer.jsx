@@ -77,9 +77,11 @@ const Footer = () => {
               <h4 className="text-sm font-bold uppercase tracking-widest text-primary">Follow Us</h4>
               <div className="flex gap-3">
                 {[
-                  { icon: 'facebook', url: 'https://www.facebook.com/IEEESBUoJ/' },
-                  { icon: 'youtube', url: 'https://www.youtube.com/@ieeestudentbranch-universi6371' },
-                  { icon: 'linkedin', url: 'https://lk.linkedin.com/company/ieeesbuoj' }
+                  { icon: 'facebook', label: 'Facebook', url: 'https://www.facebook.com/IEEESBUoJ/' },
+                  { icon: 'linkedin', label: 'LinkedIn', url: 'https://lk.linkedin.com/company/ieeesbuoj' },
+                  { icon: 'youtube', label: 'YouTube', url: 'https://www.youtube.com/@ieeesbuoj' },
+                  { icon: 'twitter', label: 'Twitter', url: 'https://twitter.com/IEEESBUOJ' },
+                  { icon: 'globe', label: 'Website', url: 'https://ieee.jfn.ac.lk/' }
                 ].map((social) => (
                   <a
                     key={social.icon}
@@ -87,8 +89,9 @@ const Footer = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-primary hover:text-black transition-all"
+                    aria-label={social.label}
                   >
-                    <i className={`fab fa-${social.icon}`}></i>
+                    <i className={social.icon === 'globe' ? 'fas fa-globe' : `fab fa-${social.icon}`}></i>
                   </a>
                 ))}
               </div>
