@@ -19,6 +19,11 @@ const Schedule = () => {
   const [loading, setLoading] = useState(true);
   const [currentTime, setCurrentTime] = useState(new Date());
 
+  // Ensure the page loads from the very top of the window on mount
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, []);
+
   // Update current time every minute to check for active events
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 60000);

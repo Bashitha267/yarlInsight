@@ -1,6 +1,11 @@
 import React from 'react';
 
 const Sponsors = () => {
+  // Ensure the page loads from the very top of the window on mount
+  React.useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, []);
+
   // Sponsor data configured to allow easy customization or image replacement.
   const sponsors = [
     {
