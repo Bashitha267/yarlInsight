@@ -38,7 +38,7 @@ const About = () => {
           </div>
 
           <p className="font-inter text-lg text-white/60 leading-relaxed">
-            YARL INSIGHT brings together industry experts, academic leaders, and passionate students for an immersive learning experience in Fullstack Development with MERN Stack.
+            YARL INSIGHT brings together industry experts, academic leaders, and passionate students for an immersive learning experience..
           </p>
 
           <div className="grid sm:grid-cols-2 gap-6">
