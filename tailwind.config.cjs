@@ -9,8 +9,8 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#1A56A6', // Yarl Blue
-          dark: '#154686',
+          DEFAULT: '#113F7C', // Yarl Blue (darker)
+          dark: '#0D305E',
           light: '#3B82F6',
         },
         secondary: {

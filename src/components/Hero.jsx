@@ -43,7 +43,7 @@ const Hero = () => {
             </div>
 
             <div className="flex flex-wrap gap-6 pt-4 animate-slide-up animation-delay-1000">
-              <button className="bg-primary text-white px-10 py-4 rounded-xl font-black text-lg md:text-xl hover:scale-105 transition-all shadow-[0_0_30px_rgba(26,86,166,0.3)] active:scale-95 flex items-center gap-3">
+              <button className="bg-primary text-white px-10 py-4 rounded-xl font-black text-lg md:text-xl hover:scale-105 transition-all shadow-[0_0_30px_rgba(17,63,124,0.3)] active:scale-95 flex items-center gap-3">
                 Register Now
                 <span className="material-symbols-outlined font-bold">arrow_forward</span>
               </button>
