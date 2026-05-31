@@ -16,8 +16,8 @@ const Hero = () => {
         />
         <div className="absolute inset-0 hero-gradient"></div>
         {/* Animated Orbs */}
-        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-primary/10 rounded-full blur-[120px] animate-blob"></div>
-        <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-white/5 rounded-full blur-[120px] animate-blob animation-delay-2000"></div>
+        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-primary/10 rounded-full blur-[120px] animate-blob transform-gpu will-change-transform"></div>
+        <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-white/5 rounded-full blur-[120px] animate-blob animation-delay-2000 transform-gpu will-change-transform"></div>
       </div>
 
       <div className="relative z-10 px-6 md:px-margin-desktop max-w-container-max mx-auto w-full">

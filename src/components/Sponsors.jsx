@@ -96,9 +96,11 @@ const Sponsors = () => {
                 scale: 1.025,
                 transition: { duration: 0.3, ease: 'easeOut' }
               }}
-              className={`group relative bg-[#0a0a0a]/60 backdrop-blur-2xl border rounded-[2.5rem] p-12 md:p-14 flex flex-col items-center justify-center transition-all duration-500 w-full cursor-default ${sponsor.borderColor} ${sponsor.shadowGlow}`}
+              className={`group relative bg-[#0a0a0a]/60 backdrop-blur-2xl border rounded-[2.5rem] p-12 md:p-14 flex flex-col items-center justify-center transition-all duration-500 w-full cursor-default ${sponsor.borderColor} ${sponsor.shadowGlow} transform-gpu`}
               style={{
-                boxShadow: `0 0 40px rgba(0, 0, 0, 0.6)`
+                boxShadow: `0 0 40px rgba(0, 0, 0, 0.6)`,
+                willChange: 'transform, opacity',
+                transform: 'translateZ(0)'
               }}
             >
               <div className="w-full flex flex-col items-center space-y-8 relative z-10">

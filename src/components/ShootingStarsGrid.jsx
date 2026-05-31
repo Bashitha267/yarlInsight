@@ -58,7 +58,8 @@ const ShootingStar = ({ id }) => {
         height: style.height,
         background: style.background,
         zIndex: 0,
-        filter: 'drop-shadow(0 0 5px rgba(250, 204, 21, 0.4))'
+        boxShadow: '0 0 5px rgba(250, 204, 21, 0.4)',
+        willChange: 'transform, opacity'
       }}
       onAnimationStart={resetStar}
     />
@@ -83,8 +84,8 @@ const ShootingStarsGrid = () => {
       ))}
 
       {/* Ambient Glows */}
-      <div className="absolute top-[-20%] left-[-20%] w-[70%] h-[70%] bg-primary/10 rounded-full blur-[150px] animate-pulse-slow"></div>
-      <div className="absolute bottom-[-20%] right-[-20%] w-[70%] h-[70%] bg-primary/10 rounded-full blur-[150px] animate-pulse-slow animation-delay-2000"></div>
+      <div className="absolute top-[-20%] left-[-20%] w-[70%] h-[70%] bg-primary/10 rounded-full blur-[150px] animate-pulse-slow transform-gpu will-change-opacity"></div>
+      <div className="absolute bottom-[-20%] right-[-20%] w-[70%] h-[70%] bg-primary/10 rounded-full blur-[150px] animate-pulse-slow animation-delay-2000 transform-gpu will-change-opacity"></div>
     </div>
   );
 };
