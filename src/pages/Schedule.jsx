@@ -55,8 +55,8 @@ const Schedule = () => {
 
         setScheduleData(grouped);
       } catch (err) {
-        console.log("Using fallback data. Supabase might not be configured yet.");
-        setScheduleData(staticScheduleData);
+        console.log("Using 'Updating Soon' state. Supabase might not be configured yet or schedule is empty.");
+        setScheduleData([]);
       } finally {
         setLoading(false);
       }
@@ -89,7 +89,42 @@ const Schedule = () => {
         </header>
 
         {loading ? (
-          <div className="text-center text-primary animate-pulse">Loading Schedule...</div>
+          <div className="w-full flex flex-col items-center justify-center py-32 space-y-6">
+            <div className="w-16 h-16 border-4 border-white/10 border-t-primary rounded-full animate-spin"></div>
+            <div className="text-primary font-mono uppercase tracking-widest text-sm animate-pulse">Loading Schedule...</div>
+          </div>
+        ) : scheduleData.length === 0 ? (
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className="w-full flex flex-col items-center justify-center py-32 px-6 space-y-8 glass-card rounded-3xl border-dashed border-white/20 relative overflow-hidden"
+          >
+            {/* Ambient Background for the card */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-primary/20 rounded-full blur-[100px] animate-pulse-slow"></div>
+            
+            <div className="relative z-10 flex flex-col items-center space-y-6">
+              {/* Animated Icon */}
+              <div className="w-24 h-24 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center animate-bounce-slow shadow-[0_0_30px_rgba(26,86,166,0.2)]">
+                <span className="material-symbols-outlined text-5xl text-primary" style={{ animation: 'spin 4s linear infinite' }}>
+                  autorenew
+                </span>
+              </div>
+              
+              {/* Text Content */}
+              <div className="text-center space-y-3 max-w-lg">
+                <h3 className="text-3xl md:text-4xl font-hanken font-bold text-white tracking-tight">
+                  Schedule will be announced soon!
+                </h3>
+                <p className="text-white/50 font-inter leading-relaxed">
+                  Shedule will be announced soon. Stay tuned for updates and get ready for an unforgettable experience at YARL INSIGHT 3.0!
+                </p>
+              </div>
+              
+              {/* Status Pill */}
+           
+            </div>
+          </motion.div>
         ) : (
           <div className="space-y-24">
             {scheduleData.map((day, dayIdx) => (
