@@ -235,67 +235,6 @@ const Sponsors = () => {
             </div>
           </motion.div>
 
-          {/* Technical Tier */}
-          <motion.div 
-            initial={{ opacity: 0, y: 25 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="space-y-8"
-          >
-            {/* Divider Header */}
-            <div className="flex items-center gap-6">
-              <div className="flex items-center gap-2 bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 px-5 py-2 rounded-full font-mono text-xs uppercase tracking-widest font-bold shadow-md">
-                <span className="material-symbols-outlined text-base">memory</span>
-                Technical Sponsor
-              </div>
-              <div className="h-px flex-grow bg-cyan-500/20"></div>
-            </div>
-
-            {/* Technical Sponsor Card */}
-            <div className="grid gap-6">
-              {sponsorTiers.technical.map((sponsor) => (
-                <motion.div 
-                  key={sponsor.name}
-                  whileHover={{ 
-                    x: 12, 
-                    scale: 1.015,
-                    transition: { duration: 0.3, ease: 'easeOut' }
-                  }}
-                  className={`group relative glass-card rounded-3xl p-8 border transition-all duration-500 flex flex-col md:flex-row items-center gap-8 ${sponsor.borderColor} ${sponsor.shadowGlow} ${sponsor.cardBg}`}
-                >
-                  {/* Logo Container */}
-                  <div className={`w-full md:w-56 h-36 flex-shrink-0 flex items-center justify-center rounded-2xl bg-black/60 border relative overflow-hidden transition-all duration-300 group-hover:bg-black/80 ${sponsor.logoBg}`}>
-                    {sponsor.logoUrl ? (
-                      <img 
-                        src={sponsor.logoUrl} 
-                        alt={`${sponsor.name} Logo`} 
-                        className="max-w-[75%] max-h-[75%] object-contain filter group-hover:brightness-110 transition-all duration-300"
-                      />
-                    ) : (
-                      <span className={`text-3xl font-black tracking-tight ${sponsor.textColor}`}>
-                        {sponsor.name}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Details */}
-                  <div className="flex-grow text-center md:text-left space-y-3 relative z-10">
-                    <div className="flex flex-col md:flex-row items-center gap-3">
-                      <h4 className="text-3xl font-extrabold text-white group-hover:text-cyan-300 transition-colors tracking-tight">
-                        {sponsor.name}
-                      </h4>
-                      <span className={`text-[9px] px-3 py-1 rounded-full border uppercase tracking-wider font-mono font-bold ${sponsor.badgeColor}`}>
-                        Technical Sponsor
-                      </span>
-                    </div>
-                    <p className="text-sm text-white/50 leading-relaxed font-inter">
-                      {sponsor.tagline}
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
           {/* Bronze Tier */}
           <motion.div 
             initial={{ opacity: 0, y: 25 }}
@@ -347,6 +286,68 @@ const Sponsors = () => {
                       </h4>
                       <span className={`text-[9px] px-3 py-1 rounded-full border uppercase tracking-wider font-mono font-bold ${sponsor.badgeColor}`}>
                         Bronze Partner
+                      </span>
+                    </div>
+                    <p className="text-sm text-white/50 leading-relaxed font-inter">
+                      {sponsor.tagline}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Technical Tier */}
+          <motion.div 
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="space-y-8"
+          >
+            {/* Divider Header */}
+            <div className="flex items-center gap-6">
+              <div className="flex items-center gap-2 bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 px-5 py-2 rounded-full font-mono text-xs uppercase tracking-widest font-bold shadow-md">
+                <span className="material-symbols-outlined text-base">memory</span>
+                Technical Partner
+              </div>
+              <div className="h-px flex-grow bg-cyan-500/20"></div>
+            </div>
+
+            {/* Technical Sponsor Card */}
+            <div className="grid gap-6">
+              {sponsorTiers.technical.map((sponsor) => (
+                <motion.div 
+                  key={sponsor.name}
+                  whileHover={{ 
+                    x: 12, 
+                    scale: 1.015,
+                    transition: { duration: 0.3, ease: 'easeOut' }
+                  }}
+                  className={`group relative glass-card rounded-3xl p-8 border transition-all duration-500 flex flex-col md:flex-row items-center gap-8 ${sponsor.borderColor} ${sponsor.shadowGlow} ${sponsor.cardBg}`}
+                >
+                  {/* Logo Container */}
+                  <div className={`w-full md:w-56 h-36 flex-shrink-0 flex items-center justify-center rounded-2xl bg-black/60 border relative overflow-hidden transition-all duration-300 group-hover:bg-black/80 ${sponsor.logoBg}`}>
+                    {sponsor.logoUrl ? (
+                      <img 
+                        src={sponsor.logoUrl} 
+                        alt={`${sponsor.name} Logo`} 
+                        className="max-w-[75%] max-h-[75%] object-contain filter group-hover:brightness-110 transition-all duration-300"
+                      />
+                    ) : (
+                      <span className={`text-3xl font-black tracking-tight ${sponsor.textColor}`}>
+                        {sponsor.name}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Details */}
+                  <div className="flex-grow text-center md:text-left space-y-3 relative z-10">
+                    <div className="flex flex-col md:flex-row items-center gap-3">
+                      <h4 className="text-3xl font-extrabold text-white group-hover:text-cyan-300 transition-colors tracking-tight">
+                        {sponsor.name}
+                      </h4>
+                      <span className={`text-[9px] px-3 py-1 rounded-full border uppercase tracking-wider font-mono font-bold ${sponsor.badgeColor}`}>
+                        Technical Sponsor
                       </span>
                     </div>
                     <p className="text-sm text-white/50 leading-relaxed font-inter">

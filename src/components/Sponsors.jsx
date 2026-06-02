@@ -29,18 +29,6 @@ const Sponsors = () => {
       iconColor: 'text-slate-300'
     },
     {
-      name: 'Cognitix',
-      tier: 'Technical',
-      logoUrl: '/tech.jpg.jpeg',
-      badgeColor: 'text-cyan-300 border-cyan-500/30 bg-cyan-500/10',
-      borderColor: 'group-hover:border-cyan-300/80 border-white/5',
-      logoBg: 'bg-cyan-500/5 group-hover:bg-cyan-500/10 border-white/5 group-hover:border-cyan-300/40',
-      shadowGlow: 'hover:shadow-[0_0_50px_rgba(34,211,238,0.2)]',
-      textColor: 'text-cyan-300',
-      icon: 'memory',
-      iconColor: 'text-cyan-300'
-    },
-    {
       name: 'Prime1',
       tier: 'Bronze',
       logoUrl: 'https://res.cloudinary.com/dnfbik3if/image/upload/v1780118625/Prime1_yhmkdt.png',
@@ -51,7 +39,20 @@ const Sponsors = () => {
       textColor: 'text-orange-500',
       icon: 'military_tech', // Rank Badge
       iconColor: 'text-orange-500'
+    },
+    {
+      name: 'Cognitix',
+      tier: 'Technical Partner',
+      logoUrl: '/tech.jpg.jpeg',
+      badgeColor: 'text-cyan-300 border-cyan-500/30 bg-cyan-500/10',
+      borderColor: 'group-hover:border-cyan-300/80 border-white/5',
+      logoBg: 'bg-cyan-500/5 group-hover:bg-cyan-500/10 border-white/5 group-hover:border-cyan-300/40',
+      shadowGlow: 'hover:shadow-[0_0_50px_rgba(34,211,238,0.2)]',
+      textColor: 'text-cyan-300',
+      icon: 'memory',
+      iconColor: 'text-cyan-300'
     }
+    
   ];
 
   return (
@@ -121,7 +122,7 @@ const Sponsors = () => {
                   <span className={`material-symbols-outlined text-sm ${sponsor.iconColor}`}>
                     {sponsor.icon}
                   </span>
-                  <span>{sponsor.tier} Sponsor</span>
+                  <span>{sponsor.tier.includes('Partner') ? sponsor.tier : `${sponsor.tier} Sponsor`}</span>
                 </div>
 
                 {/* Logo Display area */}
