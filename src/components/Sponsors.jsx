@@ -29,6 +29,18 @@ const Sponsors = () => {
       iconColor: 'text-slate-300'
     },
     {
+      name: 'Cognitix',
+      tier: 'Technical',
+      logoUrl: '/tech.jpg.jpeg',
+      badgeColor: 'text-cyan-300 border-cyan-500/30 bg-cyan-500/10',
+      borderColor: 'group-hover:border-cyan-300/80 border-white/5',
+      logoBg: 'bg-cyan-500/5 group-hover:bg-cyan-500/10 border-white/5 group-hover:border-cyan-300/40',
+      shadowGlow: 'hover:shadow-[0_0_50px_rgba(34,211,238,0.2)]',
+      textColor: 'text-cyan-300',
+      icon: 'memory',
+      iconColor: 'text-cyan-300'
+    },
+    {
       name: 'Prime1',
       tier: 'Bronze',
       logoUrl: 'https://res.cloudinary.com/dnfbik3if/image/upload/v1780118625/Prime1_yhmkdt.png',
