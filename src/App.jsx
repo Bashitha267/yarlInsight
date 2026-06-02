@@ -13,19 +13,23 @@ import Admin from './pages/Admin';
 import ShootingStarsGrid from './components/ShootingStarsGrid';
 import { motion } from 'framer-motion';
 
-const Home = () => (
-  <motion.div
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    transition={{ duration: 0.8, ease: "easeOut" }}
-  >
-    <Hero />
-    <About />
-    <Sponsors />
-    <Events />
-    <FAQ />
-  </motion.div>
-);
+const Home = () => {
+  const showSponsors = false;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+    >
+      <Hero />
+      <About />
+      {showSponsors && <Sponsors />}
+      <Events />
+      <FAQ />
+    </motion.div>
+  );
+};
 
 const AppContent = () => {
   const location = useLocation();
