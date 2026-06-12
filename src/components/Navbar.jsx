@@ -66,6 +66,16 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-4">
+          <a
+            href="https://ieee.jfn.ac.lk/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden md:inline-flex items-center gap-2 text-white font-bold text-sm border border-white/40 hover:border-secondary hover:text-secondary px-5 py-2.5 rounded-lg bg-white/5 hover:bg-secondary/10 transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_12px_rgba(255,255,255,0.05)] hover:shadow-[0_0_18px_rgba(249,168,37,0.25)]"
+          >
+           
+            IEEE Student Branch
+            <span className="material-symbols-outlined text-sm">open_in_new</span>
+          </a>
           <Link 
             to="/" 
             className="hidden md:block bg-primary text-white px-6 py-2.5 rounded-lg font-extrabold hover:bg-primary/90 transition-all active:scale-95 text-sm shadow-[0_0_15px_rgba(17,63,124,0.3)] hover:shadow-[0_0_20px_rgba(17,63,124,0.5)]"
@@ -108,6 +118,16 @@ const Navbar = () => {
                 </Link>
               );
             })}
+            <a
+              href="https://ieee.jfn.ac.lk/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full inline-flex items-center justify-center gap-2 text-white font-bold text-lg border-2 border-white/50 hover:border-secondary hover:text-secondary bg-white/5 hover:bg-secondary/10 py-4 rounded-xl transition-all duration-300 active:scale-95 shadow-[0_0_15px_rgba(255,255,255,0.05)]"
+            >
+              <span className="material-symbols-outlined">language</span>
+              IEEE Student Branch
+              <span className="material-symbols-outlined text-sm">open_in_new</span>
+            </a>
             <Link 
               to="/" 
               className="w-full bg-primary text-white py-4 rounded-xl font-black text-lg shadow-[0_0_15px_rgba(17,63,124,0.3)] hover:bg-primary/90 transition-all"
