@@ -38,15 +38,20 @@ const Hero = () => {
                 <RollingText words={dynamicWords} />
               </h1>
               <p className="font-inter text-xl md:text-2xl text-white/60 mb-12 max-w-2xl leading-relaxed animate-slide-up animation-delay-300">
-                Join us for a transformative two-day summer school hosted by IEEE Student Branch of the University of Jaffna.
+                Ready to join YarlInsight 3.0? Registration will be available soon for this transformative two-day summer school hosted by IEEE Student Branch of the University of Jaffna.
               </p>
             </div>
 
             <div className="flex flex-wrap gap-6 pt-4 animate-slide-up animation-delay-1000">
-              <button className="bg-primary text-white px-10 py-4 rounded-xl font-black text-lg md:text-xl hover:scale-105 transition-all shadow-[0_0_30px_rgba(17,63,124,0.3)] active:scale-95 flex items-center gap-3">
+              <a
+                href="https://forms.gle/1HjzND696eXYvYzA8"
+                target="_blank"
+                rel="noreferrer"
+                className="bg-primary text-white px-10 py-4 rounded-xl font-black text-lg md:text-xl hover:scale-105 transition-all shadow-[0_0_30px_rgba(17,63,124,0.3)] active:scale-95 flex items-center gap-3"
+              >
                 Register Now
                 <span className="material-symbols-outlined font-bold">arrow_forward</span>
-              </button>
+              </a>
               <button className="btn-outline px-10 py-4 rounded-xl text-lg md:text-xl">
                 Learn More
               </button>

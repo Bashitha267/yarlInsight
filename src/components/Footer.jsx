@@ -13,9 +13,14 @@ const CTA = () => {
             Don't miss this opportunity to enhance your skills and network with industry professionals.
           </p>
           <div className="pt-4">
-            <button className="bg-primary text-white px-10 py-4 rounded-xl font-bold text-lg hover:scale-105 transition-all active:scale-95 shadow-xl hover:bg-primary-dark">
-              Registrations available soon
-            </button>
+            <a
+              href="https://forms.gle/1HjzND696eXYvYzA8"
+              target="_blank"
+              rel="noreferrer"
+              className="bg-primary text-white px-10 py-4 rounded-xl font-bold text-lg hover:scale-105 transition-all active:scale-95 shadow-xl hover:bg-primary-dark inline-flex items-center justify-center"
+            >
+              Register Now
+            </a>
           </div>
         </div>
       </div>
