@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 const Sponsors = () => {
-  const isHidden = true;
+  const isHidden = false;
 
   if (isHidden) {
     return null;

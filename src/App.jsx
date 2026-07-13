@@ -14,7 +14,7 @@ import ShootingStarsGrid from './components/ShootingStarsGrid';
 import { motion } from 'framer-motion';
 
 const Home = () => {
-  const showSponsors = false;
+  const showSponsors = true;
 
   return (
     <motion.div
