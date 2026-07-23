@@ -137,7 +137,7 @@ const Hero = () => {
                 <RollingText words={dynamicWords} />
               </h1>
               <p className="font-inter text-lg sm:text-xl text-white/70 max-w-xl leading-relaxed animate-slide-up animation-delay-300">
-                Welcome to YarlInsight 3.0! Registration is now complete. Get ready for a transformative two-day summer school dedicated to Fullstack Development with MERN Stack, hosted by IEEE Student Branch of the University of Jaffna.
+                Welcome to YarlInsight 3.0! We are delighted to have you join us. Get ready for an engaging experience filled with knowledge, collaboration, and innovation.
               </p>
             </div>
           </div>
