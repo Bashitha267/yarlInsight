@@ -48,13 +48,13 @@ CREATE POLICY "Allow full access on schedule_events" ON schedule_events FOR ALL 
 -- 5. Enable Realtime updates across clients
 ALTER PUBLICATION supabase_realtime ADD TABLE schedule_events;
 
--- 6. Insert Exact Day 01 Agenda (25 JULY)
+-- 6. Insert Exact Day 01 Agenda (25 JULY 2026)
 DO $$
 DECLARE
     day1_id UUID;
 BEGIN
     INSERT INTO schedule_days (day_label, event_date, sort_order)
-    VALUES ('Day 01', '25 JULY', 1)
+    VALUES ('Day 01', '25 JULY 2026', 1)
     RETURNING id INTO day1_id;
 
     INSERT INTO schedule_events (day_id, title, speaker, event_type, display_time, is_active, sort_order) VALUES

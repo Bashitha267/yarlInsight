@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { sponsorGroups } from '../data/sponsorsData';
 
-export const SponsorLogo = ({ partner }) => {
+export const SponsorLogo = ({ partner, isGold }) => {
   const [imageError, setImageError] = useState(false);
 
   // Custom fallback renderers for when logoUrl is empty or fails to load
@@ -28,10 +28,10 @@ export const SponsorLogo = ({ partner }) => {
       case 'gold-2':
         return (
           <div className="flex items-center gap-3">
-            <div className="w-14 h-14 md:w-20 md:h-20 rounded-full border-2 border-amber-400 flex items-center justify-center bg-amber-400/10 text-amber-400">
-              <span className="material-symbols-outlined text-3xl md:text-4xl">school</span>
+            <div className={`${isGold ? 'w-16 h-16 md:w-20 md:h-20' : 'w-14 h-14 md:w-20 md:h-20'} rounded-full border-2 border-amber-400 flex items-center justify-center bg-amber-400/10 text-amber-400`}>
+              <span className={`material-symbols-outlined ${isGold ? 'text-3xl md:text-4xl' : 'text-3xl md:text-4xl'}`}>school</span>
             </div>
-            <div className="text-base md:text-xl font-extrabold text-white uppercase leading-tight text-left">
+            <div className={`${isGold ? 'text-lg md:text-xl' : 'text-base md:text-xl'} font-extrabold text-white uppercase leading-tight text-left`}>
               Master Lakhs<br />Campus
             </div>
           </div>
@@ -39,11 +39,11 @@ export const SponsorLogo = ({ partner }) => {
       case 'sago':
         return (
           <div className="flex items-center gap-3">
-            <div className="w-13 h-13 md:w-18 md:h-18 rounded-full bg-amber-400/10 border border-amber-400/20 flex items-center justify-center text-amber-400">
+            <div className={`${isGold ? 'w-16 h-16 md:w-18 md:h-18' : 'w-13 h-13 md:w-18 md:h-18'} rounded-full bg-amber-400/10 border border-amber-400/20 flex items-center justify-center text-amber-400`}>
               <span className="material-symbols-outlined text-2xl md:text-3xl rotate-45">flight</span>
             </div>
             <div className="text-left leading-tight">
-              <span className="text-2xl md:text-4xl font-black text-amber-400 block">SAGO</span>
+              <span className={`${isGold ? 'text-3xl md:text-4xl' : 'text-2xl md:text-4xl'} font-black text-amber-400 block`}>SAGO</span>
               <span className="text-xs md:text-sm font-bold text-gray-300 block tracking-wider">OVERSEAS EDUCATION</span>
             </div>
           </div>
@@ -76,7 +76,7 @@ export const SponsorLogo = ({ partner }) => {
         );
       default:
         return (
-          <span className="text-2xl md:text-4xl font-bold text-white tracking-tight">
+          <span className={`${isGold ? 'text-3xl md:text-4xl' : 'text-2xl md:text-4xl'} font-bold text-white tracking-tight`}>
             {partner.name}
           </span>
         );
@@ -89,7 +89,11 @@ export const SponsorLogo = ({ partner }) => {
         src={partner.logoUrl}
         alt={partner.alt || partner.name}
         onError={() => setImageError(true)}
-        className="h-24 sm:h-28 md:h-32 lg:h-36 max-h-40 w-auto max-w-[320px] md:max-w-[420px] object-contain transition-transform duration-300 hover:scale-105 filter drop-shadow-[0_4px_20px_rgba(255,255,255,0.05)]"
+        className={
+          isGold
+            ? "h-36 sm:h-36 md:h-36 lg:h-40 max-h-48 w-auto max-w-[340px] sm:max-w-[420px] object-contain transition-transform duration-300 hover:scale-105 filter drop-shadow-[0_4px_20px_rgba(255,255,255,0.08)]"
+            : "h-24 sm:h-28 md:h-32 lg:h-36 max-h-40 w-auto max-w-[320px] md:max-w-[420px] object-contain transition-transform duration-300 hover:scale-105 filter drop-shadow-[0_4px_20px_rgba(255,255,255,0.05)]"
+        }
       />
     );
   }
@@ -103,6 +107,7 @@ export const SponsorLogo = ({ partner }) => {
 
 // Reusable Tier Section - Large uniform scaled layout per row
 export const SponsorTierRow = ({ group }) => {
+  const isGold = group.id === 'gold';
   return (
     <div className="space-y-6 py-6">
       {/* Title Header with clean line */}
@@ -115,10 +120,10 @@ export const SponsorTierRow = ({ group }) => {
       </div>
 
       {/* Clean Row of Uniformly Large Scaled Logos */}
-      <div className="py-6 flex flex-wrap items-center justify-start gap-10 sm:gap-14 md:gap-20 lg:gap-24 min-h-[120px] md:min-h-[150px]">
+      <div className={`py-6 flex flex-wrap items-center justify-start ${isGold ? 'gap-12 sm:gap-16 md:gap-20 lg:gap-24 min-h-[140px] md:min-h-[160px]' : 'gap-10 sm:gap-14 md:gap-20 lg:gap-24 min-h-[120px] md:min-h-[150px]'}`}>
         {group.partners.map((partner) => (
-          <div key={partner.id} className="flex items-center justify-center min-h-[100px] md:min-h-[140px]">
-            <SponsorLogo partner={partner} />
+          <div key={partner.id} className={`flex items-center justify-center ${isGold ? 'min-h-[130px] md:min-h-[150px]' : 'min-h-[100px] md:min-h-[140px]'}`}>
+            <SponsorLogo partner={partner} isGold={isGold} />
           </div>
         ))}
       </div>

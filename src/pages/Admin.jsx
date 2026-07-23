@@ -19,7 +19,7 @@ const Admin = () => {
   const defaultSchedule = [
     {
       day_label: "Day 01",
-      event_date: "July 25",
+      event_date: "July 25, 2026",
       events: [
         { display_time: "08.00 – 08.30 AM", title: "Registration", speaker: "Organizing Team", event_type: "GENERAL", is_active: false },
         { display_time: "08.30 – 08.40 AM", title: "Lighting of the Oil Lamp", speaker: "Dignitaries", event_type: "GENERAL", is_active: false },

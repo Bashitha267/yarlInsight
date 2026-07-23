@@ -6,7 +6,7 @@ import { supabase } from '../lib/supabase';
 const staticScheduleData = [
   {
     day_label: "Day 01",
-    event_date: "25 JULY",
+    event_date: "25 JULY 2026",
     events: [
       { display_time: "08.00 – 08.30 AM", title: "Registration", speaker: "Organizing Team", event_type: "GENERAL" },
       { display_time: "08.30 – 08.40 AM", title: "Lighting of the Oil Lamp", speaker: "Dignitaries", event_type: "GENERAL" },
@@ -127,6 +127,26 @@ const Schedule = () => {
     return '';
   };
 
+  const formatScheduleDate = (dateStr) => {
+    if (!dateStr) return 'July 25, 2026';
+    let str = String(dateStr).trim();
+    if (!/\b20\d{2}\b/.test(str)) {
+      str = `${str} 2026`;
+    } else {
+      str = str.replace(/\b20\d{2}\b/, '2026');
+    }
+    const dayMonthMatch = str.match(/^(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})$/);
+    if (dayMonthMatch) {
+      const [, day, month, year] = dayMonthMatch;
+      str = `${month} ${day}, ${year}`;
+    }
+    const parsed = new Date(str);
+    if (!isNaN(parsed.getTime())) {
+      return parsed.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    }
+    return str;
+  };
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: 15 }}
@@ -232,9 +252,7 @@ const Schedule = () => {
                       {day.day_label}
                     </div>
                     <h2 className="text-white/70 font-mono text-sm sm:text-base font-semibold tracking-wider uppercase">
-                      {new Date(day.event_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) !== 'Invalid Date' 
-                        ? new Date(day.event_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) 
-                        : day.event_date}
+                      {formatScheduleDate(day.event_date)}
                     </h2>
                   </div>
                   <div className="hidden sm:block text-xs font-mono text-white/40 uppercase tracking-widest">
