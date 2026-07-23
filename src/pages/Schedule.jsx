@@ -19,20 +19,6 @@ const staticScheduleData = [
       { display_time: "03:30 PM - 05:00 PM", title: "AI-assisted Development and Code Generation (Part 2)", speaker: "Anto Sheron", event_type: "WORKSHOP" },
       { display_time: "05:00 PM - 05:10 PM", title: "Group Photo & Closing", speaker: "Organizing Team", event_type: "GENERAL" }
     ]
-  },
-  {
-    day_label: "Day 02",
-    event_date: "Day 2 Schedule",
-    events: [
-      { display_time: "09:00 AM - 10:30 AM", title: "Automated Testing and Quality Assurance using AI (Part 1)", speaker: "Susara Jayaweera Patabendige", event_type: "KEYNOTE" },
-      { display_time: "10:30 AM - 11:00 AM", title: "Tea Break", speaker: "", event_type: "BREAK" },
-      { display_time: "11:00 AM - 12:30 PM", title: "Automated Testing and Quality Assurance using AI (Part 2)", speaker: "Susara Jayaweera Patabendige", event_type: "WORKSHOP" },
-      { display_time: "12:30 PM - 01:30 PM", title: "Lunch Break", speaker: "", event_type: "BREAK" },
-      { display_time: "01:30 PM - 03:00 PM", title: "AI-driven DevOps, Monitoring, and Predictive Maintenance (Part 1)", speaker: "Gnanakeethan Balasubramaniam", event_type: "KEYNOTE" },
-      { display_time: "03:00 PM - 03:30 PM", title: "Tea Break", speaker: "", event_type: "BREAK" },
-      { display_time: "03:30 PM - 05:00 PM", title: "AI-driven DevOps, Monitoring, and Predictive Maintenance (Part 2)", speaker: "Gnanakeethan Balasubramaniam", event_type: "WORKSHOP" },
-      { display_time: "05:00 PM - 05:10 PM", title: "Vote of Thanks, Group Photo & Closing", speaker: "Organizing Committee", event_type: "GENERAL" }
-    ]
   }
 ];
 
@@ -89,6 +75,17 @@ const Schedule = () => {
     };
 
     fetchSchedule();
+
+    const channel = supabase
+      .channel('schedule_page_events')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'schedule_events' }, () => {
+        fetchSchedule();
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const isEventActive = (startTimeStr, endTimeStr) => {

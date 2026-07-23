@@ -40,6 +40,17 @@ const Hero = () => {
     };
 
     fetchActiveEvent();
+
+    const channel = supabase
+      .channel('hero_schedule_events')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'schedule_events' }, () => {
+        fetchActiveEvent();
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   return (

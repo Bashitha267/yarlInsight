@@ -21,30 +21,16 @@ const Admin = () => {
       day_label: "Day 01",
       event_date: "Day 1 Schedule",
       events: [
-        { display_time: "07:30 AM - 08:00 AM", title: "Registration of the Participants", speaker: "Organizing Team", event_type: "GENERAL" },
-        { display_time: "08:00 AM - 09:15 AM", title: "Opening Ceremony", speaker: "President, VC, Dean, HOD & IEEE Counselor", event_type: "GENERAL" },
-        { display_time: "09:30 AM - 10:30 AM", title: "AI-powered Requirement Engineering and Product Discovery (Part 1)", speaker: "Naresh Shanmgaraj", event_type: "KEYNOTE" },
-        { display_time: "10:30 AM - 11:00 AM", title: "Tea Break", speaker: "", event_type: "BREAK" },
-        { display_time: "11:00 AM - 12:30 PM", title: "AI-powered Requirement Engineering and Product Discovery (Part 2)", speaker: "Naresh Shanmgaraj", event_type: "WORKSHOP" },
-        { display_time: "12:30 PM - 01:30 PM", title: "Lunch Break", speaker: "", event_type: "BREAK" },
-        { display_time: "01:30 PM - 03:00 PM", title: "AI-assisted Development and Code Generation (Part 1)", speaker: "Anto Sheron", event_type: "KEYNOTE" },
-        { display_time: "03:00 PM - 03:30 PM", title: "Tea Break", speaker: "", event_type: "BREAK" },
-        { display_time: "03:30 PM - 05:00 PM", title: "AI-assisted Development and Code Generation (Part 2)", speaker: "Anto Sheron", event_type: "WORKSHOP" },
-        { display_time: "05:00 PM - 05:10 PM", title: "Group Photo & Closing", speaker: "Organizing Team", event_type: "GENERAL" }
-      ]
-    },
-    {
-      day_label: "Day 02",
-      event_date: "Day 2 Schedule",
-      events: [
-        { display_time: "09:00 AM - 10:30 AM", title: "Automated Testing and Quality Assurance using AI (Part 1)", speaker: "Susara Jayaweera Patabendige", event_type: "KEYNOTE" },
-        { display_time: "10:30 AM - 11:00 AM", title: "Tea Break", speaker: "", event_type: "BREAK" },
-        { display_time: "11:00 AM - 12:30 PM", title: "Automated Testing and Quality Assurance using AI (Part 2)", speaker: "Susara Jayaweera Patabendige", event_type: "WORKSHOP" },
-        { display_time: "12:30 PM - 01:30 PM", title: "Lunch Break", speaker: "", event_type: "BREAK" },
-        { display_time: "01:30 PM - 03:00 PM", title: "AI-driven DevOps, Monitoring, and Predictive Maintenance (Part 1)", speaker: "Gnanakeethan Balasubramaniam", event_type: "KEYNOTE" },
-        { display_time: "03:00 PM - 03:30 PM", title: "Tea Break", speaker: "", event_type: "BREAK" },
-        { display_time: "03:30 PM - 05:00 PM", title: "AI-driven DevOps, Monitoring, and Predictive Maintenance (Part 2)", speaker: "Gnanakeethan Balasubramaniam", event_type: "WORKSHOP" },
-        { display_time: "05:00 PM - 05:10 PM", title: "Vote of Thanks, Group Photo & Closing", speaker: "Organizing Committee", event_type: "GENERAL" }
+        { display_time: "07:30 AM - 08:00 AM", title: "Registration of the Participants", speaker: "Organizing Team", event_type: "GENERAL", is_active: false },
+        { display_time: "08:00 AM - 09:15 AM", title: "Opening Ceremony", speaker: "President, VC, Dean, HOD & IEEE Counselor", event_type: "GENERAL", is_active: false },
+        { display_time: "09:30 AM - 10:30 AM", title: "AI-powered Requirement Engineering and Product Discovery (Part 1)", speaker: "Naresh Shanmgaraj", event_type: "KEYNOTE", is_active: true },
+        { display_time: "10:30 AM - 11:00 AM", title: "Tea Break", speaker: "", event_type: "BREAK", is_active: false },
+        { display_time: "11:00 AM - 12:30 PM", title: "AI-powered Requirement Engineering and Product Discovery (Part 2)", speaker: "Naresh Shanmgaraj", event_type: "WORKSHOP", is_active: false },
+        { display_time: "12:30 PM - 01:30 PM", title: "Lunch Break", speaker: "", event_type: "BREAK", is_active: false },
+        { display_time: "01:30 PM - 03:00 PM", title: "AI-assisted Development and Code Generation (Part 1)", speaker: "Anto Sheron", event_type: "KEYNOTE", is_active: false },
+        { display_time: "03:00 PM - 03:30 PM", title: "Tea Break", speaker: "", event_type: "BREAK", is_active: false },
+        { display_time: "03:30 PM - 05:00 PM", title: "AI-assisted Development and Code Generation (Part 2)", speaker: "Anto Sheron", event_type: "WORKSHOP", is_active: false },
+        { display_time: "05:00 PM - 05:10 PM", title: "Group Photo & Closing", speaker: "Organizing Team", event_type: "GENERAL", is_active: false }
       ]
     }
   ];
@@ -96,37 +82,77 @@ const Admin = () => {
     }
   };
 
+  const saveScheduleDataToSupabase = async (dataToSave) => {
+    const targetData = dataToSave || scheduleData;
+    await supabase.from('schedule_events').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+    await supabase.from('schedule_days').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+
+    for (let i = 0; i < targetData.length; i++) {
+      const day = targetData[i];
+      const { data: dayRes, error: dayErr } = await supabase.from('schedule_days').insert({
+        day_label: day.day_label,
+        event_date: day.event_date || day.day_label,
+        sort_order: i + 1
+      }).select().single();
+
+      if (dayErr) throw dayErr;
+
+      if (day.events && day.events.length > 0) {
+        const eventsToInsert = day.events.map((ev, evIdx) => ({
+          day_id: dayRes.id,
+          title: ev.title,
+          speaker: ev.speaker || '',
+          event_type: ev.event_type || 'GENERAL',
+          display_time: ev.display_time,
+          is_active: Boolean(ev.is_active),
+          sort_order: evIdx + 1
+        }));
+
+        const { error: evErr } = await supabase.from('schedule_events').insert(eventsToInsert);
+        if (evErr) throw evErr;
+      }
+    }
+  };
+
+  const handleToggleHappeningNow = async (dayIdx, evIdx) => {
+    const targetEvent = scheduleData[dayIdx]?.events[evIdx];
+    const newIsActive = !targetEvent?.is_active;
+
+    const updatedSchedule = scheduleData.map((d, dI) => ({
+      ...d,
+      events: d.events.map((e, eI) => ({
+        ...e,
+        is_active: (dI === dayIdx && eI === evIdx) ? newIsActive : false
+      }))
+    }));
+
+    setScheduleData(updatedSchedule);
+
+    try {
+      // Direct update to Supabase
+      const { data: existingEvents } = await supabase.from('schedule_events').select('id');
+      if (existingEvents && existingEvents.length > 0) {
+        await supabase.from('schedule_events').update({ is_active: false }).neq('id', '00000000-0000-0000-0000-000000000000');
+        if (newIsActive && targetEvent) {
+          if (targetEvent.id) {
+            await supabase.from('schedule_events').update({ is_active: true }).eq('id', targetEvent.id);
+          } else {
+            await supabase.from('schedule_events').update({ is_active: true }).eq('title', targetEvent.title);
+          }
+        }
+      } else {
+        // Auto-save entire structure if DB doesn't have events yet
+        await saveScheduleDataToSupabase(updatedSchedule);
+      }
+    } catch (err) {
+      console.error("Auto update is_active error:", err);
+    }
+  };
+
   const handleSaveSchedule = async () => {
     setScheduleLoading(true);
     try {
-      await supabase.from('schedule_events').delete().neq('id', '00000000-0000-0000-0000-000000000000');
-      await supabase.from('schedule_days').delete().neq('id', '00000000-0000-0000-0000-000000000000');
-
-      for (let i = 0; i < scheduleData.length; i++) {
-        const day = scheduleData[i];
-        const { data: dayRes, error: dayErr } = await supabase.from('schedule_days').insert({
-          day_label: day.day_label,
-          event_date: day.event_date || day.day_label,
-          sort_order: i + 1
-        }).select().single();
-
-        if (dayErr) throw dayErr;
-
-        if (day.events && day.events.length > 0) {
-          const eventsToInsert = day.events.map((ev, evIdx) => ({
-            day_id: dayRes.id,
-            title: ev.title,
-            speaker: ev.speaker || '',
-            event_type: ev.event_type || 'GENERAL',
-            display_time: ev.display_time,
-            is_active: Boolean(ev.is_active),
-            sort_order: evIdx + 1
-          }));
-
-          const { error: evErr } = await supabase.from('schedule_events').insert(eventsToInsert);
-          if (evErr) throw evErr;
-        }
-      }
+      await saveScheduleDataToSupabase(scheduleData);
       alert('Schedule updated and saved to Supabase successfully!');
       fetchSchedule();
     } catch (err) {
@@ -598,19 +624,10 @@ const Admin = () => {
                         <div className="flex flex-wrap justify-between items-center pt-2 border-t border-white/5">
                           <button
                             type="button"
-                            onClick={() => {
-                              const updated = scheduleData.map((d, dI) => ({
-                                ...d,
-                                events: d.events.map((e, eI) => ({
-                                  ...e,
-                                  is_active: (dI === dayIdx && eI === evIdx) ? !e.is_active : false
-                                }))
-                              }));
-                              setScheduleData(updated);
-                            }}
-                            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                            onClick={() => handleToggleHappeningNow(dayIdx, evIdx)}
+                            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
                               ev.is_active 
-                                ? 'bg-primary text-white shadow-[0_0_15px_rgba(26,86,166,0.6)]' 
+                                ? 'bg-yellow-400 text-black font-black shadow-[0_0_20px_rgba(234,179,8,0.5)]' 
                                 : 'bg-white/5 hover:bg-white/10 text-white/60 border border-white/10'
                             }`}
                           >
