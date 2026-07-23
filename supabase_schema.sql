@@ -59,7 +59,7 @@ CREATE TABLE schedule_days (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     project_id UUID REFERENCES projects(id) ON DELETE CASCADE,
     day_label VARCHAR(50) NOT NULL, -- e.g., 'Day 01'
-    event_date DATE NOT NULL,
+    event_date VARCHAR(100) NOT NULL,
     sort_order INTEGER DEFAULT 0
 );
 
@@ -70,9 +70,10 @@ CREATE TABLE schedule_events (
     title VARCHAR(255) NOT NULL,
     speaker VARCHAR(255),
     event_type VARCHAR(100), -- e.g., 'KEYNOTE', 'WORKSHOP', 'PANEL'
-    start_time TIMESTAMPTZ NOT NULL, -- Full timestamp to check current time
-    end_time TIMESTAMPTZ NOT NULL,   -- Full timestamp to check current time
-    display_time VARCHAR(50)         -- e.g., '08:30 AM' for fallback/display
+    display_time VARCHAR(100),
+    is_active BOOLEAN DEFAULT false,
+    start_time TIMESTAMPTZ,
+    end_time TIMESTAMPTZ
 );
 
 -- Enable RLS (Row Level Security) and allow public read access

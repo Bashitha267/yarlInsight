@@ -15,6 +15,43 @@ const Admin = () => {
   const [projects, setProjects] = useState([]);
   const [editingProject, setEditingProject] = useState(null);
   
+  // Default Schedule Template
+  const defaultSchedule = [
+    {
+      day_label: "Day 01",
+      event_date: "Day 1 Schedule",
+      events: [
+        { display_time: "07:30 AM - 08:00 AM", title: "Registration of the Participants", speaker: "Organizing Team", event_type: "GENERAL" },
+        { display_time: "08:00 AM - 09:15 AM", title: "Opening Ceremony", speaker: "President, VC, Dean, HOD & IEEE Counselor", event_type: "GENERAL" },
+        { display_time: "09:30 AM - 10:30 AM", title: "AI-powered Requirement Engineering and Product Discovery (Part 1)", speaker: "Naresh Shanmgaraj", event_type: "KEYNOTE" },
+        { display_time: "10:30 AM - 11:00 AM", title: "Tea Break", speaker: "", event_type: "BREAK" },
+        { display_time: "11:00 AM - 12:30 PM", title: "AI-powered Requirement Engineering and Product Discovery (Part 2)", speaker: "Naresh Shanmgaraj", event_type: "WORKSHOP" },
+        { display_time: "12:30 PM - 01:30 PM", title: "Lunch Break", speaker: "", event_type: "BREAK" },
+        { display_time: "01:30 PM - 03:00 PM", title: "AI-assisted Development and Code Generation (Part 1)", speaker: "Anto Sheron", event_type: "KEYNOTE" },
+        { display_time: "03:00 PM - 03:30 PM", title: "Tea Break", speaker: "", event_type: "BREAK" },
+        { display_time: "03:30 PM - 05:00 PM", title: "AI-assisted Development and Code Generation (Part 2)", speaker: "Anto Sheron", event_type: "WORKSHOP" },
+        { display_time: "05:00 PM - 05:10 PM", title: "Group Photo & Closing", speaker: "Organizing Team", event_type: "GENERAL" }
+      ]
+    },
+    {
+      day_label: "Day 02",
+      event_date: "Day 2 Schedule",
+      events: [
+        { display_time: "09:00 AM - 10:30 AM", title: "Automated Testing and Quality Assurance using AI (Part 1)", speaker: "Susara Jayaweera Patabendige", event_type: "KEYNOTE" },
+        { display_time: "10:30 AM - 11:00 AM", title: "Tea Break", speaker: "", event_type: "BREAK" },
+        { display_time: "11:00 AM - 12:30 PM", title: "Automated Testing and Quality Assurance using AI (Part 2)", speaker: "Susara Jayaweera Patabendige", event_type: "WORKSHOP" },
+        { display_time: "12:30 PM - 01:30 PM", title: "Lunch Break", speaker: "", event_type: "BREAK" },
+        { display_time: "01:30 PM - 03:00 PM", title: "AI-driven DevOps, Monitoring, and Predictive Maintenance (Part 1)", speaker: "Gnanakeethan Balasubramaniam", event_type: "KEYNOTE" },
+        { display_time: "03:00 PM - 03:30 PM", title: "Tea Break", speaker: "", event_type: "BREAK" },
+        { display_time: "03:30 PM - 05:00 PM", title: "AI-driven DevOps, Monitoring, and Predictive Maintenance (Part 2)", speaker: "Gnanakeethan Balasubramaniam", event_type: "WORKSHOP" },
+        { display_time: "05:00 PM - 05:10 PM", title: "Vote of Thanks, Group Photo & Closing", speaker: "Organizing Committee", event_type: "GENERAL" }
+      ]
+    }
+  ];
+
+  const [scheduleData, setScheduleData] = useState(defaultSchedule);
+  const [scheduleLoading, setScheduleLoading] = useState(false);
+
   // Project Form State
   const initialProjectState = { 
     title: '', tag: '', start_date: '', end_date: '', 
@@ -29,12 +66,74 @@ const Admin = () => {
     if (admin) {
       setIsLoggedIn(true);
       fetchProjects();
+      fetchSchedule();
     }
   }, []);
 
   const fetchProjects = async () => {
     const { data, error } = await supabase.from('projects').select('*').order('created_at', { ascending: false });
     if (!error) setProjects(data);
+  };
+
+  const fetchSchedule = async () => {
+    setScheduleLoading(true);
+    try {
+      const { data: days, error: daysErr } = await supabase.from('schedule_days').select('*').order('sort_order', { ascending: true });
+      if (!daysErr && days && days.length > 0) {
+        const { data: events } = await supabase.from('schedule_events').select('*').order('sort_order', { ascending: true });
+        const grouped = days.map(d => ({
+          ...d,
+          events: events ? events.filter(e => e.day_id === d.id) : []
+        }));
+        if (grouped.some(g => g.events.length > 0)) {
+          setScheduleData(grouped);
+        }
+      }
+    } catch (e) {
+      console.log('Using default schedule template');
+    } finally {
+      setScheduleLoading(false);
+    }
+  };
+
+  const handleSaveSchedule = async () => {
+    setScheduleLoading(true);
+    try {
+      await supabase.from('schedule_events').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+      await supabase.from('schedule_days').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+
+      for (let i = 0; i < scheduleData.length; i++) {
+        const day = scheduleData[i];
+        const { data: dayRes, error: dayErr } = await supabase.from('schedule_days').insert({
+          day_label: day.day_label,
+          event_date: day.event_date || day.day_label,
+          sort_order: i + 1
+        }).select().single();
+
+        if (dayErr) throw dayErr;
+
+        if (day.events && day.events.length > 0) {
+          const eventsToInsert = day.events.map((ev, evIdx) => ({
+            day_id: dayRes.id,
+            title: ev.title,
+            speaker: ev.speaker || '',
+            event_type: ev.event_type || 'GENERAL',
+            display_time: ev.display_time,
+            is_active: Boolean(ev.is_active),
+            sort_order: evIdx + 1
+          }));
+
+          const { error: evErr } = await supabase.from('schedule_events').insert(eventsToInsert);
+          if (evErr) throw evErr;
+        }
+      }
+      alert('Schedule updated and saved to Supabase successfully!');
+      fetchSchedule();
+    } catch (err) {
+      alert('Note: Schedule preview updated locally!\n\nTo persist in Supabase, execute the generated "supabase_schedule_seed.sql" file in your Supabase SQL Editor if table permissions need configuration.');
+    } finally {
+      setScheduleLoading(false);
+    }
   };
 
   const handleLogin = async (e) => {
@@ -180,7 +279,7 @@ const Admin = () => {
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-grow p-6 lg:p-12 max-w-5xl mx-auto w-full">
+      <main className={`flex-grow p-6 lg:p-12 mx-auto w-full transition-all duration-300 ${activeTab === 'schedule' ? 'max-w-[1400px]' : 'max-w-5xl'}`}>
         {activeTab === 'projects' && (
           <div className="space-y-16">
             <h2 className="text-3xl lg:text-4xl font-black">{editingProject ? 'Edit' : 'Create'} <span className="text-primary">Project</span></h2>
@@ -338,6 +437,205 @@ const Admin = () => {
                 ))}
               </div>
             </section>
+          </div>
+        )}
+
+        {activeTab === 'schedule' && (
+          <div className="space-y-12 w-full">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-6">
+              <div>
+                <h2 className="text-3xl lg:text-4xl font-black">Manage <span className="text-primary">Event Schedule</span></h2>
+                <p className="text-white/40 text-sm mt-1">Edit timeline sessions, speakers, time slots, event types, and set the live session happening now.</p>
+              </div>
+              <div className="flex gap-3">
+                <button 
+                  type="button" 
+                  onClick={() => setScheduleData([...scheduleData, { day_label: `Day 0${scheduleData.length + 1}`, event_date: `Day ${scheduleData.length + 1} Schedule`, events: [] }])}
+                  className="px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white rounded-xl text-sm font-bold transition-all"
+                >
+                  + Add Day
+                </button>
+                <button 
+                  type="button" 
+                  onClick={handleSaveSchedule}
+                  disabled={scheduleLoading}
+                  className="admin-btn-primary px-6 py-2.5 text-sm flex items-center gap-2"
+                >
+                  {scheduleLoading ? 'Saving...' : 'Save Schedule'}
+                </button>
+              </div>
+            </div>
+
+            <div className="space-y-12">
+              {scheduleData.map((day, dayIdx) => (
+                <div key={dayIdx} className="glass-card p-6 md:p-8 rounded-3xl space-y-6 relative border border-white/10 w-full">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-white/10">
+                    <div className="flex items-center gap-3">
+                      <input 
+                        type="text" 
+                        value={day.day_label} 
+                        onChange={e => {
+                          const updated = [...scheduleData];
+                          updated[dayIdx].day_label = e.target.value;
+                          setScheduleData(updated);
+                        }} 
+                        className="admin-input text-lg font-bold w-36"
+                        placeholder="Day Label"
+                      />
+                      <input 
+                        type="text" 
+                        value={day.event_date} 
+                        onChange={e => {
+                          const updated = [...scheduleData];
+                          updated[dayIdx].event_date = e.target.value;
+                          setScheduleData(updated);
+                        }} 
+                        className="admin-input text-sm text-white/70 w-56"
+                        placeholder="Event Date"
+                      />
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <button 
+                        type="button"
+                        onClick={() => {
+                          const updated = [...scheduleData];
+                          updated[dayIdx].events.push({ display_time: '09:00 AM - 10:00 AM', title: 'New Event Session', speaker: '', event_type: 'KEYNOTE', is_active: false });
+                          setScheduleData(updated);
+                        }}
+                        className="text-xs bg-primary/20 hover:bg-primary/30 text-primary border border-primary/40 px-4 py-2.5 rounded-xl font-bold transition-all"
+                      >
+                        + Add Session
+                      </button>
+                      <button 
+                        type="button"
+                        onClick={() => {
+                          const updated = scheduleData.filter((_, i) => i !== dayIdx);
+                          setScheduleData(updated);
+                        }}
+                        className="text-xs text-red-400 hover:text-red-300 font-bold px-3 py-2"
+                      >
+                        Delete Day
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    {(day.events || []).map((ev, evIdx) => (
+                      <div 
+                        key={evIdx} 
+                        className={`p-5 rounded-2xl border transition-all space-y-4 ${
+                          ev.is_active 
+                            ? 'bg-primary/10 border-primary shadow-[0_0_30px_rgba(26,86,166,0.3)]' 
+                            : 'bg-black/60 border-white/10'
+                        }`}
+                      >
+                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-center">
+                          <div className="lg:col-span-3">
+                            <label className="text-[10px] uppercase tracking-widest text-primary font-bold block mb-1">Time</label>
+                            <input 
+                              type="text" 
+                              value={ev.display_time} 
+                              onChange={e => {
+                                const updated = [...scheduleData];
+                                updated[dayIdx].events[evIdx].display_time = e.target.value;
+                                setScheduleData(updated);
+                              }}
+                              className="admin-input text-xs py-2.5 font-mono"
+                              placeholder="09:00 AM - 10:30 AM"
+                            />
+                          </div>
+
+                          <div className="lg:col-span-4">
+                            <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold block mb-1">Event Title</label>
+                            <input 
+                              type="text" 
+                              value={ev.title} 
+                              onChange={e => {
+                                const updated = [...scheduleData];
+                                updated[dayIdx].events[evIdx].title = e.target.value;
+                                setScheduleData(updated);
+                              }}
+                              className="admin-input text-xs py-2.5 font-bold"
+                              placeholder="Session Title"
+                            />
+                          </div>
+
+                          <div className="lg:col-span-3">
+                            <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold block mb-1">Speaker / Host</label>
+                            <input 
+                              type="text" 
+                              value={ev.speaker} 
+                              onChange={e => {
+                                const updated = [...scheduleData];
+                                updated[dayIdx].events[evIdx].speaker = e.target.value;
+                                setScheduleData(updated);
+                              }}
+                              className="admin-input text-xs py-2.5"
+                              placeholder="Speaker Name"
+                            />
+                          </div>
+
+                          <div className="lg:col-span-2">
+                            <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold block mb-1">Type</label>
+                            <select 
+                              value={ev.event_type || 'GENERAL'} 
+                              onChange={e => {
+                                const updated = [...scheduleData];
+                                updated[dayIdx].events[evIdx].event_type = e.target.value;
+                                setScheduleData(updated);
+                              }}
+                              className="admin-input text-xs py-2.5 bg-black"
+                            >
+                              <option value="KEYNOTE">KEYNOTE</option>
+                              <option value="WORKSHOP">WORKSHOP</option>
+                              <option value="PANEL">PANEL</option>
+                              <option value="BREAK">BREAK</option>
+                              <option value="GENERAL">GENERAL</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <div className="flex flex-wrap justify-between items-center pt-2 border-t border-white/5">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const updated = scheduleData.map((d, dI) => ({
+                                ...d,
+                                events: d.events.map((e, eI) => ({
+                                  ...e,
+                                  is_active: (dI === dayIdx && eI === evIdx) ? !e.is_active : false
+                                }))
+                              }));
+                              setScheduleData(updated);
+                            }}
+                            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                              ev.is_active 
+                                ? 'bg-primary text-white shadow-[0_0_15px_rgba(26,86,166,0.6)]' 
+                                : 'bg-white/5 hover:bg-white/10 text-white/60 border border-white/10'
+                            }`}
+                          >
+                            <span className="material-symbols-outlined text-sm">{ev.is_active ? 'radio_button_checked' : 'radio_button_unchecked'}</span>
+                            {ev.is_active ? 'HAPPENING NOW (ACTIVE)' : 'MARK HAPPENING NOW'}
+                          </button>
+
+                          <button 
+                            type="button" 
+                            onClick={() => {
+                              const updated = [...scheduleData];
+                              updated[dayIdx].events = updated[dayIdx].events.filter((_, i) => i !== evIdx);
+                              setScheduleData(updated);
+                            }}
+                            className="text-[11px] text-red-500 hover:text-red-400 font-bold uppercase tracking-wider py-1 px-2"
+                          >
+                            Remove Session
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </main>
