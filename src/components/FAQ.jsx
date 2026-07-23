@@ -16,7 +16,7 @@ const faqData = [
   },
   {
     question: "Should I bring my personal laptop to the event?",
-    answer: "No, you should not bring your personal laptop. The department will provide all necessary computer facilities for the hands-on workshops."
+    answer: "Yes, participants are encouraged to bring their personal laptops for the hands-on practical sessions and workshops."
   },
   {
     question: "Is accommodation provided for participants?",
