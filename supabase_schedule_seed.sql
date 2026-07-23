@@ -1,9 +1,9 @@
 -- =========================================================
--- YARL INSIGHT 3.0 - SUPABASE SCHEDULE SCHEMA & SEED SCRIPT
--- Copy and paste this into Supabase SQL Editor to update tables & insert schedule data
+-- YARL INSIGHT 3.0 - SUPABASE SCHEDULE SCHEMA & SEED SCRIPT (DAY 01 ONLY)
+-- Copy and paste this into Supabase SQL Editor to update tables & insert exact agenda
 -- =========================================================
 
--- 1. Drop existing schedule tables to ensure fresh schema
+-- 1. Drop existing schedule tables to ensure a clean schema reset
 DROP TABLE IF EXISTS schedule_events CASCADE;
 DROP TABLE IF EXISTS schedule_days CASCADE;
 
@@ -11,7 +11,7 @@ DROP TABLE IF EXISTS schedule_days CASCADE;
 CREATE TABLE schedule_days (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     day_label VARCHAR(50) NOT NULL, -- e.g., 'Day 01'
-    event_date VARCHAR(100) NOT NULL, -- e.g., 'Day 1 Schedule'
+    event_date VARCHAR(100) NOT NULL, -- e.g., '25 JULY'
     sort_order INTEGER DEFAULT 0,
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -25,13 +25,11 @@ CREATE TABLE schedule_events (
     event_type VARCHAR(100), -- 'KEYNOTE', 'WORKSHOP', 'PANEL', 'BREAK', 'GENERAL'
     display_time VARCHAR(100) NOT NULL,
     is_active BOOLEAN DEFAULT false,    -- Flag to toggle 'HAPPENING NOW'
-    start_time TIMESTAMPTZ,
-    end_time TIMESTAMPTZ,
     sort_order INTEGER DEFAULT 0,
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 4. Enable RLS and setup public permissions
+-- 4. Enable RLS & public access policies
 ALTER TABLE schedule_days ENABLE ROW LEVEL SECURITY;
 ALTER TABLE schedule_events ENABLE ROW LEVEL SECURITY;
 
@@ -47,27 +45,32 @@ CREATE POLICY "Allow full access on schedule_days" ON schedule_days FOR ALL USIN
 DROP POLICY IF EXISTS "Allow full access on schedule_events" ON schedule_events;
 CREATE POLICY "Allow full access on schedule_events" ON schedule_events FOR ALL USING (true);
 
--- 5. Enable Realtime subscriptions for instant live updates
+-- 5. Enable Realtime updates across clients
 ALTER PUBLICATION supabase_realtime ADD TABLE schedule_events;
 
--- 6. Insert Day 01 Schedule Data Only (Day 02 removed)
+-- 6. Insert Exact Day 01 Agenda (25 JULY)
 DO $$
 DECLARE
     day1_id UUID;
 BEGIN
     INSERT INTO schedule_days (day_label, event_date, sort_order)
-    VALUES ('Day 01', 'Day 1 Schedule', 1)
+    VALUES ('Day 01', '25 JULY', 1)
     RETURNING id INTO day1_id;
 
     INSERT INTO schedule_events (day_id, title, speaker, event_type, display_time, is_active, sort_order) VALUES
-    (day1_id, 'Registration of the Participants', 'Organizing Team', 'GENERAL', '07:30 AM - 08:00 AM', false, 1),
-    (day1_id, 'Opening Ceremony', 'President, VC, Dean, HOD & IEEE Counselor', 'GENERAL', '08:00 AM - 09:15 AM', false, 2),
-    (day1_id, 'AI-powered Requirement Engineering and Product Discovery (Part 1)', 'Naresh Shanmgaraj', 'KEYNOTE', '09:30 AM - 10:30 AM', true, 3),
-    (day1_id, 'Tea Break', '', 'BREAK', '10:30 AM - 11:00 AM', false, 4),
-    (day1_id, 'AI-powered Requirement Engineering and Product Discovery (Part 2)', 'Naresh Shanmgaraj', 'WORKSHOP', '11:00 AM - 12:30 PM', false, 5),
-    (day1_id, 'Lunch Break', '', 'BREAK', '12:30 PM - 01:30 PM', false, 6),
-    (day1_id, 'AI-assisted Development and Code Generation (Part 1)', 'Anto Sheron', 'KEYNOTE', '01:30 PM - 03:00 PM', false, 7),
-    (day1_id, 'Tea Break', '', 'BREAK', '03:00 PM - 03:30 PM', false, 8),
-    (day1_id, 'AI-assisted Development and Code Generation (Part 2)', 'Anto Sheron', 'WORKSHOP', '03:30 PM - 05:00 PM', false, 9),
-    (day1_id, 'Group Photo & Closing', 'Organizing Team', 'GENERAL', '05:00 PM - 05:10 PM', false, 10);
+    (day1_id, 'Registration', 'Organizing Team', 'GENERAL', '08.00 – 08.30 AM', false, 1),
+    (day1_id, 'Lighting of the Oil Lamp', 'Dignitaries', 'GENERAL', '08.30 – 08.40 AM', false, 2),
+    (day1_id, 'Welcome Speech (Chairperson)', 'Chairperson', 'GENERAL', '08.40 – 08.50 AM', false, 3),
+    (day1_id, 'Speech by Vice Chancellor, University of Jaffna', 'Vice Chancellor, UOJ', 'GENERAL', '08.50 – 09.00 AM', false, 4),
+    (day1_id, 'Speech by Dean, Faculty of Science', 'Dean, Faculty of Science', 'GENERAL', '09.00 – 09.10 AM', false, 5),
+    (day1_id, 'Speech by HoD, Department of Computer Science', 'HoD, Department of Computer Science', 'GENERAL', '09.10 – 09.20 AM', false, 6),
+    (day1_id, 'Overview of Yarl Insight & Event Guidelines', 'Organizing Committee', 'GENERAL', '09.20 – 09.30 AM', false, 7),
+    (day1_id, 'Session 1: AI-powered Requirement Engineering & Product Discovery', 'Mr. Naresh Shanmugaraj', 'KEYNOTE', '09.30 – 10.30 AM', true, 8),
+    (day1_id, 'Tea Break', '', 'BREAK', '10.30 – 11.00 AM', false, 9),
+    (day1_id, 'Session 1: Continue', 'Mr. Naresh Shanmugaraj', 'WORKSHOP', '11.00 – 12.30 PM', false, 10),
+    (day1_id, 'Lunch Break', '', 'BREAK', '12.30 – 01.30 PM', false, 11),
+    (day1_id, 'Session 2: AI-assisted Development & Code Generation', 'Mr. Sheron Jude', 'KEYNOTE', '01.30 – 03.00 PM', false, 12),
+    (day1_id, 'Tea Break', '', 'BREAK', '03.00 – 03.30 PM', false, 13),
+    (day1_id, 'Session 2: Continue', 'Mr. Sheron Jude', 'WORKSHOP', '03.30 – 05.00 PM', false, 14),
+    (day1_id, 'Group Photo & Closing Ceremony', 'Organizing Team', 'GENERAL', '05.00 – 05.10 PM', false, 15);
 END $$;

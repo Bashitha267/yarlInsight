@@ -6,18 +6,23 @@ import { supabase } from '../lib/supabase';
 const staticScheduleData = [
   {
     day_label: "Day 01",
-    event_date: "Day 1 Schedule",
+    event_date: "25 JULY",
     events: [
-      { display_time: "07:30 AM - 08:00 AM", title: "Registration of the Participants", speaker: "Organizing Team", event_type: "GENERAL" },
-      { display_time: "08:00 AM - 09:15 AM", title: "Opening Ceremony", speaker: "President, VC, Dean, HOD & IEEE Counselor", event_type: "GENERAL" },
-      { display_time: "09:30 AM - 10:30 AM", title: "AI-powered Requirement Engineering and Product Discovery (Part 1)", speaker: "Naresh Shanmgaraj", event_type: "KEYNOTE" },
-      { display_time: "10:30 AM - 11:00 AM", title: "Tea Break", speaker: "", event_type: "BREAK" },
-      { display_time: "11:00 AM - 12:30 PM", title: "AI-powered Requirement Engineering and Product Discovery (Part 2)", speaker: "Naresh Shanmgaraj", event_type: "WORKSHOP" },
-      { display_time: "12:30 PM - 01:30 PM", title: "Lunch Break", speaker: "", event_type: "BREAK" },
-      { display_time: "01:30 PM - 03:00 PM", title: "AI-assisted Development and Code Generation (Part 1)", speaker: "Anto Sheron", event_type: "KEYNOTE" },
-      { display_time: "03:00 PM - 03:30 PM", title: "Tea Break", speaker: "", event_type: "BREAK" },
-      { display_time: "03:30 PM - 05:00 PM", title: "AI-assisted Development and Code Generation (Part 2)", speaker: "Anto Sheron", event_type: "WORKSHOP" },
-      { display_time: "05:00 PM - 05:10 PM", title: "Group Photo & Closing", speaker: "Organizing Team", event_type: "GENERAL" }
+      { display_time: "08.00 – 08.30 AM", title: "Registration", speaker: "Organizing Team", event_type: "GENERAL" },
+      { display_time: "08.30 – 08.40 AM", title: "Lighting of the Oil Lamp", speaker: "Dignitaries", event_type: "GENERAL" },
+      { display_time: "08.40 – 08.50 AM", title: "Welcome Speech (Chairperson)", speaker: "Chairperson", event_type: "GENERAL" },
+      { display_time: "08.50 – 09.00 AM", title: "Speech by Vice Chancellor, University of Jaffna", speaker: "Vice Chancellor, UOJ", event_type: "GENERAL" },
+      { display_time: "09.00 – 09.10 AM", title: "Speech by Dean, Faculty of Science", speaker: "Dean, Faculty of Science", event_type: "GENERAL" },
+      { display_time: "09.10 – 09.20 AM", title: "Speech by HoD, Department of Computer Science", speaker: "HoD, Department of Computer Science", event_type: "GENERAL" },
+      { display_time: "09.20 – 09.30 AM", title: "Overview of Yarl Insight & Event Guidelines", speaker: "Organizing Committee", event_type: "GENERAL" },
+      { display_time: "09.30 – 10.30 AM", title: "Session 1: AI-powered Requirement Engineering & Product Discovery", speaker: "Mr. Naresh Shanmugaraj", event_type: "KEYNOTE", is_active: true },
+      { display_time: "10.30 – 11.00 AM", title: "Tea Break", speaker: "", event_type: "BREAK" },
+      { display_time: "11.00 – 12.30 PM", title: "Session 1: Continue", speaker: "Mr. Naresh Shanmugaraj", event_type: "WORKSHOP" },
+      { display_time: "12.30 – 01.30 PM", title: "Lunch Break", speaker: "", event_type: "BREAK" },
+      { display_time: "01.30 – 03.00 PM", title: "Session 2: AI-assisted Development & Code Generation", speaker: "Mr. Sheron Jude", event_type: "KEYNOTE" },
+      { display_time: "03.00 – 03.30 PM", title: "Tea Break", speaker: "", event_type: "BREAK" },
+      { display_time: "03.30 – 05.00 PM", title: "Session 2: Continue", speaker: "Mr. Sheron Jude", event_type: "WORKSHOP" },
+      { display_time: "05.00 – 05.10 PM", title: "Group Photo & Closing Ceremony", speaker: "Organizing Team", event_type: "GENERAL" }
     ]
   }
 ];
