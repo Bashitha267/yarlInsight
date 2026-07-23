@@ -54,7 +54,7 @@ DECLARE
     day1_id UUID;
 BEGIN
     INSERT INTO schedule_days (day_label, event_date, sort_order)
-    VALUES ('Day 01', '25 JULY 2026', 1)
+    VALUES ('Day 01', 'July 25, 2026', 1)
     RETURNING id INTO day1_id;
 
     INSERT INTO schedule_events (day_id, title, speaker, event_type, display_time, is_active, sort_order) VALUES
@@ -69,8 +69,8 @@ BEGIN
     (day1_id, 'Tea Break', '', 'BREAK', '10.30 – 11.00 AM', false, 9),
     (day1_id, 'Session 1: Continue', 'Mr. Naresh Shanmugaraj', 'WORKSHOP', '11.00 – 12.30 PM', false, 10),
     (day1_id, 'Lunch Break', '', 'BREAK', '12.30 – 01.30 PM', false, 11),
-    (day1_id, 'Session 2: AI-assisted Development & Code Generation', 'Mr. Sheron Jude', 'KEYNOTE', '01.30 – 03.00 PM', false, 12),
+    (day1_id, 'Session 2: AI-assisted Development & Code Generation', 'Mr. Jude Selvakumar Anto Sheron', 'KEYNOTE', '01.30 – 03.00 PM', false, 12),
     (day1_id, 'Tea Break', '', 'BREAK', '03.00 – 03.30 PM', false, 13),
-    (day1_id, 'Session 2: Continue', 'Mr. Sheron Jude', 'WORKSHOP', '03.30 – 05.00 PM', false, 14),
+    (day1_id, 'Session 2: Continue', 'Mr. Jude Selvakumar Anto Sheron', 'WORKSHOP', '03.30 – 05.00 PM', false, 14),
     (day1_id, 'Group Photo & Closing Ceremony', 'Organizing Team', 'GENERAL', '05.00 – 05.10 PM', false, 15);
 END $$;

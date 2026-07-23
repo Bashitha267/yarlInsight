@@ -32,9 +32,9 @@ const Admin = () => {
         { display_time: "10.30 – 11.00 AM", title: "Tea Break", speaker: "", event_type: "BREAK", is_active: false },
         { display_time: "11.00 – 12.30 PM", title: "Session 1: Continue", speaker: "Mr. Naresh Shanmugaraj", event_type: "WORKSHOP", is_active: false },
         { display_time: "12.30 – 01.30 PM", title: "Lunch Break", speaker: "", event_type: "BREAK", is_active: false },
-        { display_time: "01.30 – 03.00 PM", title: "Session 2: AI-assisted Development & Code Generation", speaker: "Mr. Sheron Jude", event_type: "KEYNOTE", is_active: false },
+        { display_time: "01.30 – 03.00 PM", title: "Session 2: AI-assisted Development & Code Generation", speaker: "Mr. Jude Selvakumar Anto Sheron", event_type: "KEYNOTE", is_active: false },
         { display_time: "03.00 – 03.30 PM", title: "Tea Break", speaker: "", event_type: "BREAK", is_active: false },
-        { display_time: "03.30 – 05.00 PM", title: "Session 2: Continue", speaker: "Mr. Sheron Jude", event_type: "WORKSHOP", is_active: false },
+        { display_time: "03.30 – 05.00 PM", title: "Session 2: Continue", speaker: "Mr. Jude Selvakumar Anto Sheron", event_type: "WORKSHOP", is_active: false },
         { display_time: "05.00 – 05.10 PM", title: "Group Photo & Closing Ceremony", speaker: "Organizing Team", event_type: "GENERAL", is_active: false }
       ]
     }

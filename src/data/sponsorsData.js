@@ -69,7 +69,7 @@ export const sponsorGroups = [
       {
         id: 'cloudparallax',
         name: 'Cloud Parallax',
-        logoUrl: 'https://res.cloudinary.com/dnfbik3if/image/upload/v1784817786/images_17_jkjmlt.jpg', // Add logo URL here
+        logoUrl: 'https://res.cloudinary.com/dnfbik3if/image/upload/v1784819971/cp_logo_r_v7ury9.png ', // Add logo URL here
         alt: 'Cloud Parallax Logo'
       }
     ]

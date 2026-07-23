@@ -38,8 +38,8 @@ const Speakers = () => {
           </p>
         </header>
 
-        {/* Speakers Grid - Image and Name only */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        {/* Speakers Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {speakersData.map((speaker, index) => (
             <motion.div
               key={speaker.id || index}
@@ -50,22 +50,41 @@ const Speakers = () => {
               className="glass-card rounded-2xl p-6 flex flex-col items-center text-center group hover:border-secondary/40 hover:shadow-[0_0_30px_rgba(249,168,37,0.15)] transition-all duration-500 relative"
             >
               {/* Speaker Card Image */}
-              <div className="w-full aspect-square max-w-[220px] rounded-2xl overflow-hidden border border-white/10 group-hover:border-secondary/60 transition-all duration-500 mb-6 relative shadow-lg">
+              <div className="w-full aspect-square max-w-[200px] rounded-2xl overflow-hidden border border-white/10 group-hover:border-secondary/60 transition-all duration-500 mb-5 relative shadow-lg bg-white/5 flex items-center justify-center p-2">
                 <img
                   src={speaker.image}
                   alt={speaker.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700"
                   onError={(e) => {
                     e.target.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=800';
                   }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
               </div>
 
               {/* Speaker Name */}
-              <h2 className="text-xl md:text-2xl font-black text-white group-hover:text-secondary transition-colors duration-300">
+              <h2 className="text-lg font-black text-white group-hover:text-secondary transition-colors duration-300 leading-snug">
                 {speaker.name}
               </h2>
+
+              {/* Position */}
+              {speaker.position && (
+                <p className="text-xs font-mono font-medium text-secondary/90 mt-1.5 mb-3 leading-snug">
+                  {speaker.position}
+                </p>
+              )}
+
+              {/* Session Topic */}
+              {speaker.topic && (
+                <div className="mt-auto pt-3 border-t border-white/10 w-full text-center">
+                  <span className="text-[10px] font-mono uppercase tracking-widest text-primary font-bold block mb-1">
+                    Keynote Topic
+                  </span>
+                  <p className="text-xs text-white/70 font-inter leading-relaxed italic">
+                    "{speaker.topic}"
+                  </p>
+                </div>
+              )}
             </motion.div>
           ))}
         </div>
