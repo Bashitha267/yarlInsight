@@ -101,6 +101,29 @@ const Schedule = () => {
     return now >= start && now <= end;
   };
 
+  const currentHappeningEvent = scheduleData
+    .flatMap(day => (day.events || []).map(event => ({ ...event, day_label: day.day_label, event_date: day.event_date })))
+    .find(event => Boolean(event.is_active) || isEventActive(event.start_time, event.end_time));
+
+  const formatEventTime = event => {
+    if (event?.display_time) return event.display_time;
+    if (event?.start_time && event?.end_time) {
+      const start = new Date(event.start_time);
+      const end = new Date(event.end_time);
+
+      if (!Number.isNaN(start.getTime()) && !Number.isNaN(end.getTime())) {
+        const timeFormatter = new Intl.DateTimeFormat('en-US', {
+          hour: '2-digit',
+          minute: '2-digit',
+        });
+
+        return `${timeFormatter.format(start)} - ${timeFormatter.format(end)}`;
+      }
+    }
+
+    return '';
+  };
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: 15 }}
@@ -117,6 +140,47 @@ const Schedule = () => {
             Three days of intensive learning, competitive building, and high-level networking.
           </p>
         </header>
+
+        {currentHappeningEvent && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35 }}
+            className="max-w-5xl mx-auto w-full"
+          >
+            <div className="bg-yellow-500/10 border border-yellow-400/50 backdrop-blur-xl rounded-3xl p-4 sm:p-5 lg:p-6 shadow-[0_0_35px_rgba(234,179,8,0.18)] flex flex-col lg:flex-row lg:items-center justify-between gap-4 relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/10 via-transparent to-yellow-500/5 pointer-events-none"></div>
+              <div className="relative z-10 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+                <div className="bg-yellow-400 text-black font-black text-[10px] sm:text-xs px-3 py-1 rounded-full uppercase tracking-widest flex items-center gap-2 shrink-0 shadow-[0_0_12px_rgba(234,179,8,0.6)] w-fit">
+                  <span className="w-2 h-2 rounded-full bg-black animate-ping"></span>
+                  Happening Now
+                </div>
+                <div>
+                  <div className="text-white font-bold text-lg sm:text-xl leading-snug">
+                    {currentHappeningEvent.title}
+                  </div>
+                  <div className="text-white/60 text-sm sm:text-base mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
+                    {formatEventTime(currentHappeningEvent) && (
+                      <span className="text-yellow-400 font-mono font-semibold">
+                        {formatEventTime(currentHappeningEvent)}
+                      </span>
+                    )}
+                    {currentHappeningEvent.speaker && (
+                      <span>
+                        with <strong className="text-white/90">{currentHappeningEvent.speaker}</strong>
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className="relative z-10 self-start lg:self-center">
+                <span className="px-4 py-1.5 rounded-full text-[10px] sm:text-xs font-black tracking-widest uppercase border bg-yellow-500/15 border-yellow-400/50 text-yellow-300">
+                  {currentHappeningEvent.event_type || 'GENERAL'}
+                </span>
+              </div>
+            </div>
+          </motion.div>
+        )}
 
         {loading ? (
           <div className="w-full flex flex-col items-center justify-center py-32 space-y-6">
