@@ -85,13 +85,13 @@ ALTER TABLE project_highlights ENABLE ROW LEVEL SECURITY;
 ALTER TABLE schedule_days ENABLE ROW LEVEL SECURITY;
 ALTER TABLE schedule_events ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "Allow public read access on projects" ON projects FOR SELECT USING (true);
-CREATE POLICY "Allow public read access on project_speakers" ON project_speakers FOR SELECT USING (true);
-CREATE POLICY "Allow public read access on project_sponsors" ON project_sponsors FOR SELECT USING (true);
-CREATE POLICY "Allow public read access on project_committee" ON project_committee FOR SELECT USING (true);
-CREATE POLICY "Allow public read access on project_highlights" ON project_highlights FOR SELECT USING (true);
-CREATE POLICY "Allow public read access on schedule_days" ON schedule_days FOR SELECT USING (true);
-CREATE POLICY "Allow public read access on schedule_events" ON schedule_events FOR SELECT USING (true);
+CREATE POLICY "Allow full access on projects" ON projects FOR ALL USING (true);
+CREATE POLICY "Allow full access on project_speakers" ON project_speakers FOR ALL USING (true);
+CREATE POLICY "Allow full access on project_sponsors" ON project_sponsors FOR ALL USING (true);
+CREATE POLICY "Allow full access on project_committee" ON project_committee FOR ALL USING (true);
+CREATE POLICY "Allow full access on project_highlights" ON project_highlights FOR ALL USING (true);
+CREATE POLICY "Allow full access on schedule_days" ON schedule_days FOR ALL USING (true);
+CREATE POLICY "Allow full access on schedule_events" ON schedule_events FOR ALL USING (true);
 
 -- Insert dummy data for testing the Schedule highlighting logic
 DO $$

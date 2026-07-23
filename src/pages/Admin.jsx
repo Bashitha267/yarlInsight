@@ -69,19 +69,30 @@ const Admin = () => {
   const fetchSchedule = async () => {
     setScheduleLoading(true);
     try {
-      const { data: days, error: daysErr } = await supabase.from('schedule_days').select('*').order('sort_order', { ascending: true });
-      if (!daysErr && days && days.length > 0) {
-        const { data: events } = await supabase.from('schedule_events').select('*').order('sort_order', { ascending: true });
+      const { data: days, error: daysErr } = await supabase
+        .from('schedule_days')
+        .select('*')
+        .order('sort_order', { ascending: true });
+
+      if (daysErr) throw daysErr;
+
+      if (days && days.length > 0) {
+        const { data: events, error: eventsErr } = await supabase
+          .from('schedule_events')
+          .select('*')
+          .order('sort_order', { ascending: true });
+
+        if (eventsErr) throw eventsErr;
+
         const grouped = days.map(d => ({
           ...d,
           events: events ? events.filter(e => e.day_id === d.id) : []
         }));
-        if (grouped.some(g => g.events.length > 0)) {
-          setScheduleData(grouped);
-        }
+
+        setScheduleData(grouped);
       }
     } catch (e) {
-      console.log('Using default schedule template');
+      console.error('Error fetching schedule from Supabase:', e);
     } finally {
       setScheduleLoading(false);
     }
@@ -89,19 +100,47 @@ const Admin = () => {
 
   const saveScheduleDataToSupabase = async (dataToSave) => {
     const targetData = dataToSave || scheduleData;
-    await supabase.from('schedule_events').delete().neq('id', '00000000-0000-0000-0000-000000000000');
-    await supabase.from('schedule_days').delete().neq('id', '00000000-0000-0000-0000-000000000000');
 
+    // 1. Delete events first (child table) to maintain referential integrity
+    const { error: delEvErr } = await supabase
+      .from('schedule_events')
+      .delete()
+      .neq('id', '00000000-0000-0000-0000-000000000000');
+    if (delEvErr) {
+      console.error('Delete schedule_events error:', delEvErr);
+      throw new Error(`Failed to clear existing schedule events: ${delEvErr.message}`);
+    }
+
+    // 2. Delete days second (parent table)
+    const { error: delDaysErr } = await supabase
+      .from('schedule_days')
+      .delete()
+      .neq('id', '00000000-0000-0000-0000-000000000000');
+    if (delDaysErr) {
+      console.error('Delete schedule_days error:', delDaysErr);
+      throw new Error(`Failed to clear existing schedule days: ${delDaysErr.message}`);
+    }
+
+    // 3. Re-insert days and their respective events
+    const newGroupedData = [];
     for (let i = 0; i < targetData.length; i++) {
       const day = targetData[i];
-      const { data: dayRes, error: dayErr } = await supabase.from('schedule_days').insert({
-        day_label: day.day_label,
-        event_date: day.event_date || day.day_label,
-        sort_order: i + 1
-      }).select().single();
+      const { data: dayRes, error: dayErr } = await supabase
+        .from('schedule_days')
+        .insert({
+          day_label: day.day_label,
+          event_date: day.event_date || day.day_label,
+          sort_order: i + 1
+        })
+        .select()
+        .single();
 
-      if (dayErr) throw dayErr;
+      if (dayErr) {
+        console.error('Insert schedule_days error:', dayErr);
+        throw new Error(`Failed to insert schedule day "${day.day_label}": ${dayErr.message}`);
+      }
 
+      let insertedEvents = [];
       if (day.events && day.events.length > 0) {
         const eventsToInsert = day.events.map((ev, evIdx) => ({
           day_id: dayRes.id,
@@ -113,10 +152,26 @@ const Admin = () => {
           sort_order: evIdx + 1
         }));
 
-        const { error: evErr } = await supabase.from('schedule_events').insert(eventsToInsert);
-        if (evErr) throw evErr;
+        const { data: evRes, error: evErr } = await supabase
+          .from('schedule_events')
+          .insert(eventsToInsert)
+          .select();
+
+        if (evErr) {
+          console.error('Insert schedule_events error:', evErr);
+          throw new Error(`Failed to insert events for "${day.day_label}": ${evErr.message}`);
+        }
+        insertedEvents = evRes || [];
       }
+
+      newGroupedData.push({
+        ...dayRes,
+        events: insertedEvents
+      });
     }
+
+    setScheduleData(newGroupedData);
+    return newGroupedData;
   };
 
   const handleToggleHappeningNow = async (dayIdx, evIdx) => {
@@ -134,23 +189,29 @@ const Admin = () => {
     setScheduleData(updatedSchedule);
 
     try {
-      // Direct update to Supabase
-      const { data: existingEvents } = await supabase.from('schedule_events').select('id');
-      if (existingEvents && existingEvents.length > 0) {
-        await supabase.from('schedule_events').update({ is_active: false }).neq('id', '00000000-0000-0000-0000-000000000000');
-        if (newIsActive && targetEvent) {
-          if (targetEvent.id) {
-            await supabase.from('schedule_events').update({ is_active: true }).eq('id', targetEvent.id);
-          } else {
-            const { data: updatedByTitle } = await supabase.from('schedule_events').update({ is_active: true }).eq('title', targetEvent.title).select();
-            if (!updatedByTitle || updatedByTitle.length === 0) {
-              await saveScheduleDataToSupabase(updatedSchedule);
-            }
+      const { error: resetErr } = await supabase
+        .from('schedule_events')
+        .update({ is_active: false })
+        .neq('id', '00000000-0000-0000-0000-000000000000');
+
+      if (resetErr) {
+        console.error("Reset is_active error:", resetErr);
+      }
+
+      if (newIsActive && targetEvent) {
+        if (targetEvent.id) {
+          const { error: upErr } = await supabase
+            .from('schedule_events')
+            .update({ is_active: true })
+            .eq('id', targetEvent.id);
+          
+          if (upErr) {
+            console.error("Update target event error:", upErr);
+            await saveScheduleDataToSupabase(updatedSchedule);
           }
+        } else {
+          await saveScheduleDataToSupabase(updatedSchedule);
         }
-      } else {
-        // Auto-save entire structure if DB doesn't have events yet
-        await saveScheduleDataToSupabase(updatedSchedule);
       }
     } catch (err) {
       console.error("Auto update is_active error:", err);
@@ -161,10 +222,11 @@ const Admin = () => {
     setScheduleLoading(true);
     try {
       await saveScheduleDataToSupabase(scheduleData);
-      alert('Schedule updated and saved to Supabase successfully!');
-      fetchSchedule();
+      alert('Schedule saved to Supabase successfully!');
+      await fetchSchedule();
     } catch (err) {
-      alert('Note: Schedule preview updated locally!\n\nTo persist in Supabase, execute the generated "supabase_schedule_seed.sql" file in your Supabase SQL Editor if table permissions need configuration.');
+      console.error('handleSaveSchedule error:', err);
+      alert(`Error saving schedule to Supabase:\n\n${err.message}\n\nNote: If this is an RLS permission error, please run the updated supabase_schedule_seed.sql script in your Supabase SQL Editor.`);
     } finally {
       setScheduleLoading(false);
     }
@@ -274,11 +336,11 @@ const Admin = () => {
             <div className="space-y-4">
               <div className="space-y-2">
                 <label className="text-[10px] uppercase font-black text-primary tracking-widest ml-1">Username</label>
-                <input type="text" placeholder="Enter username" className="admin-input" value={username} onChange={e => setUsername(e.target.value)} required />
+                <input type="text" placeholder="Enter username" className="admin-input-login" value={username} onChange={e => setUsername(e.target.value)} required />
               </div>
               <div className="space-y-2">
                 <label className="text-[10px] uppercase font-black text-primary tracking-widest ml-1">Password</label>
-                <input type="password" placeholder="••••••••" className="admin-input" value={password} onChange={e => setPassword(e.target.value)} required />
+                <input type="password" placeholder="••••••••" className="admin-input-login" value={password} onChange={e => setPassword(e.target.value)} required />
               </div>
             </div>
             {error && <div className="text-red-500 text-xs text-center font-bold">{error}</div>}
@@ -666,12 +728,42 @@ const Admin = () => {
       </main>
 
       <style jsx="true">{`
+        .admin-input-login {
+          background: #ffffff !important;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: 0.75rem;
+          padding: 1rem;
+          color: #000000 !important;
+          -webkit-text-fill-color: #000000 !important;
+          font-weight: 600;
+          width: 100%;
+          outline: none;
+          transition: all 0.2s;
+        }
+        .admin-input-login::placeholder {
+          color: #666666 !important;
+          -webkit-text-fill-color: #666666 !important;
+          opacity: 1;
+        }
+        .admin-input-login:-webkit-autofill,
+        .admin-input-login:-webkit-autofill:hover, 
+        .admin-input-login:-webkit-autofill:focus, 
+        .admin-input-login:-webkit-autofill:active {
+          -webkit-text-fill-color: #000000 !important;
+          transition: background-color 5000s ease-in-out 0s;
+        }
+        .admin-input-login:focus { 
+          border-color: #1A56A6; 
+          background: #ffffff !important; 
+          box-shadow: 0 0 0 2px rgba(26, 86, 166, 0.4); 
+        }
         .admin-input { 
           background: #111111 !important; 
           border: 1px solid rgba(255, 255, 255, 0.1); 
           border-radius: 0.75rem; 
           padding: 1rem; 
           color: white !important; 
+          -webkit-text-fill-color: white !important;
           width: 100%; 
           outline: none; 
           transition: all 0.2s; 

@@ -1,169 +1,153 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { sponsorGroups } from '../data/sponsorsData';
 
-const Sponsors = () => {
-  // Sponsor configuration data
-  const sponsorsList = [
-    {
-      name: 'Aravanai',
-      tier: 'Gold',
-      logoUrl: 'https://res.cloudinary.com/dnfbik3if/image/upload/v1780118625/05_kd5xjn.png',
-      badgeColor: 'text-amber-400 border-amber-500/30 bg-amber-500/10',
-      borderColor: 'group-hover:border-amber-400/80 border-white/5',
-      logoBg: 'bg-amber-500/5 group-hover:bg-amber-500/10 border-white/5 group-hover:border-amber-400/40',
-      shadowGlow: 'hover:shadow-[0_0_50px_rgba(245,158,11,0.25)]',
-      textColor: 'text-amber-400',
-      icon: 'emoji_events', // Trophy
-      iconColor: 'text-amber-400'
-    },
-    {
-      name: 'WSO2',
-      tier: 'Silver',
-      logoUrl: '', // Fallback styled logo text is used if empty
-      badgeColor: 'text-slate-300 border-slate-500/30 bg-slate-500/10',
-      borderColor: 'group-hover:border-[#F14E23]/80 border-white/5',
-      logoBg: 'bg-slate-500/5 group-hover:bg-orange-500/10 border-white/5 group-hover:border-[#F14E23]/40',
-      shadowGlow: 'hover:shadow-[0_0_50px_rgba(241,78,35,0.25)]',
-      textColor: 'text-[#F14E23]',
-      icon: 'workspace_premium', // Medal
-      iconColor: 'text-slate-300'
-    },
-    {
-      name: 'Prime1',
-      tier: 'Bronze',
-      logoUrl: 'https://res.cloudinary.com/dnfbik3if/image/upload/v1780118625/Prime1_yhmkdt.png',
-      badgeColor: 'text-orange-400 border-orange-700/30 bg-orange-700/10',
-      borderColor: 'group-hover:border-orange-500/80 border-white/5',
-      logoBg: 'bg-orange-950/5 group-hover:bg-orange-950/20 border-white/5 group-hover:border-orange-500/30',
-      shadowGlow: 'hover:shadow-[0_0_40px_rgba(234,88,12,0.2)]',
-      textColor: 'text-orange-500',
-      icon: 'military_tech', // Rank Badge
-      iconColor: 'text-orange-500'
-    },
-    {
-      name: 'Cognitix',
-      tier: 'Technical Partner',
-      logoUrl: '/tech.jpg.jpeg',
-      badgeColor: 'text-cyan-300 border-cyan-500/30 bg-cyan-500/10',
-      borderColor: 'group-hover:border-cyan-300/80 border-white/5',
-      logoBg: 'bg-cyan-500/5 group-hover:bg-cyan-500/10 border-white/5 group-hover:border-cyan-300/40',
-      shadowGlow: 'hover:shadow-[0_0_50px_rgba(34,211,238,0.2)]',
-      textColor: 'text-cyan-300',
-      icon: 'memory',
-      iconColor: 'text-cyan-300'
+export const SponsorLogo = ({ partner, isCompact = false }) => {
+  const [imageError, setImageError] = useState(false);
+
+  // Custom fallback renderers for when logoUrl is empty or fails to load
+  const renderFallback = () => {
+    switch (partner.id) {
+      case 'wso2':
+        return (
+          <div className="flex items-center gap-1.5">
+            <div className={`${isCompact ? 'w-6 h-6' : 'w-10 h-10 md:w-12 md:h-12'} rounded-full border-2 border-white flex items-center justify-center`}>
+              <span className={`${isCompact ? 'w-3 h-[2px]' : 'w-5 h-[3px]'} bg-white rotate-45`}></span>
+            </div>
+            <span className={`${isCompact ? 'text-2xl md:text-3xl' : 'text-4xl md:text-6xl'} font-black text-white tracking-tighter`}>WSO</span>
+            <span className={`${isCompact ? 'text-2xl md:text-3xl' : 'text-4xl md:text-6xl'} font-black text-[#F14E23] tracking-tighter`}>2</span>
+          </div>
+        );
+      case 'prime1':
+        return (
+          <div className={`flex items-center bg-[#18212f] text-white ${isCompact ? 'text-xs md:text-sm' : 'text-lg md:text-2xl'} font-bold rounded-lg overflow-hidden shadow-lg border border-white/10`}>
+            <span className={`${isCompact ? 'px-3 py-1.5' : 'px-5 py-3'} tracking-wider`}>PRIME</span>
+            <span className={`bg-[#f97316] ${isCompact ? 'px-2.5 py-1.5' : 'px-4 py-3'} text-white font-extrabold`}>1</span>
+          </div>
+        );
+      case 'gold-2':
+        return (
+          <div className="flex items-center gap-2">
+            <div className={`${isCompact ? 'w-8 h-8' : 'w-12 h-12 md:w-16 md:h-16'} rounded-full border-2 border-amber-400 flex items-center justify-center bg-amber-400/10 text-amber-400`}>
+              <span className={`material-symbols-outlined ${isCompact ? 'text-base' : 'text-2xl md:text-3xl'}`}>school</span>
+            </div>
+            <div className={`${isCompact ? 'text-[10px] md:text-xs' : 'text-sm md:text-base'} font-extrabold text-white uppercase leading-tight text-left`}>
+              Master Lakhs<br />Campus
+            </div>
+          </div>
+        );
+      case 'sago':
+        return (
+          <div className="flex items-center gap-2">
+            <div className={`${isCompact ? 'w-7 h-7' : 'w-11 h-11 md:w-14 md:h-14'} rounded-full bg-amber-400/10 border border-amber-400/20 flex items-center justify-center text-amber-400`}>
+              <span className={`material-symbols-outlined ${isCompact ? 'text-xs' : 'text-lg md:text-xl'} rotate-45`}>flight</span>
+            </div>
+            <div className="text-left leading-tight">
+              <span className={`${isCompact ? 'text-xs md:text-sm' : 'text-lg md:text-2xl'} font-black text-amber-400 block`}>SAGO</span>
+              <span className={`${isCompact ? 'text-[7px]' : 'text-[9px] md:text-xs'} font-bold text-gray-300 block tracking-wider`}>OVERSEAS EDUCATION</span>
+            </div>
+          </div>
+        );
+      case 'cognitix':
+        return (
+          <div className={`flex items-center gap-2 font-black ${isCompact ? 'text-base md:text-lg' : 'text-xl md:text-3xl'} text-white`}>
+            <div className={`${isCompact ? 'w-7 h-7 text-xs' : 'w-10 h-10 md:w-14 md:h-14 text-lg md:text-xl'} rounded-lg bg-cyan-500/20 border border-cyan-400/30 text-cyan-300 flex items-center justify-center font-mono font-bold`}>C</div>
+            <span className="tracking-tight text-cyan-300">Cogntix</span>
+          </div>
+        );
+      case 'vitalhub':
+        return (
+          <div className="text-left leading-tight">
+            <div className={`${isCompact ? 'text-base md:text-lg' : 'text-xl md:text-3xl'} font-extrabold tracking-tight`}>
+              <span className="text-[#38bdf8]">vital</span>
+              <span className="text-slate-300">hub</span>
+            </div>
+            <span className={`${isCompact ? 'text-[8px]' : 'text-[10px] md:text-xs'} text-[#38bdf8] font-bold uppercase tracking-widest block`}>Innovations Lab</span>
+          </div>
+        );
+      case 'cloudparallax':
+        return (
+          <div className={`flex items-center gap-2 ${isCompact ? 'text-base md:text-lg' : 'text-xl md:text-3xl'} font-bold text-white`}>
+            <div className={`${isCompact ? 'w-7 h-7 text-xs' : 'w-10 h-10 md:w-14 md:h-14 text-lg md:text-xl'} rounded-full bg-orange-500 text-white flex items-center justify-center`}>
+              <span className="material-symbols-outlined text-sm">cloud</span>
+            </div>
+            <span className="text-sky-300 font-extrabold">Cloud Parallax</span>
+          </div>
+        );
+      default:
+        return (
+          <span className={`${isCompact ? 'text-sm md:text-base' : 'text-lg md:text-2xl'} font-bold text-white tracking-tight`}>
+            {partner.name}
+          </span>
+        );
     }
-    
-  ];
+  };
+
+  if (partner.logoUrl && !imageError) {
+    return (
+      <img
+        src={partner.logoUrl}
+        alt={partner.alt || partner.name}
+        onError={() => setImageError(true)}
+        className={`${
+          isCompact
+            ? 'h-9 sm:h-10 md:h-12 max-h-12 max-w-[160px] md:max-w-[200px]'
+            : 'h-20 sm:h-24 md:h-28 lg:h-32 max-h-36 max-w-[280px] md:max-w-[360px]'
+        } w-auto object-contain transition-transform duration-300 hover:scale-105 filter drop-shadow-[0_4px_20px_rgba(255,255,255,0.05)]`}
+      />
+    );
+  }
 
   return (
-    <section id="sponsors" className="min-h-screen py-32 bg-transparent border-t border-white/5 relative overflow-hidden flex flex-col justify-center">
+    <div className="transition-transform duration-300 hover:scale-105 flex items-center justify-center">
+      {renderFallback()}
+    </div>
+  );
+};
+
+// Reusable Tier Section - Clean borderless layout per row
+export const SponsorTierRow = ({ group, isCompact = false }) => {
+  return (
+    <div className={`space-y-4 ${isCompact ? 'py-2' : 'py-4'}`}>
+      {/* Title Header with clean line */}
+      <div className="flex items-center gap-4">
+        <h3 className={`font-hanken ${isCompact ? 'text-lg md:text-xl font-bold' : 'text-2xl md:text-4xl font-extrabold'} text-white tracking-tight flex items-center gap-2.5`}>
+          <span className={`${isCompact ? 'w-2.5 h-2.5' : 'w-3.5 h-3.5'} rounded-full bg-secondary`}></span>
+          {group.title}
+        </h3>
+        <div className="h-px flex-grow bg-white/10"></div>
+      </div>
+
+      {/* Clean Row of Logos */}
+      <div className={`py-4 flex flex-wrap items-center justify-start ${isCompact ? 'gap-6 sm:gap-8 md:gap-10 min-h-[70px]' : 'gap-10 sm:gap-14 md:gap-20 lg:gap-24 min-h-[120px]'}`}>
+        {group.partners.map((partner) => (
+          <div key={partner.id} className={`flex items-center justify-center ${isCompact ? 'min-h-[50px]' : 'min-h-[90px] md:min-h-[120px]'}`}>
+            <SponsorLogo partner={partner} isCompact={isCompact} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const Sponsors = () => {
+  return (
+    <section id="sponsors" className="py-16 md:py-24 bg-transparent relative overflow-hidden flex flex-col justify-center">
       {/* Decorative ambient background glows */}
-      <div className="absolute top-1/4 left-1/4 -translate-y-1/2 w-[550px] h-[550px] bg-[#1A56A6]/10 rounded-full blur-[150px] pointer-events-none"></div>
-      <div className="absolute bottom-1/4 right-1/4 translate-y-1/2 w-[450px] h-[450px] bg-[#F9A825]/5 rounded-full blur-[130px] pointer-events-none"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-primary/10 rounded-full blur-[150px] pointer-events-none"></div>
 
-      <div className="px-6 md:px-margin-desktop max-w-container-max mx-auto relative z-10 w-full">
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-24 space-y-6">
-          <motion.div 
-            initial={{ opacity: 0, y: -10 }}
+      <div className="px-4 md:px-margin-desktop max-w-container-max mx-auto relative z-10 w-full space-y-12">
+        {sponsorGroups.map((group, index) => (
+          <motion.div
+            key={group.id}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-mono tracking-[0.2em] text-white/60 uppercase shadow-inner"
+            transition={{ duration: 0.5, delay: index * 0.1 }}
           >
-            <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-            Collaborations
+            <SponsorTierRow group={group} isCompact={true} />
           </motion.div>
-
-          <motion.h2 
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="font-hanken text-4xl md:text-6xl text-white font-extrabold tracking-tight leading-none"
-          >
-            <span className="text-primary">YARL</span> <span className="text-secondary">INSIGHT</span><span className="text-white"> 3.0</span> <span className="text-secondary italic">Sponsors</span>
-          </motion.h2>
-
-          <motion.p 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="text-white/50 text-base md:text-lg leading-relaxed max-w-xl mx-auto font-inter"
-          >
-            We are honored to have the backing of forward-thinking brands driving local technical ecosystem growth.
-          </motion.p>
-        </div>
-
-        {/* Sponsors Grid - Uniform size, highly animated cards */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-8 items-stretch max-w-6xl mx-auto pt-6">
-          {sponsorsList.map((sponsor, index) => (
-            <motion.div
-              key={sponsor.name}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.15, type: 'spring', stiffness: 100 }}
-              whileHover={{ 
-                y: -15,
-                scale: 1.025,
-                transition: { duration: 0.3, ease: 'easeOut' }
-              }}
-              className={`group relative bg-[#0a0a0a]/60 backdrop-blur-2xl border rounded-[2.5rem] p-12 md:p-14 flex flex-col items-center justify-center transition-all duration-500 w-full cursor-default ${sponsor.borderColor} ${sponsor.shadowGlow} transform-gpu`}
-              style={{
-                boxShadow: `0 0 40px rgba(0, 0, 0, 0.6)`,
-                willChange: 'transform, opacity',
-                transform: 'translateZ(0)'
-              }}
-            >
-              <div className="w-full flex flex-col items-center space-y-8 relative z-10">
-                {/* Badge Header */}
-                <div className={`flex items-center gap-2 py-1.5 px-4.5 rounded-full border text-[10px] font-mono font-bold tracking-widest uppercase shadow-md ${sponsor.badgeColor}`}>
-                  <span className={`material-symbols-outlined text-sm ${sponsor.iconColor}`}>
-                    {sponsor.icon}
-                  </span>
-                  <span>{sponsor.tier.includes('Partner') ? sponsor.tier : `${sponsor.tier} Sponsor`}</span>
-                </div>
-
-                {/* Logo Display area */}
-                <div className={`w-full h-44 flex items-center justify-center rounded-[2rem] bg-black/60 border relative overflow-hidden transition-all duration-300 group-hover:bg-black/80 ${sponsor.logoBg}`}>
-                  {sponsor.logoUrl ? (
-                    <motion.img 
-                      src={sponsor.logoUrl} 
-                      alt={`${sponsor.name} Logo`} 
-                      className="max-w-[75%] max-h-[75%] object-contain filter group-hover:brightness-110 transition-all duration-300"
-                      whileHover={{ scale: 1.05 }}
-                    />
-                  ) : (
-                    <div className="text-center p-4">
-                      {sponsor.name === 'WSO2' ? (
-                        <div className="flex items-center justify-center gap-0.5 group-hover:scale-105 transition-transform duration-300">
-                          <span className="text-5xl font-black tracking-tighter text-white">
-                            WSO
-                          </span>
-                          <span className="text-5xl font-black tracking-tighter text-[#F14E23]">
-                            2
-                          </span>
-                        </div>
-                      ) : (
-                        <span className={`text-4xl font-black tracking-tight ${sponsor.textColor}`}>
-                          {sponsor.name}
-                        </span>
-                      )}
-                    </div>
-                  )}
-                </div>
-
-                {/* Styled Sponsor Name */}
-                <div className="space-y-2 text-center w-full">
-                  <h4 className="text-3xl font-extrabold text-white tracking-tight group-hover:text-white/80 transition-all duration-300">
-                    {sponsor.name}
-                  </h4>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        ))}
       </div>
     </section>
   );

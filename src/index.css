@@ -36,3 +36,46 @@ html {
 .hero-gradient {
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.8) 80%, #000000 100%);
 }
+
+/* Subtle, Smooth Shooting Stars Animations */
+@keyframes shootHorizontal {
+  0% {
+    transform: translateX(-200px);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.35;
+  }
+  80% {
+    opacity: 0.35;
+  }
+  100% {
+    transform: translateX(calc(100vw + 200px));
+    opacity: 0;
+  }
+}
+
+@keyframes shootVertical {
+  0% {
+    transform: translateY(-200px);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.25;
+  }
+  80% {
+    opacity: 0.25;
+  }
+  100% {
+    transform: translateY(calc(100vh + 200px));
+    opacity: 0;
+  }
+}
+
+.animate-shoot-horizontal {
+  animation: shootHorizontal infinite linear;
+}
+
+.animate-shoot-vertical {
+  animation: shootVertical infinite linear;
+}

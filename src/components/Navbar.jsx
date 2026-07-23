@@ -22,6 +22,7 @@ const Navbar = () => {
 
   const navLinks = [
     { name: 'Home', path: '/' },
+    { name: 'Speakers', path: '/speakers' },
     { name: 'Sponsors', path: '/sponsors' },
     { name: 'Schedule', path: '/schedule' },
   ];
@@ -76,14 +77,6 @@ const Navbar = () => {
             IEEE Student Branch
             <span className="material-symbols-outlined text-sm">open_in_new</span>
           </a>
-          <a
-            href="https://forms.gle/1HjzND696eXYvYzA8"
-            target="_blank"
-            rel="noreferrer"
-            className="hidden md:block bg-primary text-white px-6 py-2.5 rounded-lg font-extrabold hover:bg-primary/90 transition-all active:scale-95 text-sm shadow-[0_0_15px_rgba(17,63,124,0.3)] hover:shadow-[0_0_20px_rgba(17,63,124,0.5)]"
-          >
-            Register Now
-          </a>
 
           {/* Mobile Menu Toggle */}
           <button
@@ -129,14 +122,6 @@ const Navbar = () => {
               <span className="material-symbols-outlined">language</span>
               IEEE Student Branch
               <span className="material-symbols-outlined text-sm">open_in_new</span>
-            </a>
-            <a
-              href="https://forms.gle/1HjzND696eXYvYzA8"
-              target="_blank"
-              rel="noreferrer"
-              className="w-full bg-primary text-white py-4 rounded-xl font-black text-lg shadow-[0_0_15px_rgba(17,63,124,0.3)] hover:bg-primary/90 transition-all inline-flex items-center justify-center"
-            >
-              Register Now
             </a>
           </motion.div>
         )}

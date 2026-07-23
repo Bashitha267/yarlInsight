@@ -1,34 +1,19 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import FAQ from './FAQ';
 
-const CTA = () => {
-  return (
-    <section className="py-24 px-6 md:px-margin-desktop max-w-container-max mx-auto">
-      <div className="relative rounded-3xl overflow-hidden py-16 px-12 text-center bg-black/60 border border-white/10 backdrop-blur-md shadow-[0_0_40px_rgba(26,86,166,0.15)]">
-        <div className="max-w-3xl mx-auto space-y-6 relative z-10 text-white">
-          <h2 className="font-hanken text-4xl md:text-5xl font-black leading-tight">
-            Ready to Join <span className="text-primary">YARL</span> <span className="text-secondary">INSIGHT</span> <span className="text-white">3.0</span>
-          </h2>
-          <p className="text-white/60 text-lg font-medium max-w-xl mx-auto font-inter">
-            Don't miss this opportunity to enhance your skills and network with industry professionals.
-          </p>
-          <div className="pt-4">
-            <a
-              href="https://forms.gle/1HjzND696eXYvYzA8"
-              target="_blank"
-              rel="noreferrer"
-              className="bg-primary text-white px-10 py-4 rounded-xl font-bold text-lg hover:scale-105 transition-all active:scale-95 shadow-xl hover:bg-primary-dark inline-flex items-center justify-center"
-            >
-              Register Now
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
+const CTA = () => null;
 
 const Footer = () => {
+  const links = [
+    { name: 'Home', path: '/' },
+    { name: 'Speakers', path: '/speakers' },
+    { name: 'Sponsors', path: '/sponsors' },
+    { name: 'Schedule', path: '/schedule' },
+    { name: 'About', path: '/#about' },
+    { name: 'FAQ', path: '/#faq' },
+  ];
+
   return (
     <>
       <footer className="bg-black text-white pt-24 pb-8 border-t border-white/5">
@@ -50,9 +35,9 @@ const Footer = () => {
             <div className="space-y-6">
               <h4 className="text-sm font-bold uppercase tracking-widest text-primary">Quick Links</h4>
               <ul className="space-y-3">
-                {['Home', 'About', 'Speakers', 'Schedule', 'Gallery', 'FAQ'].map((link) => (
-                  <li key={link}>
-                    <a href={`#${link.toLowerCase()}`} className="text-white/40 hover:text-white transition-colors text-sm">{link}</a>
+                {links.map((link) => (
+                  <li key={link.name}>
+                    <Link to={link.path} className="text-white/40 hover:text-white transition-colors text-sm">{link.name}</Link>
                   </li>
                 ))}
               </ul>

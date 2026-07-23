@@ -9,6 +9,7 @@ import { CTA, Footer } from './components/Footer';
 import ProjectDetails from './pages/ProjectDetails';
 import Schedule from './pages/Schedule';
 import SponsorsPage from './pages/Sponsors';
+import Speakers from './pages/Speakers';
 import Admin from './pages/Admin';
 import ShootingStarsGrid from './components/ShootingStarsGrid';
 import { motion } from 'framer-motion';
@@ -45,13 +46,13 @@ const AppContent = () => {
           <Route path="/" element={<Home />} />
           <Route path="/details/:id" element={<ProjectDetails />} />
           <Route path="/sponsors" element={<SponsorsPage />} />
+          <Route path="/speakers" element={<Speakers />} />
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/admin" element={<Admin />} />
         </Routes>
       </main>
       {!isAdminPage && (
         <div className="relative z-20">
-          <CTA />
           <Footer />
         </div>
       )}
