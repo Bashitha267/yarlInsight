@@ -26,9 +26,7 @@ const Footer = () => {
                   <span className="text-primary">YARL</span> <span className="text-secondary">INSIGHT</span>
                 </span>
               </div>
-              <p className="text-white/40 text-sm leading-relaxed">
-                A comprehensive two-day summer school dedicated to Fullstack Development with MERN Stack. Hosted by IEEE Student Branch of the University of Jaffna.
-              </p>
+
             </div>
 
             {/* Column 2: Quick Links */}
