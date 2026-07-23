@@ -56,7 +56,7 @@ const Schedule = () => {
         const { data: events, error: eventsError } = await supabase
           .from('schedule_events')
           .select('*')
-          .order('start_time', { ascending: true });
+          .order('sort_order', { ascending: true });
 
         if (eventsError) throw eventsError;
 
@@ -84,6 +84,9 @@ const Schedule = () => {
     const channel = supabase
       .channel('schedule_page_events')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'schedule_events' }, () => {
+        fetchSchedule();
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'schedule_days' }, () => {
         fetchSchedule();
       })
       .subscribe();

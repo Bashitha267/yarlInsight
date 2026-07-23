@@ -142,7 +142,10 @@ const Admin = () => {
           if (targetEvent.id) {
             await supabase.from('schedule_events').update({ is_active: true }).eq('id', targetEvent.id);
           } else {
-            await supabase.from('schedule_events').update({ is_active: true }).eq('title', targetEvent.title);
+            const { data: updatedByTitle } = await supabase.from('schedule_events').update({ is_active: true }).eq('title', targetEvent.title).select();
+            if (!updatedByTitle || updatedByTitle.length === 0) {
+              await saveScheduleDataToSupabase(updatedSchedule);
+            }
           }
         }
       } else {
