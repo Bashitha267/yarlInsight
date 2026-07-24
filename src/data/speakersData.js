@@ -6,7 +6,7 @@ export const speakersData = [
     name: 'Mr.Naresh Shanmugaraj',
     position: 'Founder and CEO of Cogntix (Pvt) Ltd',
     topic: 'AI-powered Requirement Engineering and Product Discovery',
-    image: 'https://res.cloudinary.com/dnfbik3if/image/upload/v1784816780/Naresh.jpg__1_-removebg-preview_jspofa.png'
+    image: 'https://res.cloudinary.com/dnfbik3if/image/upload/v1784870555/Untitled_design_1_jypvuw.png'
   },
   {
     id: 'jude-sheron',
