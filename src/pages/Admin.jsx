@@ -40,8 +40,8 @@ const Admin = () => {
     }
   ];
 
-  const [scheduleData, setScheduleData] = useState(defaultSchedule);
-  const [scheduleLoading, setScheduleLoading] = useState(false);
+  const [scheduleData, setScheduleData] = useState([]);
+  const [scheduleLoading, setScheduleLoading] = useState(true);
 
   // Project Form State
   const initialProjectState = { 
@@ -58,6 +58,8 @@ const Admin = () => {
       setIsLoggedIn(true);
       fetchProjects();
       fetchSchedule();
+    } else {
+      setScheduleLoading(false);
     }
   }, []);
 
@@ -90,9 +92,12 @@ const Admin = () => {
         }));
 
         setScheduleData(grouped);
+      } else {
+        setScheduleData(defaultSchedule);
       }
     } catch (e) {
       console.error('Error fetching schedule from Supabase:', e);
+      setScheduleData(defaultSchedule);
     } finally {
       setScheduleLoading(false);
     }
@@ -243,6 +248,7 @@ const Admin = () => {
         sessionStorage.setItem('admin_session', 'true');
         setIsLoggedIn(true);
         fetchProjects();
+        fetchSchedule();
       } else { throw new Error('Invalid credentials'); }
     } catch (err) { setError(err.message); }
     finally { setLoading(false); }
@@ -548,6 +554,7 @@ const Admin = () => {
                   type="button" 
                   onClick={() => setScheduleData([...scheduleData, { day_label: `Day 0${scheduleData.length + 1}`, event_date: `Day ${scheduleData.length + 1} Schedule`, events: [] }])}
                   className="px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white rounded-xl text-sm font-bold transition-all"
+                  disabled={scheduleLoading}
                 >
                   + Add Day
                 </button>
@@ -557,205 +564,219 @@ const Admin = () => {
                   disabled={scheduleLoading}
                   className="admin-btn-primary px-6 py-2.5 text-sm flex items-center gap-2"
                 >
-                  {scheduleLoading ? 'Saving...' : 'Save Schedule'}
+                  {scheduleLoading ? (
+                    <>
+                      <span className="animate-spin material-symbols-outlined text-sm">progress_activity</span>
+                      Loading...
+                    </>
+                  ) : 'Save Schedule'}
                 </button>
               </div>
             </div>
 
-            <div className="space-y-12">
-              {scheduleData.map((day, dayIdx) => (
-                <div key={dayIdx} className="glass-card p-6 md:p-8 rounded-3xl space-y-6 relative border border-white/10 w-full">
-                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-white/10">
-                    <div className="flex items-center gap-3">
-                      <input 
-                        type="text" 
-                        value={day.day_label} 
-                        onChange={e => {
-                          const updated = [...scheduleData];
-                          updated[dayIdx].day_label = e.target.value;
-                          setScheduleData(updated);
-                        }} 
-                        className="admin-input text-lg font-bold w-36"
-                        placeholder="Day Label"
-                      />
-                      <input 
-                        type="text" 
-                        value={day.event_date} 
-                        onChange={e => {
-                          const updated = [...scheduleData];
-                          updated[dayIdx].event_date = e.target.value;
-                          setScheduleData(updated);
-                        }} 
-                        className="admin-input text-sm text-white/70 w-56"
-                        placeholder="Event Date"
-                      />
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <button 
-                        type="button"
-                        onClick={() => {
-                          const updated = [...scheduleData];
-                          updated[dayIdx].events.push({ display_time: '09:00 AM - 10:00 AM', title: 'New Event Session', speaker: '', event_type: 'KEYNOTE', is_active: false });
-                          setScheduleData(updated);
-                        }}
-                        className="text-xs bg-primary/20 hover:bg-primary/30 text-primary border border-primary/40 px-4 py-2.5 rounded-xl font-bold transition-all"
-                      >
-                        + Add Session
-                      </button>
-                      <button 
-                        type="button"
-                        onClick={() => {
-                          const updated = scheduleData.filter((_, i) => i !== dayIdx);
-                          setScheduleData(updated);
-                        }}
-                        className="text-xs text-red-400 hover:text-red-300 font-bold px-3 py-2"
-                      >
-                        Delete Day
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    {(day.events || []).map((ev, evIdx) => (
-                      <div 
-                        key={evIdx} 
-                        className={`p-5 rounded-2xl border transition-all space-y-4 ${
-                          ev.is_active 
-                            ? 'bg-primary/10 border-primary shadow-[0_0_30px_rgba(26,86,166,0.3)]' 
-                            : 'bg-black/60 border-white/10'
-                        }`}
-                      >
-                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-center">
-                          <div className="lg:col-span-3">
-                            <label className="text-[10px] uppercase tracking-widest text-primary font-bold block mb-1">Time</label>
-                            <input 
-                              type="text" 
-                              value={ev.display_time} 
-                              onChange={e => {
-                                const updated = [...scheduleData];
-                                updated[dayIdx].events[evIdx].display_time = e.target.value;
-                                setScheduleData(updated);
-                              }}
-                              className="admin-input text-xs py-2.5 font-mono"
-                              placeholder="09:00 AM - 10:30 AM"
-                            />
-                          </div>
-
-                          <div className="lg:col-span-4">
-                            <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold block mb-1">Event Title</label>
-                            <input 
-                              type="text" 
-                              value={ev.title} 
-                              onChange={e => {
-                                const updated = [...scheduleData];
-                                updated[dayIdx].events[evIdx].title = e.target.value;
-                                setScheduleData(updated);
-                              }}
-                              className="admin-input text-xs py-2.5 font-bold"
-                              placeholder="Session Title"
-                            />
-                          </div>
-
-                          <div className="lg:col-span-3">
-                            <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold block mb-1">Speaker / Host</label>
-                            <input 
-                              type="text" 
-                              value={ev.speaker} 
-                              onChange={e => {
-                                const updated = [...scheduleData];
-                                updated[dayIdx].events[evIdx].speaker = e.target.value;
-                                setScheduleData(updated);
-                              }}
-                              className="admin-input text-xs py-2.5"
-                              placeholder="Speaker Name"
-                            />
-                          </div>
-
-                          <div className="lg:col-span-2">
-                            <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold block mb-1">Type</label>
-                            <select 
-                              value={ev.event_type || 'GENERAL'} 
-                              onChange={e => {
-                                const updated = [...scheduleData];
-                                updated[dayIdx].events[evIdx].event_type = e.target.value;
-                                setScheduleData(updated);
-                              }}
-                              className="admin-input text-xs py-2.5 bg-black"
-                            >
-                              <option value="KEYNOTE">KEYNOTE</option>
-                              <option value="WORKSHOP">WORKSHOP</option>
-                              <option value="PANEL">PANEL</option>
-                              <option value="BREAK">BREAK</option>
-                              <option value="GENERAL">GENERAL</option>
-                            </select>
-                          </div>
-                        </div>
-
-                        <div className="flex flex-wrap justify-between items-center pt-2 border-t border-white/5">
-                          <button
-                            type="button"
-                            onClick={() => handleToggleHappeningNow(dayIdx, evIdx)}
-                            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
-                              ev.is_active 
-                                ? 'bg-yellow-400 text-black font-black shadow-[0_0_20px_rgba(234,179,8,0.5)]' 
-                                : 'bg-white/5 hover:bg-white/10 text-white/60 border border-white/10'
-                            }`}
-                          >
-                            <span className="material-symbols-outlined text-sm">{ev.is_active ? 'radio_button_checked' : 'radio_button_unchecked'}</span>
-                            {ev.is_active ? 'HAPPENING NOW (ACTIVE)' : 'MARK HAPPENING NOW'}
-                          </button>
-
-                          <button 
-                            type="button" 
-                            onClick={() => {
-                              const updated = [...scheduleData];
-                              updated[dayIdx].events = updated[dayIdx].events.filter((_, i) => i !== evIdx);
-                              setScheduleData(updated);
-                            }}
-                            className="text-[11px] text-red-500 hover:text-red-400 font-bold uppercase tracking-wider py-1 px-2"
-                          >
-                            Remove Session
-                          </button>
-                        </div>
+            {scheduleLoading ? (
+              <div className="glass-card p-16 rounded-3xl flex flex-col items-center justify-center gap-4 text-center border border-white/10">
+                <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                <div className="text-white/80 font-bold text-lg">Fetching schedule data from Supabase...</div>
+                <p className="text-white/40 text-xs">Please wait while the latest event schedule is loaded.</p>
+              </div>
+            ) : (
+              <div className="space-y-12">
+                {scheduleData.map((day, dayIdx) => (
+                  <div key={dayIdx} className="glass-card p-6 md:p-8 rounded-3xl space-y-6 relative border border-white/10 w-full">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-white/10">
+                      <div className="flex items-center gap-3">
+                        <input 
+                          type="text" 
+                          value={day.day_label} 
+                          onChange={e => {
+                            const updated = [...scheduleData];
+                            updated[dayIdx].day_label = e.target.value;
+                            setScheduleData(updated);
+                          }} 
+                          className="admin-input text-lg font-bold w-36"
+                          placeholder="Day Label"
+                        />
+                        <input 
+                          type="text" 
+                          value={day.event_date} 
+                          onChange={e => {
+                            const updated = [...scheduleData];
+                            updated[dayIdx].event_date = e.target.value;
+                            setScheduleData(updated);
+                          }} 
+                          className="admin-input text-sm text-white/70 w-56"
+                          placeholder="Event Date"
+                        />
                       </div>
-                    ))}
+                      <div className="flex items-center gap-3">
+                        <button 
+                          type="button"
+                          onClick={() => {
+                            const updated = [...scheduleData];
+                            updated[dayIdx].events.push({ display_time: '09:00 AM - 10:00 AM', title: 'New Event Session', speaker: '', event_type: 'KEYNOTE', is_active: false });
+                            setScheduleData(updated);
+                          }}
+                          className="text-xs bg-primary/20 hover:bg-primary/30 text-primary border border-primary/40 px-4 py-2.5 rounded-xl font-bold transition-all"
+                        >
+                          + Add Session
+                        </button>
+                        <button 
+                          type="button"
+                          onClick={() => {
+                            const updated = scheduleData.filter((_, i) => i !== dayIdx);
+                            setScheduleData(updated);
+                          }}
+                          className="text-xs text-red-400 hover:text-red-300 font-bold px-3 py-2"
+                        >
+                          Delete Day
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      {(day.events || []).map((ev, evIdx) => (
+                        <div 
+                          key={evIdx} 
+                          className={`p-5 rounded-2xl border transition-all space-y-4 ${
+                            ev.is_active 
+                              ? 'bg-primary/10 border-primary shadow-[0_0_30px_rgba(26,86,166,0.3)]' 
+                              : 'bg-black/60 border-white/10'
+                          }`}
+                        >
+                          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-center">
+                            <div className="lg:col-span-3">
+                              <label className="text-[10px] uppercase tracking-widest text-primary font-bold block mb-1">Time</label>
+                              <input 
+                                type="text" 
+                                value={ev.display_time} 
+                                onChange={e => {
+                                  const updated = [...scheduleData];
+                                  updated[dayIdx].events[evIdx].display_time = e.target.value;
+                                  setScheduleData(updated);
+                                }}
+                                className="admin-input text-xs py-2.5 font-mono"
+                                placeholder="09:00 AM - 10:30 AM"
+                              />
+                            </div>
+
+                            <div className="lg:col-span-4">
+                              <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold block mb-1">Event Title</label>
+                              <input 
+                                type="text" 
+                                value={ev.title} 
+                                onChange={e => {
+                                  const updated = [...scheduleData];
+                                  updated[dayIdx].events[evIdx].title = e.target.value;
+                                  setScheduleData(updated);
+                                }}
+                                className="admin-input text-xs py-2.5 font-bold"
+                                placeholder="Session Title"
+                              />
+                            </div>
+
+                            <div className="lg:col-span-3">
+                              <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold block mb-1">Speaker / Host</label>
+                              <input 
+                                type="text" 
+                                value={ev.speaker} 
+                                onChange={e => {
+                                  const updated = [...scheduleData];
+                                  updated[dayIdx].events[evIdx].speaker = e.target.value;
+                                  setScheduleData(updated);
+                                }}
+                                className="admin-input text-xs py-2.5"
+                                placeholder="Speaker Name"
+                              />
+                            </div>
+
+                            <div className="lg:col-span-2">
+                              <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold block mb-1">Type</label>
+                              <select 
+                                value={ev.event_type || 'GENERAL'} 
+                                onChange={e => {
+                                  const updated = [...scheduleData];
+                                  updated[dayIdx].events[evIdx].event_type = e.target.value;
+                                  setScheduleData(updated);
+                                }}
+                                className="admin-input text-xs py-2.5 bg-black"
+                              >
+                                <option value="KEYNOTE">KEYNOTE</option>
+                                <option value="WORKSHOP">WORKSHOP</option>
+                                <option value="PANEL">PANEL</option>
+                                <option value="BREAK">BREAK</option>
+                                <option value="GENERAL">GENERAL</option>
+                              </select>
+                            </div>
+                          </div>
+
+                          <div className="flex flex-wrap justify-between items-center pt-2 border-t border-white/5">
+                            <button
+                              type="button"
+                              onClick={() => handleToggleHappeningNow(dayIdx, evIdx)}
+                              className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
+                                ev.is_active 
+                                  ? 'bg-yellow-400 text-black font-black shadow-[0_0_20px_rgba(234,179,8,0.5)]' 
+                                  : 'bg-white/5 hover:bg-white/10 text-white/60 border border-white/10'
+                              }`}
+                            >
+                              <span className="material-symbols-outlined text-sm">{ev.is_active ? 'radio_button_checked' : 'radio_button_unchecked'}</span>
+                              {ev.is_active ? 'HAPPENING NOW (ACTIVE)' : 'MARK HAPPENING NOW'}
+                            </button>
+
+                            <button 
+                              type="button" 
+                              onClick={() => {
+                                const updated = [...scheduleData];
+                                updated[dayIdx].events = updated[dayIdx].events.filter((_, i) => i !== evIdx);
+                                setScheduleData(updated);
+                              }}
+                              className="text-[11px] text-red-500 hover:text-red-400 font-bold uppercase tracking-wider py-1 px-2"
+                            >
+                              Remove Session
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </main>
 
       <style jsx="true">{`
         .admin-input-login {
-          background: #ffffff !important;
+          background: #121212 !important;
           border: 1px solid rgba(255, 255, 255, 0.2);
           border-radius: 0.75rem;
           padding: 1rem;
-          color: #000000 !important;
-          -webkit-text-fill-color: #000000 !important;
+          color: #ffffff !important;
+          -webkit-text-fill-color: #ffffff !important;
           font-weight: 600;
           width: 100%;
           outline: none;
           transition: all 0.2s;
         }
         .admin-input-login::placeholder {
-          color: #666666 !important;
-          -webkit-text-fill-color: #666666 !important;
+          color: rgba(255, 255, 255, 0.4) !important;
+          -webkit-text-fill-color: rgba(255, 255, 255, 0.4) !important;
           opacity: 1;
         }
         .admin-input-login:-webkit-autofill,
         .admin-input-login:-webkit-autofill:hover, 
         .admin-input-login:-webkit-autofill:focus, 
         .admin-input-login:-webkit-autofill:active {
-          -webkit-text-fill-color: #000000 !important;
+          -webkit-text-fill-color: #ffffff !important;
           transition: background-color 5000s ease-in-out 0s;
+          box-shadow: 0 0 0px 1000px #121212 inset !important;
         }
         .admin-input-login:focus { 
-          border-color: #1A56A6; 
-          background: #ffffff !important; 
-          box-shadow: 0 0 0 2px rgba(26, 86, 166, 0.4); 
+          border-color: #113F7C; 
+          background: #181818 !important; 
+          box-shadow: 0 0 0 2px rgba(17, 63, 124, 0.6); 
         }
         .admin-input { 
           background: #111111 !important; 
@@ -768,8 +789,8 @@ const Admin = () => {
           outline: none; 
           transition: all 0.2s; 
         }
-        .admin-input:focus { border-color: #1A56A6; background: #1a1a1a !important; }
-        .admin-btn-primary { background: #1A56A6; color: white; font-weight: 900; border-radius: 0.75rem; padding: 1rem; transition: all 0.2s; text-transform: uppercase; }
+        .admin-input:focus { border-color: #113F7C; background: #1a1a1a !important; }
+        .admin-btn-primary { background: #113F7C; color: white; font-weight: 900; border-radius: 0.75rem; padding: 1rem; transition: all 0.2s; text-transform: uppercase; }
         .admin-btn-primary:hover { filter: brightness(1.1); transform: translateY(-2px); }
         .glass-card { background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
       `}</style>
