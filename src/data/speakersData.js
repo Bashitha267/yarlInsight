@@ -13,7 +13,7 @@ export const speakersData = [
     name: 'Mr.Jude Selvakumar Anto Sheron',
     position: 'Senior Software Engineer Cogntix (Pvt) Ltd',
     topic: 'AI-Assisted Development and Code Generation',
-    image: 'https://res.cloudinary.com/dnfbik3if/image/upload/v1784816926/Sheron.jpg_1_v8vegx.jpg'
+    image: 'https://res.cloudinary.com/dnfbik3if/image/upload/v1784874667/Untitled_design_2_mpn466.png'
   },
   {
     id: 'susara-jayaweera',
