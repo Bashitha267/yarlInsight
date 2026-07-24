@@ -54,7 +54,7 @@ const Speakers = () => {
                 <img
                   src={speaker.image}
                   alt={speaker.name}
-                  className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700"
+                  className="w-72 h-72 object-cover group-hover:scale-105 transition-transform duration-700"
                   onError={(e) => {
                     e.target.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=800';
                   }}
