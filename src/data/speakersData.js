@@ -6,14 +6,14 @@ export const speakersData = [
     name: 'Mr.Naresh Shanmugaraj',
     position: 'Founder and CEO of Cogntix (Pvt) Ltd',
     topic: 'AI-powered Requirement Engineering and Product Discovery',
-    image: 'https://res.cloudinary.com/dnfbik3if/image/upload/v1784870555/Untitled_design_1_jypvuw.png'
+    image: 'https://res.cloudinary.com/dnfbik3if/image/upload/v1784875376/Untitled_design_5_cixaz5.png'
   },
   {
     id: 'jude-sheron',
     name: 'Mr.Jude Selvakumar Anto Sheron',
     position: 'Senior Software Engineer Cogntix (Pvt) Ltd',
     topic: 'AI-Assisted Development and Code Generation',
-    image: 'https://res.cloudinary.com/dnfbik3if/image/upload/v1784875049/Untitled_design_3_heyuj4.png'
+    image: 'https://res.cloudinary.com/dnfbik3if/image/upload/v1784875375/Untitled_design_4_lb7kmk.png'
   },
   {
     id: 'susara-jayaweera',
