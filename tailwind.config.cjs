@@ -31,8 +31,9 @@ module.exports = {
         }
       },
       fontFamily: {
+        deltha: ['Deltha', 'Orbitron', 'sans-serif'],
         orbitron: ['Orbitron', 'sans-serif'],
-        hanken: ['Orbitron', 'Hanken Grotesk', 'sans-serif'],
+        hanken: ['Deltha', 'Orbitron', 'Hanken Grotesk', 'sans-serif'],
         inter: ['Inter', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
       },
