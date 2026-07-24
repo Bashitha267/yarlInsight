@@ -22,7 +22,7 @@ const Footer = () => {
             {/* Column 1: About */}
             <div className="space-y-6">
               <div className="flex items-center gap-2">
-                <span className="font-hanken text-xl font-black tracking-wider uppercase select-none">
+                <span className="font-deltha text-xl font-black tracking-wider uppercase select-none">
                   <span className="text-primary">YARL</span> <span className="text-secondary">INSIGHT</span>
                 </span>
               </div>
@@ -31,11 +31,11 @@ const Footer = () => {
 
             {/* Column 2: Quick Links */}
             <div className="space-y-6">
-              <h4 className="text-sm font-bold uppercase tracking-widest text-primary">Quick Links</h4>
+              <h4 className="font-deltha text-sm font-bold uppercase tracking-widest text-primary">Quick Links</h4>
               <ul className="space-y-3">
                 {links.map((link) => (
                   <li key={link.name}>
-                    <Link to={link.path} className="text-white/40 hover:text-white transition-colors text-sm">{link.name}</Link>
+                    <Link to={link.path} className="font-deltha tracking-wider text-white/50 hover:text-white transition-colors text-xs uppercase">{link.name}</Link>
                   </li>
                 ))}
               </ul>
@@ -43,21 +43,21 @@ const Footer = () => {
 
             {/* Column 3: Contact */}
             <div className="space-y-6">
-              <h4 className="text-sm font-bold uppercase tracking-widest text-primary">Contact</h4>
-              <ul className="space-y-4">
-                <li className="flex items-start gap-3 text-sm text-white/40">
+              <h4 className="font-deltha text-sm font-bold uppercase tracking-widest text-primary">Contact</h4>
+              <ul className="space-y-4 font-deltha">
+                <li className="flex items-start gap-3 text-xs tracking-wider uppercase text-white/50">
                   <span className="material-symbols-outlined text-primary text-lg">location_on</span>
                   <span>University of Jaffna, Sri Lanka</span>
                 </li>
-                <li className="flex items-start gap-3 text-sm text-white/40">
+                <li className="flex items-start gap-3 text-xs tracking-wider uppercase text-white/50">
                   <span className="material-symbols-outlined text-primary text-lg">mail</span>
                   <span>ieeesb@univ.jfn.ac.lk</span>
                 </li>
-                <li className="flex items-start gap-3 text-sm text-white/40">
+                <li className="flex items-start gap-3 text-xs tracking-wider uppercase text-white/50">
                   <span className="material-symbols-outlined text-primary text-lg">phone</span>
                   <span>075 6852 271</span>
                 </li>
-                  <li className="flex items-start gap-3 text-sm text-white/40">
+                  <li className="flex items-start gap-3 text-xs tracking-wider uppercase text-white/50">
                   <span className="material-symbols-outlined text-primary text-lg">phone</span>
                   <span>072 154 1183</span>
                 </li>
@@ -66,7 +66,7 @@ const Footer = () => {
 
             {/* Column 4: Follow Us */}
             <div className="space-y-6">
-              <h4 className="text-sm font-bold uppercase tracking-widest text-primary">Follow Us</h4>
+              <h4 className="font-deltha text-sm font-bold uppercase tracking-widest text-primary">Follow Us</h4>
               <div className="flex gap-3">
                 {[
                   { icon: 'facebook', label: 'Facebook', url: 'https://www.facebook.com/IEEESBUoJ/' },
@@ -92,11 +92,11 @@ const Footer = () => {
 
           {/* Bottom Bar */}
           <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-            <p className="text-[10px] text-white/20 uppercase tracking-widest text-center">
+            <p className="font-deltha text-[10px] text-white/40 uppercase tracking-widest text-center">
               © {new Date().getFullYear()} <span className="text-primary">YARL</span> <span className="text-secondary">INSIGHT</span>. All rights reserved. Organized by IEEE Student Branch of University of Jaffna.
             </p>
-            <div className="flex items-center gap-4 text-[10px] text-white/20 uppercase tracking-widest">
-              <span>Developed by <a href="https://nimeshbashitha.me" target="_blank" rel="noopener noreferrer" className="text-white/60 font-bold hover:text-primary transition-colors">Nimesh Bashitha</a></span>
+            <div className="flex items-center gap-4 font-deltha text-[10px] text-white/40 uppercase tracking-widest">
+              <span>Developed by <a href="https://nimeshbashitha.me" target="_blank" rel="noopener noreferrer" className="text-white/80 font-bold hover:text-primary transition-colors">Nimesh Bashitha</a></span>
             </div>
           </div>
         </div>

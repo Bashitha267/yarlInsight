@@ -31,7 +31,7 @@ const FAQItem = ({ question, answer, isOpen, onClick }) => {
         onClick={onClick}
         className="w-full py-6 flex justify-between items-center text-left group"
       >
-        <span className={`text-lg font-bold transition-colors ${isOpen ? 'text-primary' : 'text-white/80 group-hover:text-white'}`}>
+        <span className={`font-deltha text-lg tracking-wider font-bold transition-colors ${isOpen ? 'text-primary' : 'text-white/80 group-hover:text-white'}`}>
           {question}
         </span>
         <span className={`material-symbols-outlined transition-transform duration-300 ${isOpen ? 'rotate-180 text-primary' : 'text-white/20'}`}>
@@ -47,7 +47,7 @@ const FAQItem = ({ question, answer, isOpen, onClick }) => {
             transition={{ duration: 0.3 }}
             className="overflow-hidden"
           >
-            <p className="pb-6 text-white/40 leading-relaxed">
+            <p className="font-deltha pb-6 text-white/50 text-sm leading-relaxed tracking-wider">
               {answer}
             </p>
           </motion.div>
@@ -64,7 +64,7 @@ const FAQ = () => {
     <section id="faq" className="py-32 px-6 md:px-margin-desktop max-w-4xl mx-auto">
       <div className="space-y-4 mb-16 text-center">
         <h2 className="text-primary font-mono text-sm uppercase tracking-[0.3em]">Support</h2>
-        <h3 className="font-hanken text-4xl md:text-5xl text-white font-bold">Frequently Asked Questions</h3>
+        <h3 className="font-deltha text-4xl md:text-5xl text-white font-bold">Frequently Asked Questions</h3>
       </div>
 
       <div className="glass-card rounded-3xl p-8 md:p-12 border-white/5">

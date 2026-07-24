@@ -132,7 +132,7 @@ const Hero = () => {
             </div>
 
             <div className="space-y-4">
-              <h1 className="font-orbitron text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black leading-none tracking-tight animate-slide-up flex flex-wrap items-center gap-x-4">
+              <h1 className="font-deltha text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black leading-none tracking-tight animate-slide-up flex flex-wrap items-center gap-x-4">
                 <span className="text-primary">YARL</span>
                 <RollingText words={dynamicWords} />
               </h1>
@@ -152,30 +152,38 @@ const Hero = () => {
 
               <div className="grid grid-cols-4 gap-3 sm:gap-4 w-full">
                 <div className="bg-white/5 border border-white/10 rounded-2xl p-3 sm:p-4 text-center group hover:border-primary/50 transition-all duration-300 shadow-lg">
-                  <span className="font-orbitron text-3xl sm:text-4xl font-black text-white group-hover:text-primary transition-colors block">
+                  <span className="font-deltha text-3xl sm:text-4xl font-black text-white group-hover:text-primary transition-colors block">
                     {String(timeLeft.days).padStart(2, '0')}
                   </span>
                   <span className="text-[10px] sm:text-xs font-mono uppercase text-white/40 tracking-widest mt-1 block">Days</span>
                 </div>
                 <div className="bg-white/5 border border-white/10 rounded-2xl p-3 sm:p-4 text-center group hover:border-primary/50 transition-all duration-300 shadow-lg">
-                  <span className="font-orbitron text-3xl sm:text-4xl font-black text-white group-hover:text-primary transition-colors block">
+                  <span className="font-deltha text-3xl sm:text-4xl font-black text-white group-hover:text-primary transition-colors block">
                     {String(timeLeft.hours).padStart(2, '0')}
                   </span>
                   <span className="text-[10px] sm:text-xs font-mono uppercase text-white/40 tracking-widest mt-1 block">Hours</span>
                 </div>
                 <div className="bg-white/5 border border-white/10 rounded-2xl p-3 sm:p-4 text-center group hover:border-primary/50 transition-all duration-300 shadow-lg">
-                  <span className="font-orbitron text-3xl sm:text-4xl font-black text-white group-hover:text-primary transition-colors block">
+                  <span className="font-deltha text-3xl sm:text-4xl font-black text-white group-hover:text-primary transition-colors block">
                     {String(timeLeft.minutes).padStart(2, '0')}
                   </span>
                   <span className="text-[10px] sm:text-xs font-mono uppercase text-white/40 tracking-widest mt-1 block">Mins</span>
                 </div>
                 <div className="bg-white/5 border border-secondary/30 rounded-2xl p-3 sm:p-4 text-center group hover:border-secondary transition-all duration-300 shadow-[0_0_20px_rgba(249,168,37,0.15)] relative overflow-hidden">
-                  <span className="font-orbitron text-3xl sm:text-4xl font-black text-secondary block">
+                  <span className="font-deltha text-3xl sm:text-4xl font-black text-secondary block">
                     {String(timeLeft.seconds).padStart(2, '0')}
                   </span>
                   <span className="text-[10px] sm:text-xs font-mono uppercase text-white/40 tracking-widest mt-1 block">Secs</span>
                 </div>
               </div>
+
+              <Link
+                to="/schedule"
+                className="w-full bg-primary hover:bg-primary/90 text-white font-deltha font-bold tracking-wider uppercase py-3.5 px-6 rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 group shadow-[0_0_25px_rgba(17,63,124,0.4)] hover:shadow-[0_0_35px_rgba(17,63,124,0.7)] hover:scale-[1.02] active:scale-[0.98]"
+              >
+                <span>View Full Schedule</span>
+                <span className="material-symbols-outlined text-xl group-hover:translate-x-1 transition-transform">arrow_forward</span>
+              </Link>
             </div>
           </div>
 
