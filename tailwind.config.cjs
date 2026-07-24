@@ -31,7 +31,8 @@ module.exports = {
         }
       },
       fontFamily: {
-        hanken: ['Hanken Grotesk', 'sans-serif'],
+        orbitron: ['Orbitron', 'sans-serif'],
+        hanken: ['Orbitron', 'Hanken Grotesk', 'sans-serif'],
         inter: ['Inter', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
       },
